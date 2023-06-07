@@ -30,10 +30,14 @@ body {
     font-size: 16px;
     line-height: 1.5;
     color: #333;
-    min-height: 100vh;
-
 }
 
+
+:global .app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
 :global .outer-container {
     display: flex;
