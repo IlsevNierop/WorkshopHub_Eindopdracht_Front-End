@@ -4,7 +4,8 @@ import Select from 'react-select';
 import 'react-date-range/dist/styles.css'; // main css file of date range calendar
 import 'react-date-range/dist/theme/default.css'; // theme css file of date range calendar
 import {DateRange} from 'react-date-range';
-import Slider from "../../components/Slider/Slider";
+import {Heart, Star} from "@phosphor-icons/react";
+import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
 
 {/*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
 }
@@ -35,6 +36,7 @@ function Home() {
     const [location, setLocation] = useState([]);
     const [environment, setEnvironment] = useState([]);
     const [valueSlider, setValueSlider] = useState(0);
+    const [minRating, setMinRating] = useState(0);
 
 
     const [dateRange, setDateRange] = useState([
@@ -50,87 +52,240 @@ function Home() {
     // console.log(environment);
     console.log(valueSlider);
     // console.log(dateRange);
+    console.log(minRating);
 
     const changeValueSlider = (e) => {
         setValueSlider(e.target.value);
+    }
+
+    const handleChangeRating = (e) => {
+        setMinRating(e.target.value);
     }
 
 
     return (
         <div className={`outer-container ${styles["home-outer-container"]}`}>
             <div className={`inner-container ${styles["home-inner"]}`}>
-                <h1>WorkshopHub</h1>
-                <h2>De plek om een creatieve workshop te boeken</h2>
-                <section className={styles["sidebar-filter-section"]}>
-                    <h4>Filter je zoekopdracht:</h4>
-
-                    <h5>Categorie</h5>
-                    <Select
-                        placeholder="Selecteer.."
-                        defaultValue={category}
-                        onChange={setCategory}
-                        options={optionsCategory}
-                        isMulti={true}
-
-                    />
-
-                    <h5>Wanneer</h5>
-                    {/*Onderstreept vandaag nog in het blauw, kijken of ik dat kan wijzigen*/}
-                    <DateRange
-                        editableDateInputs={true}
-                        onChange={item => setDateRange([item.selection])}
-                        moveRangeOnFirstSelection={false}
-                        ranges={dateRange}
-                        minDate={new Date()}
-                        rangeColors={['#c2683a', '#c2683a', '#c2683a']}
-                        color={'#c2683a'}
-                    />
-                    <h5>Locatie</h5>
-                    <Select
-                        placeholder="Selecteer.."
-                        defaultValue={location}
-                        onChange={setLocation}
-                        options={optionsLocation}
-                        isMulti={true}
-
-                    />
-                    <h5>Maximale prijs</h5>
-                    <p>{valueSlider}</p>
-                    <label>
-                        <input
-                            type='range'
-                            onChange={changeValueSlider}
-                            min={1}
-                            max={400}
-                            step={1}
-                            value={valueSlider}
-                            className={styles["price-slider"]}>
-                        </input>
-                    </label>
-
-                    <h5>Minimale beoordeling</h5>
-
-                    <h5>Omgeving</h5>
-                    <Select
-                        placeholder="Selecteer.."
-                        defaultValue={environment}
-                        onChange={setEnvironment}
-                        options={optionsEnvironment}
-                        isMulti={false}
-
-                    />
-
-
+                <section className={styles["header-homepage"]}>
+                    <h1>WorkshopHub</h1>
+                    <h2>De plek om een creatieve workshop te boeken</h2>
                 </section>
 
-                <section className={styles["overview-workshop-tiles"]}>
+                <div className={styles["homepage-row"]}>
+                    <section className={styles["sidebar-filter-section"]}>
+                        <h4>Filter je zoekopdracht:</h4>
+
+                        <div className={styles["filter-item"]}>
+
+                            <h5>Categorie</h5>
+                            <Select
+                                placeholder="Selecteer.."
+                                defaultValue={category}
+                                onChange={setCategory}
+                                options={optionsCategory}
+                                isMulti={true}
+
+                            />
+                        </div>
+
+                        <div className={styles["filter-item"]}>
 
 
-                </section>
+                            <h5>Wanneer</h5>
+                            {/*Onderstreept vandaag nog in het blauw, kijken of ik dat kan wijzigen*/}
+                            {/*kijken of ik de kalendar kleiner kan maken*/}
+                            <DateRange
+                                // className={styles["calendar-item"]}
+                                editableDateInputs={true}
+                                onChange={item => setDateRange([item.selection])}
+                                moveRangeOnFirstSelection={false}
+                                ranges={dateRange}
+                                minDate={new Date()}
+                                rangeColors={['#c2683a', '#c2683a', '#c2683a']}
+                                color={'#c2683a'}
+                            />
+                        </div>
 
+
+                        <div className={styles["filter-item"]}>
+
+                            <h5>Locatie</h5>
+                            <Select
+                                placeholder="Selecteer.."
+                                defaultValue={location}
+                                onChange={setLocation}
+                                options={optionsLocation}
+                                isMulti={true}
+
+                            />
+                        </div>
+                        <div className={styles["filter-item"]}>
+                            <h5>Maximale prijs</h5>
+                            <p>{valueSlider}</p>
+                            <label>
+                                <input
+                                    type='range'
+                                    onChange={changeValueSlider}
+                                    min={1}
+                                    max={400}
+                                    step={1}
+                                    value={valueSlider}
+                                    className={styles["price-slider"]}>
+                                </input>
+                            </label>
+                        </div>
+
+                        <div className={styles["filter-item"]}>
+
+                            <h5>Minimale beoordeling</h5>
+                            <div className={styles["rating-column"]}>
+                                <label className={styles["rating-row"]} htmlFor="zero-star">
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value="0"
+                                        id="zero-star"
+                                        checked={minRating === 0 ? "checked"
+                                            : null}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <div className={styles["label-stars"]}>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                    </div>
+                                </label>
+                                <label className={styles["rating-row"]} htmlFor="one-star">
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value="1"
+                                        id="one-star"
+                                        checked={minRating === 1 ? "checked"
+                                            : null}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <div className={styles["label-stars"]}>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                    </div>
+                                </label>
+                                <label className={styles["rating-row"]} htmlFor="two-star">
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value="2"
+                                        id="two-star"
+                                        checked={minRating === 2 ? "checked"
+                                            : null}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <div className={styles["label-stars"]}>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                    </div>
+                                </label>
+                                <label className={styles["rating-row"]} htmlFor="three-star">
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value="3"
+                                        id="three-star"
+                                        checked={minRating === 3 ? "checked"
+                                            : null}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <div className={styles["label-stars"]}>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                    </div>
+                                </label>
+                                <label className={styles["rating-row"]} htmlFor="four-star">
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value="4"
+                                        id="four-star"
+                                        checked={minRating === 4 ? "checked"
+                                            : null}
+                                        onChange={handleChangeRating}
+                                    />
+                                    <div className={styles["label-stars"]}>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="#e7cf07"
+                                              weight="fill"/>
+                                        <Star size={20} color="black"
+                                              weight="light"/>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className={styles["filter-item"]}>
+
+
+                            <h5>Omgeving</h5>
+                            <Select
+                                placeholder="Selecteer.."
+                                defaultValue={environment}
+                                onChange={setEnvironment}
+                                options={optionsEnvironment}
+                                isMulti={false}
+
+                            />
+                        </div>
+
+
+                    </section>
+
+                    <section className={styles["overview-workshop-tiles"]}>
+
+                        <img src={bakken1} alt="test"/>
+
+
+                    </section>
+
+                </div>
             </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default Home;

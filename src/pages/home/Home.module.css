@@ -2,21 +2,81 @@
     flex-grow:1;
 }
 
-.price-slider::-webkit-slider-thumb {
-    appearance: none;
-    -webkit-appearance: none;
-    color: var(--color-color-terracotta);
-    background-color: var(--color-color-terracotta);
-    cursor: pointer;
+.sidebar-filter-section {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 1.5rem;
 }
 
-.price-slider::-moz-range-thumb{
-    -webkit-appearance: none;
-    color: var(--color-color-terracotta);
-    background: var(--color-color-terracotta);
-    cursor: pointer;
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-/*element.style {*/
-/*    background-color: var(--color-color-terracotta) !important;*/
+.calendar-item {
+    max-width: 200px;
+}
+
+
+/*deze styling heeft wel invloed op de styling:*/
+/*.price-slider {*/
+/*    -webkit-appearance: none;*/
+/*    height: 12px;*/
+/*    background: #ccc;*/
+/*    border: solid var(--color-color-black) 1px;*/
+/*    border-radius: 16px;*/
 /*}*/
+
+/*slider styling kleur niet goed. Blijft blauw. pointer werkt wel - hoe komt dit? */
+
+.price-slider::-webkit-slider-thumb  {
+    -webkit-appearance: none;
+    appearance: none;
+    color: red;
+    background: red;
+    cursor: pointer;
+}
+
+
+/*.price-slider::-moz-range-thumb{*/
+/*    -webkit-appearance: none;*/
+/*    color: var(--color-color-terracotta);*/
+/*    background: var(--color-color-terracotta);*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.price-slider__track--active,*/
+/*.input-range__slider {*/
+/*    background: red !important;*/
+/*    border-color: red !important;*/
+/*}*/
+
+.rating-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rating-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.label-stars {
+    height: 20px;
+}
+
+.homepage-row {
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
