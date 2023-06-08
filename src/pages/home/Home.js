@@ -6,6 +6,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file of date rang
 import {DateRange} from 'react-date-range';
 import {Heart, Star} from "@phosphor-icons/react";
 import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
+import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 
 {/*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
 }
@@ -275,8 +276,87 @@ function Home() {
                     </section>
 
                     <section className={styles["overview-workshop-tiles"]}>
-
-                        <img src={bakken1} alt="test"/>
+                        <WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile><WorkshopTile
+                            image={bakken1}
+                        workshoptitle="Indonesische kook workshop"
+                        price="99"
+                        location="Utrecht"
+                        date="01-01-2023"
+                        category1="koken"
+                        category2="bakken"
+                        ></WorkshopTile>
 
 
                     </section>

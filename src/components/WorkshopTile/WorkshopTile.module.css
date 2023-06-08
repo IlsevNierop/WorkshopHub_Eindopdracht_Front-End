@@ -1,0 +1,75 @@
+/*croppen van foto nog uitzoeken*/
+
+.workshop-tile{
+    border: 1px solid var(--color-color-grey-300);
+    border-radius: 0.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 255px;
+}
+
+.favourite-icon {
+    z-index: 1;
+    padding: 0.25rem;
+    border-radius: 50px;
+    background-color: var(--color-color-grey-200);
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    opacity: 0.6;
+}
+
+.workshop-image {
+    border-radius: 0.5rem 0.5rem 0 0;
+    max-width: 255px;
+    max-height: 255px;
+}
+
+.information-workshop-column {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 29px;
+}
+
+.top-row-workshop {
+    display: flex;
+    flex-direction: row;
+}
+
+.top-row-workshop > h5 {
+    width: 150px;
+}
+
+.bottom-row-workshop {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-end;
+    /*max-height: 10px;*/
+}
+
+.category-workshop-row > p {
+    color: var(--color-color-grey-500);
+    border: 1px solid var(--color-color-grey-300);
+    padding: 3px 5px;
+    border-radius: 15px;
+
+}
+
+.bottom-column-workshop {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-workshop-row {
+    max-height: 25px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
+}
+
