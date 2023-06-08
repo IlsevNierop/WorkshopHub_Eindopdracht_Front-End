@@ -1,3 +1,22 @@
 .home-outer-container {
     flex-grow:1;
 }
+
+.price-slider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--color-color-terracotta);
+    background-color: var(--color-color-terracotta);
+    cursor: pointer;
+}
+
+.price-slider::-moz-range-thumb{
+    -webkit-appearance: none;
+    color: var(--color-color-terracotta);
+    background: var(--color-color-terracotta);
+    cursor: pointer;
+}
+
+/*element.style {*/
+/*    background-color: var(--color-color-terracotta) !important;*/
+/*}*/

@@ -10,17 +10,17 @@
 
 :root {
     --color-color-black: #282828;
+    --color-color-black-blue: #272932;
+    --color-color-grey-100: #fcfbfb;
+    --color-color-grey-200: #f5f2f0;
     --color-color-grey-300: #d9d9d9;
     --color-color-grey-500: #bfbdbd;
+    --color-color-grey-700: #b1b0b0;
     --color-color-warning: #fe5c5c;
     --color-color-light-orange: #ebc1a7;
     --color-color-terracotta: #c2683a;
-    --color-color-black-blue: #272932;
-    --color-color-grey-200: #f5f2f0;
-    --color-color-grey-700: #b1b0b0;
     --color-color-white: #ffffff;
     --color-color-terracotta-orange: #d68d68;
-    --color-color-grey-100: #fcfbfb;
     --color-orange: #f86505;
     --color-color-yellow-star: #e7cf07;
 }
