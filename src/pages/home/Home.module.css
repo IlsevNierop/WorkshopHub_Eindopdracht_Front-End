@@ -2,6 +2,23 @@
     flex-grow:1;
 }
 
+.header-homepage > h1 {
+    font-family: Allerta Stencil, sans-serif;
+    font-size: 48px;
+    font-weight: lighter;
+}
+
+.logo-orange-letter {
+    color: var(--color-color-terracotta);
+}
+
+.header-homepage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
+}
+
 .row-above-workshop-tiles {
     display: flex;
     flex-direction: row;

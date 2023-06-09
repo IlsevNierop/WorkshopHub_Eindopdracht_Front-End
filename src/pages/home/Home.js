@@ -72,10 +72,11 @@ function Home() {
 
 
     return (
+        // main toevoegen
         <div className={`outer-container ${styles["home-outer-container"]}`}>
             <div className={`inner-container ${styles["home-inner"]}`}>
                 <section className={styles["header-homepage"]}>
-                    <h1>WorkshopHub</h1>
+                    <h1><span className={styles["logo-orange-letter"]}>W</span>orkshop<span className={styles["logo-orange-letter"]}>H</span>ub</h1>
                     <h2>De plek om een creatieve workshop te boeken</h2>
                 </section>
 
@@ -128,7 +129,6 @@ function Home() {
                                 color={'#c2683a'}
                             />
                         </div>
-
 
                         <div className={styles["filter-item"]}>
 

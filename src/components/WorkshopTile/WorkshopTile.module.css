@@ -24,8 +24,9 @@
 
 .workshop-image {
     border-radius: 0.5rem 0.5rem 0 0;
-    max-width: 255px;
-    max-height: 255px;
+    width: 255px;
+    height: 255px;
+    object-fit: cover;
 }
 
 .information-workshop-column {
