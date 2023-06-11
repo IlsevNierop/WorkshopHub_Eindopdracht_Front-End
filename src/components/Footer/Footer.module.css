@@ -10,7 +10,7 @@ p {
 .footer-outer {
     height: 4rem;
     background-color: var(--color-color-grey-300);
-    justify-content: flex-end;
+    align-self: flex-end;
 }
 
 .footer-inner{

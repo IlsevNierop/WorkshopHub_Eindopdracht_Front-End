@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import styles from "./Nav.module.css";
+import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
 import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mobile.svg";
 import {Heart} from "@phosphor-icons/react";
