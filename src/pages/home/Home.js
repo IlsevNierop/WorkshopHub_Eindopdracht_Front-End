@@ -55,11 +55,11 @@ function Home() {
         }
     ]);
 
-    // console.log(category);
-    // console.log(location);
-    // console.log(environment);
+    console.log(category);
+    console.log(location);
+    console.log(environment);
     console.log(valueSlider);
-    // console.log(dateRange);
+    console.log(dateRange);
     console.log(minRating);
 
     const changeValueSlider = (e) => {
@@ -72,12 +72,12 @@ function Home() {
 
 
     return (
-        // main toevoegen
-        <div className={`outer-container ${styles["home-outer-container"]}`}>
+
+        <main className={`outer-container ${styles["home-outer-container"]}`}>
             <div className={`inner-container ${styles["home-inner"]}`}>
                 <section className={styles["header-homepage"]}>
                     <h1><span className={styles["logo-orange-letter"]}>W</span>orkshop<span className={styles["logo-orange-letter"]}>H</span>ub</h1>
-                    <h2>De plek om een creatieve workshop te boeken</h2>
+                    <h3>De plek om een creatieve workshop te boeken</h3>
                 </section>
 
                 <section className={styles["row-above-workshop-tiles"]}>
@@ -86,7 +86,7 @@ function Home() {
                     <div className={styles["sort-item"]}>
                         <h4>Sorteer op:</h4>
                         <Select className={styles["sort-dropdown"]}
-                            placeholder="Selecteer.."
+                            placeholder="Datum"
                             defaultValue={sortValue}
                             onChange={setSortValue}
                             options={optionsSortValue}
@@ -312,7 +312,7 @@ function Home() {
                         <WorkshopTile
                             image={bakken1}
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="75"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -325,7 +325,7 @@ function Home() {
                             heartColor="#fe5c5c"
                             heartWeight="fill"
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="33"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -345,7 +345,7 @@ function Home() {
                         <WorkshopTile
                             image={bakken1}
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="42"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -354,18 +354,7 @@ function Home() {
                         <WorkshopTile
                             image={bakken1}
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            heartColor="#fe5c5c"
-                            heartWeight="fill"
-                            workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="100"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -376,7 +365,18 @@ function Home() {
                             heartColor="#fe5c5c"
                             heartWeight="fill"
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="95"
+                            location="Utrecht"
+                            date="01-01-2023"
+                            category1="koken"
+                            category2="bakken"
+                        ></WorkshopTile>
+                        <WorkshopTile
+                            image={bakken1}
+                            heartColor="#fe5c5c"
+                            heartWeight="fill"
+                            workshoptitle="Indonesische kook workshop"
+                            price="80"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -385,7 +385,7 @@ function Home() {
                         <WorkshopTile
                             image={bakken1}
                             workshoptitle="Indonesische kook workshop"
-                            price="99"
+                            price="42"
                             location="Utrecht"
                             date="01-01-2023"
                             category1="koken"
@@ -397,7 +397,7 @@ function Home() {
 
                 </div>
             </div>
-        </div>
+        </main>
     )
         ;
 }

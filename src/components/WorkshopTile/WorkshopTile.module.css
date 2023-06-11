@@ -39,6 +39,7 @@
 .top-row-workshop {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .top-row-workshop > h5 {
