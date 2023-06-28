@@ -14,11 +14,11 @@ function WorkshopTile({workshoptitle, price, location, date, category1, category
             <div className={styles["information-workshop-column"]}>
                 <div className={styles["top-row-workshop"]}>
                     <h4>{workshoptitle}</h4>
-                    <h7>€{price},00</h7>
+                    <h6>€{price},00</h6>
                 </div>
                 <div className={styles["bottom-row-workshop"]}>
                     <div className={styles["bottom-column-workshop"]}>
-                        <h7>{location}</h7>
+                        <h6>{location}</h6>
                         <p>{date}</p>
                     </div>
                     <div className={styles["category-workshop-row"]}>

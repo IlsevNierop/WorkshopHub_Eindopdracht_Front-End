@@ -14,7 +14,7 @@ function NavBar({isAuth}) {
                     <ul className={styles["nav-ul-top"]}>
                         {!isAuth && <li className={styles["nav-li-top"]}><NavLink
                             className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Inloggen</NavLink></li>}
+                            to="/login">Inloggen</NavLink></li>}
                         {isAuth && <li className={styles["nav-li-top"]}><NavLink
                             className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
                             to="/test">Uitloggen</NavLink></li>}
