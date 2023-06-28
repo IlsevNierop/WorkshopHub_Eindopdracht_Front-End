@@ -4,10 +4,14 @@ import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
 import SingIn from "./pages/signin/SignIn";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {AuthContext} from "./context/AuthContext";
 
 
 function App() {
+
+    const {isAuth, user} = useContext(AuthContext);
+    console.log(isAuth);
 
     return (
         <>
