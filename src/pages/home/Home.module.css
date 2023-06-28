@@ -1,44 +1,51 @@
-.home-outer-container {
+.home__outer-container {
     flex-grow:1;
 }
 
-.header-homepage > h1 {
+.homepage__header__h1 {
     font-family: Allerta Stencil, sans-serif;
     font-size: 48px;
     font-weight: lighter;
 }
 
-.logo-orange-letter {
+.logo__capital-letter {
     color: var(--color-color-terracotta);
 }
 
-.header-homepage {
+.homepage__header {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 2rem 0;
 }
 
-.row-above-workshop-tiles {
+.filter__row__workshop-tiles {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-.sort-item {
+.sort {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     align-items: center;
 }
 
-.sort-dropdown {
+.sort__dropdown {
     z-index: 2;
     width: 12rem;
 }
 
-.sidebar-filter-section {
+.sidebar__workshop-tiles {
+    display: flex;
+    flex-direction: row;
+    /*gap: 3rem;*/
+    justify-content: space-between;
+}
+
+.sidebar__filter {
     display: flex;
     flex-direction: column;
     max-width: 350px;
@@ -106,14 +113,8 @@
     height: 20px;
 }
 
-.homepage-row {
-    display: flex;
-    flex-direction: row;
-    /*gap: 3rem;*/
-    justify-content: space-between;
-}
 
-.overview-workshop-tiles {
+.overview__workshop-tiles {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -3,18 +3,23 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
-import {useState} from "react";
+import SingIn from "./pages/signin/SignIn";
+import {useContext, useState} from "react";
+import {AuthContext} from "./context/AuthContext";
 
 
 function App() {
-    const [isAuth, toggleAuthentication] = useState(true);
+
+    const {isAuth, user} = useContext(AuthContext);
+    console.log(isAuth);
 
     return (
         <>
             <div className="app-container">
-                <NavBar isAuth={isAuth}></NavBar>
+                <NavBar></NavBar>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<SingIn/>}/>
                     {/*<Route path="/aanmelden" element={<Register />} />*/}
                     {/*<Route path="/workshop" element={<WorkshopPage />} />*/}
                 </Routes>

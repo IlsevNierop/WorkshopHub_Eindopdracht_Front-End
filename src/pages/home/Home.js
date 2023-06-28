@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import styles from "./Home.module.css";
 import Select from 'react-select';
 import 'react-date-range/dist/styles.css'; // main css file of date range calendar
@@ -7,6 +7,7 @@ import {DateRange} from 'react-date-range';
 import {Heart, Star} from "@phosphor-icons/react";
 import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
+import {AuthContext} from "../../context/AuthContext";
 
 {/*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
 }
@@ -39,6 +40,10 @@ const optionsSortValue = [
 
 
 function Home() {
+    const {user} = useContext(AuthContext);
+    console.log(user);
+
+
     const [category, setCategory] = useState([]);
     const [location, setLocation] = useState([]);
     const [environment, setEnvironment] = useState([]);
@@ -55,12 +60,12 @@ function Home() {
         }
     ]);
 
-    console.log(category);
-    console.log(location);
-    console.log(environment);
-    console.log(valueSlider);
-    console.log(dateRange);
-    console.log(minRating);
+    // console.log(category);
+    // console.log(location);
+    // console.log(environment);
+    // console.log(valueSlider);
+    // console.log(dateRange);
+    // console.log(minRating);
 
     const changeValueSlider = (e) => {
         setValueSlider(e.target.value);
@@ -73,19 +78,19 @@ function Home() {
 
     return (
 
-        <main className={`outer-container ${styles["home-outer-container"]}`}>
-            <div className={`inner-container ${styles["home-inner"]}`}>
-                <section className={styles["header-homepage"]}>
-                    <h1><span className={styles["logo-orange-letter"]}>W</span>orkshop<span className={styles["logo-orange-letter"]}>H</span>ub</h1>
+        <main className={`outer-container ${styles["home__outer-container"]}`}>
+            <div className={`inner-container ${styles["home__inner"]}`}>
+                <header className={styles["homepage__header"]}>
+                    <h1 className={styles["homepage__header__h1"]}><span className={styles["logo__capital-letter"]}>W</span>orkshop<span className={styles["logo__capital-letter"]}>H</span>ub</h1>
                     <h3>De plek om een creatieve workshop te boeken</h3>
-                </section>
+                </header>
 
-                <section className={styles["row-above-workshop-tiles"]}>
+                <section className={styles["filter__row__workshop-tiles"]}>
                     <h4>Filter je zoekopdracht:</h4>
 
-                    <div className={styles["sort-item"]}>
+                    <div className={styles["sort"]}>
                         <h4>Sorteer op:</h4>
-                        <Select className={styles["sort-dropdown"]}
+                        <Select className={styles["sort__dropdown"]}
                             placeholder="Datum"
                             defaultValue={sortValue}
                             onChange={setSortValue}
@@ -96,8 +101,8 @@ function Home() {
                     </div>
                 </section>
 
-                <div className={styles["homepage-row"]}>
-                    <section className={styles["sidebar-filter-section"]}>
+                <div className={styles["sidebar__workshop-tiles"]}>
+                    <section className={styles["sidebar__filter"]}>
 
                         <div className={styles["filter-item"]}>
 
@@ -116,7 +121,7 @@ function Home() {
 
 
                             <h5>Wanneer</h5>
-                            {/*Onderstreept vandaag nog in het blauw, kijken of ik dat kan wijzigen*/}
+                            {/*Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
                             {/*kijken of ik de kalendar kleiner kan maken*/}
                             <DateRange
                                 // className={styles["calendar-item"]}
@@ -297,7 +302,7 @@ function Home() {
 
                     </section>
 
-                    <section className={styles["overview-workshop-tiles"]}>
+                    <section className={styles["overview__workshop-tiles"]}>
                         <WorkshopTile
                             image={bakken1}
                             heartColor="#fe5c5c"
