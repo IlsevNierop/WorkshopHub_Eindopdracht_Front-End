@@ -3,6 +3,7 @@ import styles from "./SignIn.module.css";
 import {AuthContext} from "../../context/AuthContext";
 import {useForm} from 'react-hook-form';
 import axios from "axios";
+import Button from "../../components/Button/Button";
 
 function SignIn() {
     const {login} = useContext(AuthContext);
@@ -72,10 +73,18 @@ function SignIn() {
 
                     {/*button component van maken*/}
 
-                    <button type="submit">Inloggen</button>
+                    <Button
+                        type="submit"
+                    >Inloggen</Button>
+
                 </form>
 
+                <p>Wachtwoord vergeten?</p>
                 <p>Heb je nog geen account? Registreer je dan eerst.</p>
+
+                 {/*TODO add wachtwoord vergeten linkt en registreer link, add styling, add inner outer container etc, add capslock on password, and add view password button*/}
+                 {/*TODO error als verkeerde inloggegevens*/}
+
             </main>
         </>
     );

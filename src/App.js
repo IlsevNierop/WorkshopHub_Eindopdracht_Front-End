@@ -3,9 +3,11 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
-import SingIn from "./pages/signin/SignIn";
+import SignIn from "./pages/signin/SignIn";
 import {useContext, useState} from "react";
 import {AuthContext} from "./context/AuthContext";
+import Profile from "./pages/profile/Profile";
+import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
 
 
 function App() {
@@ -15,11 +17,16 @@ function App() {
 
     return (
         <>
+            {/*TODO add private routes*/}
             <div className="app-container">
                 <NavBar></NavBar>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="/login" element={<SingIn/>}/>
+                    <Route path="/login" element={<SignIn/>}/>
+                    <Route path="/profiel" element={isAuth? <Profile/> : <SignIn />}/>
+                    {/*TODO check authority is workshopowner*/}
+                    <Route path="/nieuweworkshop" element={isAuth? <NewWorkshop/> : <SignIn />}/>
+
                     {/*<Route path="/aanmelden" element={<Register />} />*/}
                     {/*<Route path="/workshop" element={<WorkshopPage />} />*/}
                 </Routes>

@@ -1,0 +1,18 @@
+.label__input-field {
+    display: flex;
+    flex-direction: row;
+    max-width: 350px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input-field {
+    border: solid 1px var(--color-grey-500);
+    color: var(--color-black);
+    padding: 0.5rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    border-radius: 5px;
+    min-width: 200px;
+}
+

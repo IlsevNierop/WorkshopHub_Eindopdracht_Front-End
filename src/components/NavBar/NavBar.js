@@ -43,6 +43,8 @@ function NavBar() {
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
 
+                        {/* TODO add navbar dropdown for sub menus*/}
+
                         {
                             navLinks(user.authorities).map((navlink) => {
                             return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}><NavLink
