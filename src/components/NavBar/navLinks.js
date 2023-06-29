@@ -16,7 +16,7 @@ export function navLinks(authorities) {
         if (stringAuthorities.includes("ROLE_ADMIN")) {
             return [
                 {
-                    title: "Mijn Account",
+                    title: "Mijn Profiel",
                     link: "/test",
                 },
                 {
@@ -46,10 +46,7 @@ export function navLinks(authorities) {
         } else if (stringAuthorities.includes("ROLE_WORKSHOPOWNER")) {
             return [
                 {
-                    title: "WorkshopOwner",
-                    link: "/test",
-                }, {
-                    title: "Mijn Account",
+                    title: "Mijn Profiel",
                     link: "/test",
                 },
                 {
@@ -71,11 +68,7 @@ export function navLinks(authorities) {
         } else {
             return [
                 {
-                    title: "Customer",
-                    link: "/test",
-                },
-                {
-                    title: "Mijn Account",
+                    title: "Mijn Profiel",
                     link: "/test",
                 },
                 {
