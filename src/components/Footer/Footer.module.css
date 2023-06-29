@@ -1,6 +1,6 @@
 
 p span {
-    color: var(--color-color-terracotta)
+    color: var(--color-terracotta)
 }
 
 p {
@@ -9,7 +9,7 @@ p {
 
 .footer-outer {
     height: 4rem;
-    background-color: var(--color-color-grey-300);
+    background-color: var(--color-grey-300);
     align-self: flex-end;
 }
 

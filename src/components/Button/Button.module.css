@@ -1,0 +1,19 @@
+
+.button {
+    color: white;
+    text-transform: uppercase;
+    background-color: var(--color-terracotta);
+    border: solid 2px var(--color-light-orange);
+    border-radius: 25px;
+    padding: 12px 24px;
+}
+
+.button:hover {
+    background-color: var(--color-terracotta-orange);
+
+}
+
+.button:focus {
+    background-color: var(--color-light-orange);
+    border: solid 2px var(--color-white);
+}

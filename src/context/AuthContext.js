@@ -51,6 +51,7 @@ function AuthContextProvider({children}) {
 
     function logout() {
         localStorage.removeItem('token');
+        console.log("Logout is aangeroepen");
         setAuthData({
             ...authData,
             isAuth: false,

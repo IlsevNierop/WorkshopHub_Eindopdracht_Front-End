@@ -1,8 +1,8 @@
 .nav-outer-top {
-    background-color: var(--color-color-grey-300);
+    background-color: var(--color-grey-300);
 }
 .nav-outer-bottom {
-    background-color: var(--color-color-grey-200);
+    background-color: var(--color-grey-200);
 }
 
 .nav-inner-top {
@@ -42,11 +42,11 @@ li {
 .default-nav-link,
 nav a:visited {
     text-decoration: none;
-    color: var(--color-color-black)
+    color: var(--color-black)
 }
 
 nav a:hover {
-    color: var(--color-color-terracotta)
+    color: var(--color-terracotta)
 }
 
 .active-nav-link {
