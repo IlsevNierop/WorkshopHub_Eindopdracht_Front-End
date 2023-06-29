@@ -4,29 +4,34 @@ import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
 import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mobile.svg";
 import {Heart} from "@phosphor-icons/react";
-import {checkAuthorityLevel} from "../../helper/checkAuthorityLevel";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
+import Button from "../Button/Button";
 
 function NavBar() {
 
 
 
-    const {isAuth, user} = useContext(AuthContext)
+    const {isAuth, user, logout} = useContext(AuthContext)
 
     return (
         <>
             <div className={`outer-container ${styles["nav-outer-top"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-top"]}`}>
-                    <NavLink to="/"><img src={logo} alt="WorkshopHub logo"/></NavLink>
+                    <NavLink to="/"><img src={logo} alt="WorkshopHub logo"/>
+                    </NavLink>
                     <ul className={styles["nav-ul-top"]}>
-                        {!isAuth && <li className={styles["nav-li-top"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/login">Inloggen</NavLink></li>}
 
-                        {isAuth && <li className={styles["nav-li-top"]}><NavLink
+                        {!isAuth && <li className={styles["nav-li-top"]}>
+                            <NavLink
                             className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/loguit">Uitloggen</NavLink></li>}
+                            to="/login">Inloggen</NavLink>
+                        </li>}
+
+                        {isAuth && <li className={styles["nav-li-top"]}>
+                            <NavLink className={styles['default-nav-link']}
+                            to="/" onClick={() => logout()}>
+                        Uitloggen</NavLink></li>}
 
                         <li className={styles["nav-li"]}><NavLink to="/"><Heart size={32} color="black"
                                                                                 weight="regular"/></NavLink></li>

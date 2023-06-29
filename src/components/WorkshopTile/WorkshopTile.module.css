@@ -1,7 +1,7 @@
 /*croppen van foto nog uitzoeken*/
 
 .workshop-tile{
-    border: 1px solid var(--color-color-grey-300);
+    border: 1px solid var(--color-grey-300);
     border-radius: 0.5rem;
     position: relative;
     display: flex;
@@ -15,7 +15,7 @@
     z-index: 1;
     padding: 0.25rem;
     border-radius: 50px;
-    background-color: var(--color-color-grey-200);
+    background-color: var(--color-grey-200);
     position: absolute;
     top: 10px;
     right: 10px;
@@ -56,8 +56,8 @@
 }
 
 .category-workshop-row > p {
-    color: var(--color-color-grey-500);
-    border: 1px solid var(--color-color-grey-300);
+    color: var(--color-grey-500);
+    border: 1px solid var(--color-grey-300);
     padding: 3px 5px;
     border-radius: 15px;
 
