@@ -6,8 +6,11 @@ import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mob
 import {Heart} from "@phosphor-icons/react";
 import {checkAuthorityLevel} from "../../helper/checkAuthorityLevel";
 import {AuthContext} from "../../context/AuthContext";
+import {navLinks} from "./navLinks";
 
 function NavBar() {
+
+
 
     const {isAuth, user} = useContext(AuthContext)
 
@@ -20,6 +23,7 @@ function NavBar() {
                         {!isAuth && <li className={styles["nav-li-top"]}><NavLink
                             className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
                             to="/login">Inloggen</NavLink></li>}
+
                         {isAuth && <li className={styles["nav-li-top"]}><NavLink
                             className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
                             to="/loguit">Uitloggen</NavLink></li>}
@@ -30,118 +34,23 @@ function NavBar() {
                 </nav>
             </div>
 
-            {/*Ingelogde admin: */}
-            {user!= null && (checkAuthorityLevel(user.authorities) === 'admin') && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
+            {isAuth && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Account</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Goedkeuren Workshops</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Goedkeuren Reviews</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Workshops</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Reviews</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Boekingen</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Gebruikers</NavLink></li>
+
+                        {
+                            navLinks(user.authorities).map((navlink) => {
+                            return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}><NavLink
+                                        className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
+                                        to={navlink.link}>{navlink.title}</NavLink>
+                            </li> )
+                        })
+                        }
+
                     </ul>
 
                 </nav>
             </div>}
-
-            {/*Ingelogde workshopeigenaar: */}
-            {user!= null && (checkAuthorityLevel(user.authorities) === 'workshopowner') && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
-                <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
-                    <ul className={styles["nav-ul-bottom"]}>
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Account</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Workshops</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Reviews</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Boekingen</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Nieuwe Workshop</NavLink></li>
-                    </ul>
-
-                </nav>
-            </div>}
-
-
-            {/*Ingelogde klant: */}
-            {user!= null && (checkAuthorityLevel(user.authorities) === 'customer') && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
-                <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
-                    <ul className={styles["nav-ul-bottom"]}>
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Account</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Boekingen</NavLink></li>
-                        |
-                        <li className={styles["nav-li-bottom"]}><NavLink
-                            className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                            to="/test">Mijn Reviews</NavLink></li>
-                    </ul>
-
-                </nav>
-            </div>}
-
-
-            {/*{isAuth && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>*/}
-            {/*    <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>*/}
-            {/*        <ul className={styles["nav-ul-bottom"]}>*/}
-            {/*            <li className={styles["nav-li-bottom"]}><NavLink*/}
-            {/*                className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}*/}
-            {/*                to="/test">Mijn Account</NavLink></li>*/}
-            {/*            |*/}
-            {/*            <li className={styles["nav-li-bottom"]}><NavLink*/}
-            {/*                className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}*/}
-            {/*                to="/test">Mijn Workshops</NavLink></li>*/}
-            {/*            |*/}
-            {/*            <li className={styles["nav-li-bottom"]}><NavLink*/}
-            {/*                className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}*/}
-            {/*                to="/test">Mijn Reviews</NavLink></li>*/}
-            {/*            |*/}
-            {/*            <li className={styles["nav-li-bottom"]}><NavLink*/}
-            {/*                className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}*/}
-            {/*                to="/test">Boekingen</NavLink></li>*/}
-            {/*            |*/}
-            {/*            <li className={styles["nav-li-bottom"]}><NavLink*/}
-            {/*                className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}*/}
-            {/*                to="/test">Nieuwe Workshop</NavLink></li>*/}
-            {/*        </ul>*/}
-
-            {/*    </nav>*/}
-            {/*</div>}*/}
 
 
         </>
