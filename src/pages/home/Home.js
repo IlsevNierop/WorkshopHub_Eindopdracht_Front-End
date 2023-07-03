@@ -79,7 +79,7 @@ function Home() {
     return (
 
         <main className={`outer-container ${styles["home__outer-container"]}`}>
-            <div className={`inner-container ${styles["home__inner"]}`}>
+            <div className={`inner-container ${styles["home__inner-container"]}`}>
                 <header className={styles["homepage__header"]}>
                     <h1 className={styles["homepage__header__h1"]}><span className={styles["logo__capital-letter"]}>W</span>orkshop<span className={styles["logo__capital-letter"]}>H</span>ub</h1>
                     <h3>De plek om een creatieve workshop te boeken</h3>

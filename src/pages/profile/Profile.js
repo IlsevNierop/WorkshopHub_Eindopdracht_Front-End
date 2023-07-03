@@ -14,8 +14,31 @@ function Profile() {
     const {user: {id, authorities, workshopowner}} = useContext(AuthContext);
 
     const [userData, setUserData] = useState(null);
+    const [editProfile, toggleEditProfile] = useState(false);
+    // const [editedValues, setEditedValues] = useState({
+    //     firstname: userData.firstname,
+    //     lastname: userData.lastname,
+    //     email: userData.email,
+    //     companyname: userData.companyname,
+    //     kvknumber: userData.kvknumber,
+    //     vatnumber: userData.vatnumber,
+    // });
 
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: "onTouched"});
+
+    const handleChange = (event) => {
+        const {name, value} = event.target;
+        setUserData((prevValues) => ({
+            ...prevValues,
+            [name]: value,
+        }));
+
+        // setEditedValues((prevValues) => ({
+        //     ...prevValues,
+        //     [name]: value,
+        // }));
+    };
+
+    const {register, handleSubmit, formState: {errors}} = useForm();
 
     const navigate = useNavigate();
 
@@ -34,6 +57,7 @@ function Profile() {
                             firstName,
                             lastName,
                             email,
+                            profilePicUrl,
                             companyName,
                             kvkNumber,
                             vatNumber,
@@ -52,6 +76,7 @@ function Profile() {
                         firstname: firstName,
                         lastname: lastName,
                         email: email,
+                        profilepic: profilePicUrl,
                         companyname: companyName,
                         kvknumber: kvkNumber,
                         vatnumber: vatNumber,
@@ -68,7 +93,8 @@ function Profile() {
                         data: {
                             firstName,
                             lastName,
-                            email
+                            email,
+                            profilePicUrl
                         }
                     } = await axios.get(`http://localhost:8080/users/customer/${id}`, {
                         headers: {
@@ -77,12 +103,15 @@ function Profile() {
                         },
                         // signal: controller.signal,
                     });
-                    console.log(firstName, lastName, email);
+
+                    console.log(firstName, lastName, email, profilePicUrl);
                     setUserData({
                         firstname: firstName,
                         lastname: lastName,
-                        email: email
+                        email: email,
+                        profilepic: profilePicUrl
                     })
+
 
                 } catch (e) {
                     console.log(e);
@@ -106,6 +135,43 @@ function Profile() {
 
     }, [])
 
+    async function handleFormSubmit(data) {
+        console.log(data)
+
+        if (workshopowner) {
+            try {
+                const response = await axios.put(`http://localhost:8080/users/workshopowner/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, companyName: data.companyname, kvkNumber: data.kvknumber, vatnumber: data.vatnumber, workshopOwner: workshopowner},
+                {headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    // signal: controller.signal,
+                });
+                window.location.reload();
+
+            } catch (e) {
+                console.log(e);
+            }
+
+        } else {
+            try {
+                const response = await axios.put(`http://localhost:8080/users/customer/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, workshopOwner: workshopowner},
+                    {headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        // signal: controller.signal,
+                    });
+                window.location.reload();
+
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+
+    }
+
 
     return (
         <>
@@ -113,122 +179,204 @@ function Profile() {
                 <div className={`inner-container ${styles["profile__inner-container"]}`}>
 
                     {/* TODO change pic to profile pic*/}
+
                     <div className={styles["profile"]}>
                         <section className={styles["left-side__profile"]}>
-                            <img className={styles["profile-pic"]} src={bakken1} alt="Profielfoto"/>
+                            {/*TODO placeholder voor als iemnad geen foto heeft*/}
+                            {userData && userData.profilepic != null &&
+                                <img className={styles["profile-pic"]} src={userData.profilepic} alt="Profielfoto"/>}
                             {userData && userData.workshopownerverified &&
                                 <div className={styles["verification"]}>
                                     <Check size={20} color="#52B706"/>
-                                    <p>Profiel geverifieerd door administrator</p>
+                                    <p>Geverifieerd door administrator</p>
                                 </div>
                             }
-                            <Button
-                                type="button"
-                                //TODO onclick toevoegen
-                            >
-                                Wijzig profiel
-                            </Button>
+
+                            {!editProfile &&
+                                <Button
+                                    type="text"
+                                    onClick={() => toggleEditProfile(true)}
+                                >Wijzig profiel
+                                </Button>
+                            }
+
 
                         </section>
 
                         <section className={styles["profile-fields"]}>
                             <h1>Mijn Profiel</h1>
 
-                            {userData &&
+                            <form onSubmit={handleSubmit(handleFormSubmit)}>
+                                {userData &&
 
-                                <div className={styles["profile-fields-personal"]}>
+                                    <div className={styles["profile-fields-personal"]}>
 
-                                    <InputField
-                                        type="text"
-                                        name="first-name"
-                                        label="Voornaam: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.firstname}
-                                    >
-                                    </InputField>
-
-
-                                    <InputField
-                                        type="text"
-                                        name="last-name"
-                                        label="Achternaam: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.lastname}
-                                    >
-                                    </InputField>
-
-                                    <InputField
-                                        type="text"
-                                        name="email"
-                                        label="Email: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.email}
-                                    >
-                                    </InputField>
-                                </div>
-
-                            }
-
-                            {userData && workshopowner &&
-                                <div className={styles["profile-fields-company"]}>
-                                    <InputField
-                                        type="text"
-                                        name="company-name"
-                                        label="Bedrijfsnaam: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.companyname}
-                                    >
-                                    </InputField>
+                                        <InputField
+                                            type="text"
+                                            name="firstname"
+                                            label="Voornaam: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.firstname}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
 
 
-                                    <InputField
-                                        type="text"
-                                        name="kvk-number"
-                                        label="KvK nummer: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.kvknumber}
-                                    >
-                                    </InputField>
+                                        <InputField
+                                            type="text"
+                                            name="lastname"
+                                            label="Achternaam: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.lastname}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
 
-                                    <InputField
-                                        type="text"
-                                        name="vat-number"
-                                        label="BTW nummer: "
-                                        readOnly="readOnly"
-                                        register={register}
-                                        errors={errors}
-                                        value={userData.vatnumber}
-                                    >
-                                    </InputField>
+                                        <InputField
+                                            type="text"
+                                            name="email"
+                                            label="Email: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.email}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
+                                    </div>
 
-                                </div>
-                            }
+                                }
+
+                                {userData && workshopowner &&
+                                    <div className={styles["profile-fields-company"]}>
+                                        <InputField
+                                            type="text"
+                                            name="companyname"
+                                            label="Bedrijfsnaam: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.companyname}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
+
+
+                                        <InputField
+                                            type="text"
+                                            name="kvknumber"
+                                            label="KvK nummer: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.kvknumber}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
+
+                                        <InputField
+                                            type="text"
+                                            name="vatnumber"
+                                            label="BTW nummer: "
+                                            validation={{
+                                                disabled: !editProfile,
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Dit veld is verplicht",
+                                                    }
+                                            }
+                                            }
+                                            register={register}
+                                            errors={errors}
+                                            value={userData.vatnumber}
+                                            onChange={handleChange}
+                                        >
+                                        </InputField>
+
+
+                                    </div>
+                                }
+                                {editProfile &&
+                                    <Button
+                                        type="submit"
+                                    >Verstuur
+                                    </Button>
+                                }
+
+                            </form>
 
 
                         </section>
                     </div>
 
-                    {userData && userData.workshopownerverified &&
-                        <div className={styles["button"]}>
-                            <Button
-                                type="button"
-                                onClick={() => navigate(`/nieuweworkshop`)}
+                    {userData && !editProfile &&
+                        <div>
+                            {workshopowner &&
+                                <div>
+                                    {userData.workshopownerverified ?
+                                        <div className={styles["button"]}>
+                                            <Button
+                                                type="button"
+                                                onClick={() => navigate(`/nieuweworkshop`)}
 
-                            >
-                                Maak nieuwe workshop aan
+                                            >
+                                                Maak nieuwe workshop aan
 
-                            </Button>
+                                            </Button>
 
+                                        </div> :
+                                        <div>
+                                            <p>Je profiel is nog niet geverifieerd door de administrator</p>
+                                            <p>Na verificatie kun je workshops aanmaken</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
                         </div>
                     }
 

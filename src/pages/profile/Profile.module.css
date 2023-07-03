@@ -5,8 +5,10 @@
 
 .profile__inner-container {
     flex-direction: column;
-    margin: 3rem;
-    justify-content: space-around;
+    margin: 4rem;
+    gap: 5rem;
+    align-items: center;
+
 
 }
 
