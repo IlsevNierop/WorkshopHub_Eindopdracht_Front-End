@@ -2,18 +2,13 @@
 //
 
 
+import {returnHighestAuthority} from "../../helper/returnHighestAuthority";
+
 export function navLinks(authorities) {
 
+    const highestAuthority = returnHighestAuthority(authorities);
 
-    if (authorities != null) {
-
-        const stringAuthorities = authorities.map((a) => {
-            return a.authority
-        });
-
-        console.log(stringAuthorities);
-
-        if (stringAuthorities.includes("ROLE_ADMIN")) {
+        if (highestAuthority === 'admin') {
             return [
                 {
                     title: "Mijn Profiel",
@@ -47,7 +42,7 @@ export function navLinks(authorities) {
                     title: "Gebruikers",
                     link: "/test",
                 }];
-        } else if (stringAuthorities.includes("ROLE_WORKSHOPOWNER")) {
+        } else if (highestAuthority === 'workshopowner') {
             return [
                 {
                     title: "Mijn Profiel",
@@ -84,6 +79,5 @@ export function navLinks(authorities) {
                     link: "/test",
                 }];
         }
-    }
 
 }
