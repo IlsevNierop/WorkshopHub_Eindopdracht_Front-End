@@ -50,6 +50,8 @@ function SignIn() {
                 "signin__inner-container"]}`}>
                     <h1>Inloggen</h1>
 
+                    {/*TODO input field componenten van maken*/}
+
                     <form className={styles["form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                         <label htmlFor="email-field">
                             Email:
@@ -81,7 +83,6 @@ function SignIn() {
                             {errors.password && <p>{errors.password.message}</p>}
                         </label>
 
-                        {/*button component van maken*/}
 
                         <Button
                             type="submit"

@@ -17,16 +17,16 @@ function AuthContextProvider({children}) {
 
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const storedToken = localStorage.getItem('token');
-    //
-    //     if (storedToken && checkTokenValidity(storedToken)) {
-    //         void login(storedToken);
-    //     } else {
-    //         void logout();
-    //     }
-    //
-    // }, [])
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token');
+
+        if (storedToken && checkTokenValidity(storedToken)) {
+            void login(storedToken);
+        } else {
+            void logout();
+        }
+
+    }, []);
 
 
     function login(jwt_token, redirect) {

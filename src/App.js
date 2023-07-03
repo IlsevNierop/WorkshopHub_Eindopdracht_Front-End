@@ -8,6 +8,7 @@ import {useContext, useState} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
+import {returnHighestAuthority} from "./helper/returnHighestAuthority";
 
 
 function App() {
@@ -24,8 +25,8 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/login" element={<SignIn/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <SignIn />}/>
-                    {/*TODO check authority is workshopowner*/}
-                    <Route path="/nieuweworkshop" element={isAuth? <NewWorkshop/> : <SignIn />}/>
+                    {/*TODO isAuth ook toevoegen?*/}
+                    <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <NewWorkshop/> : <Home />}/>
 
                     {/*<Route path="/aanmelden" element={<Register />} />*/}
                     {/*<Route path="/workshop" element={<WorkshopPage />} />*/}
