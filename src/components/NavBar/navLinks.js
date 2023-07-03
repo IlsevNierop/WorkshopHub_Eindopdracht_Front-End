@@ -17,11 +17,15 @@ export function navLinks(authorities) {
             return [
                 {
                     title: "Mijn Profiel",
-                    link: "/test",
+                    link: "/profiel",
                 },
                 {
                     title: "Goedkeuren Workshops",
                     link: "/test",
+                },
+                {
+                    title: "Nieuwe Workshops",
+                    link: "/nieuweworkshop",
                 },
                 {
                     title: "Goedkeuren Reviews",
@@ -47,7 +51,7 @@ export function navLinks(authorities) {
             return [
                 {
                     title: "Mijn Profiel",
-                    link: "/test",
+                    link: "/profiel",
                 },
                 {
                     title: "Mijn Workshops",
@@ -63,13 +67,13 @@ export function navLinks(authorities) {
                 },
                 {
                     title: "Nieuwe Workshop",
-                    link: "/test",
+                    link: "/nieuweworkshop",
                 }];
         } else {
             return [
                 {
                     title: "Mijn Profiel",
-                    link: "/test",
+                    link: "/profiel",
                 },
                 {
                     title: "Mijn Boekingen",

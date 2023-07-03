@@ -5,7 +5,7 @@
     background-color: var(--color-terracotta);
     border: solid 2px var(--color-light-orange);
     border-radius: 25px;
-    padding: 12px 24px;
+    padding: 10px 20px;
 }
 
 .button:hover {

@@ -6,7 +6,10 @@ import {checkTokenValidity} from "../helper/checkTokenValidity";
 
 export const AuthContext = createContext(null);
 
+
 function AuthContextProvider({children}) {
+    // TODO persist on refresh
+
     const [authData, setAuthData] = useState({
         isAuth: false,
         user: null
@@ -29,7 +32,7 @@ function AuthContextProvider({children}) {
     function login(jwt_token, redirect) {
 
         const decodedToken = jwt_decode(jwt_token)
-        const {sub, id, authorities} = decodedToken;
+        const {sub, id, authorities, workshopowner} = decodedToken;
 
         setAuthData({
             ...authData,
@@ -38,6 +41,7 @@ function AuthContextProvider({children}) {
                 email: sub,
                 id: id,
                 authorities: authorities,
+                workshopowner: workshopowner,
             }
         });
 
@@ -69,10 +73,12 @@ function AuthContextProvider({children}) {
     }
 
 
+
     return (
         <AuthContext.Provider value={data}>
             {children}
         </AuthContext.Provider>
+
     );
 }
 

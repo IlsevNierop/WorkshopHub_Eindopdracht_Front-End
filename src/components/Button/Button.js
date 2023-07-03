@@ -1,17 +1,17 @@
 import React from 'react';
-import styles from "../Footer/Footer.module.css";
+import styles from "../Button/Button.module.css";
 
 const Button = ({children, type, className, onClick}) => {
     return (
-        <div>
+        <>
             <button
-                className={`button ${styles[`${className}`]}`}
+                className={`${styles["button"]} ${styles[`${className}`]}`}
                 type={type}
                 onClick = {onClick}
             >
                 { children }
             </button>
-        </div>
+        </>
     );
 };
 
