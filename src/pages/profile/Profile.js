@@ -8,6 +8,7 @@ import Button from "../../components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {Check} from "@phosphor-icons/react";
 import bakken1 from "../../assets/temppicsworkshop/Bakken1.jpg";
+import {fetchDataCustomer, fetchDataWorkshopOwner, updateCustomer, updateWorkshopOwner} from "../../api/api";
 
 function Profile() {
 
@@ -46,14 +47,11 @@ function Profile() {
 
     const token = localStorage.getItem('token');
 
-
     useEffect(() => {
-        async function fetchUserData() {
-
-            if (workshopowner) {
-                try {
-                    const {
-                        data: {
+            async function fetchUserData() {
+                if (workshopowner) {
+                    try {
+                        const {
                             firstName,
                             lastName,
                             email,
@@ -62,92 +60,62 @@ function Profile() {
                             kvkNumber,
                             vatNumber,
                             workshopOwnerVerified
-                        }
-                    } = await axios.get(`http://localhost:8080/users/workshopowner/${id}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
+                        } = await fetchDataWorkshopOwner(token, id);
 
-                    console.log(firstName, lastName, email, workshopOwnerVerified, companyName, kvkNumber, vatNumber);
-                    setUserData({
-                        firstname: firstName,
-                        lastname: lastName,
-                        email: email,
-                        profilepic: profilePicUrl,
-                        companyname: companyName,
-                        kvknumber: kvkNumber,
-                        vatnumber: vatNumber,
-                        workshopownerverified: workshopOwnerVerified
-                    })
-
-                } catch (e) {
-                    console.log(e);
-                }
-
-            } else {
-                try {
-                    const {
-                        data: {
+                        setUserData({
+                            firstname: firstName,
+                            lastname: lastName,
+                            email: email,
+                            profilepic: profilePicUrl,
+                            companyname: companyName,
+                            kvknumber: kvkNumber,
+                            vatnumber: vatNumber,
+                            workshopownerverified: workshopOwnerVerified
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                } else {
+                    try {
+                        const {
                             firstName,
                             lastName,
                             email,
-                            profilePicUrl
-                        }
-                    } = await axios.get(`http://localhost:8080/users/customer/${id}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
-
-                    console.log(firstName, lastName, email, profilePicUrl);
-                    setUserData({
-                        firstname: firstName,
-                        lastname: lastName,
-                        email: email,
-                        profilepic: profilePicUrl
-                    })
+                            profilePicUrl,
+                        } = await fetchDataCustomer(token, id);
 
 
-                } catch (e) {
-                    console.log(e);
+                        setUserData({
+                            firstname: firstName,
+                            lastname: lastName,
+                            email: email,
+                            profilepic: profilePicUrl,
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
                 }
 
             }
 
-
-        }
-
-        // TODO re-usable try and catch block
-        // TODO js file for all api requests
-
-
-        void fetchUserData();
-
-        // return function cleanup() {
-        //     console.log("cleanup profile aangeroepen")
-        //     controller.abort();
-        // }
-
-    }, [])
+            void fetchUserData();
+            // return function cleanup() {
+//     //     console.log("cleanup profile aangeroepen")
+//     //     controller.abort();
+//     // }
+        }, []
+    );
+//
+//     // TODO re-usable try and catch block
+//     // TODO js file for all api requests
+//
 
     async function handleFormSubmit(data) {
         console.log(data)
 
         if (workshopowner) {
             try {
-                const response = await axios.put(`http://localhost:8080/users/workshopowner/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, companyName: data.companyname, kvkNumber: data.kvknumber, vatnumber: data.vatnumber, workshopOwner: workshopowner},
-                {headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    // signal: controller.signal,
-                });
-                window.location.reload();
+                const response = await updateWorkshopOwner(token, id, data.firstname, data.lastname, data.email, data.companyname, data.kvknumber, data.vatnumber, workshopowner);
 
             } catch (e) {
                 console.log(e);
@@ -155,21 +123,15 @@ function Profile() {
 
         } else {
             try {
-                const response = await axios.put(`http://localhost:8080/users/customer/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, workshopOwner: workshopowner},
-                    {headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
-                window.location.reload();
+
+                const response = await updateCustomer(token, id, data.firstname, data.lastname, data.email, workshopowner);
 
             } catch (e) {
                 console.log(e);
             }
 
         }
-
+        window.location.reload();
     }
 
 
