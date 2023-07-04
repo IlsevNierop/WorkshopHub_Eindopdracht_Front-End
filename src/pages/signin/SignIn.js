@@ -2,14 +2,15 @@ import React, {useContext, useEffect, useState} from 'react';
 import styles from "./SignIn.module.css";
 import {AuthContext} from "../../context/AuthContext";
 import {useForm} from 'react-hook-form';
-import axios from "axios";
 import Button from "../../components/Button/Button";
-import {signIn, updateWorkshopOwner} from "../../api/api";
+import {signIn} from "../../api/api";
+import {errorHandling} from "../../helper/errorHandling";
 
 function SignIn() {
     const {login} = useContext(AuthContext);
 
     const {register, formState: {errors}, handleSubmit} = useForm();
+    const [error, toggleError] = useState('');
     const controller = new AbortController();
 
     useEffect(() => {
@@ -22,12 +23,13 @@ function SignIn() {
     const handleFormSubmit = async (data) => {
 
         try {
-            const {jwt} = await signIn(data.email, data.password, data.email);
+            const {jwt} = await signIn(data.email, data.password);
             console.log(jwt);
             login(jwt, "/profiel");
 
         } catch (e) {
-            console.log(e);
+            toggleError(errorHandling(e));
+            console.log(error);
         }
     }
 
@@ -39,7 +41,6 @@ function SignIn() {
     //     @Pattern(regexp = "^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[\\!\\#\\@\\$\\%\\&\\/\\(\\)\\=\\?\\*\\-\\+\\_\\.\\:\\;\\,\\{\\}\\^])[A-Za-z0-9!#@$%&/()=?*+-_.:;,{}]{8,20}", message = "Password needs to contain the following: " +
     //             "1. Minimum of 1 lowercase letter. 2. Minimum of 1 uppercase letter. 3. Minimum of 1 number 4. Minimum of 1 symbol. 5. It should be between 8 and 20 characters long.")
     //     public String password;
-    {/*TODO errors toevoegen bij verkeerde inloggegevens*/}
     return (
         <>
             <main className={`outer-container ${styles["signin__outer-container"]}`}>
@@ -79,6 +80,8 @@ function SignIn() {
                             />
                             {errors.password && <p>{errors.password.message}</p>}
                         </label>
+
+                        {error && <p className="error-message">{error}</p>}
 
 
                         <Button

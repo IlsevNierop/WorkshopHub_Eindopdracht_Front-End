@@ -8,8 +8,6 @@
     margin: 4rem;
     gap: 5rem;
     align-items: center;
-
-
 }
 
 .profile {
@@ -21,6 +19,7 @@
 }
 
 .left-side__profile {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,10 +29,69 @@
 }
 
 .profile-pic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
     width: 150px;
     height: 150px;
     object-fit: cover;
+}
+
+.placeholder-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    background-color: var(--color-grey-300);
+    text-decoration: none;
+}
+
+.form__upload-profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label__input-field__profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-field__profile-picture {
+    font-family: 'Raleway', sans-serif;
+}
+
+.profile-picture__preview__label {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile-picture__preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.link__upload-photo {
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+
+
+.photo-icon {
+    position: absolute;
+    z-index: 0.5;
+    padding: 0.25rem;
+    border-radius: 50px;
+    background-color: var(--color-grey-200);
+    top: 130px;
+    right: 30px;
 }
 
 .verification {
@@ -50,18 +108,37 @@
     width: 350px;
 }
 
+.profile__form {
+    gap: 2rem;
+}
+
 .profile-fields-personal {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    padding-bottom: 1.5rem;
 }
+
+.user-type__row {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-type__label {
+    font-weight: normal;
+}
+
+.user-type__dropdown {
+    min-width: 200px;
+    font-size: 12px;
+}
+
 .profile-fields-company {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     border-top: solid 2px var(--color-grey-500);
-    padding-top: 1.5rem;
+    padding: 1.5rem 0;
 
 }
 
