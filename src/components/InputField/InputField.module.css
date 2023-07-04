@@ -25,16 +25,12 @@
     border: solid 1px var(--color-warning);
 }
 
-.input-field__error-message {
-    color: var(--color-warning);
-}
-
 .error__row {
     display: flex;
     justify-content: flex-end;
 }
 
-.error__row > p {
+.input-field__error-message {
     width: 200px;
     text-align: left;
     color: var(--color-warning);
