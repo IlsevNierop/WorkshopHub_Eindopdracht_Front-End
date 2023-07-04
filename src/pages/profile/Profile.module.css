@@ -50,18 +50,37 @@
     width: 350px;
 }
 
+.profile__form {
+    gap: 2rem;
+}
+
 .profile-fields-personal {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
+    padding-bottom: 1.5rem;
 }
+
+.user-type__row {
+    display: flex;
+    flex-direction: row;
+}
+
+.user-type__label {
+    font-weight: normal;
+}
+
+.user-type__dropdown {
+    min-width: 200px;
+    font-size: 12px;
+}
+
 .profile-fields-company {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     border-top: solid 2px var(--color-grey-500);
-    padding-top: 1.5rem;
+    padding: 1.5rem 0;
 
 }
 

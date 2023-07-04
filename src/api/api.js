@@ -39,11 +39,12 @@ export async function fetchDataCustomer(token, userId) {
     return response.data;
 }
 
-export async function updateWorkshopOwner(token, userId, firstname, lastname, email, companyname, kvknumber, vatnumber, workshopowner) {
+export async function updateWorkshopOwner(token, userId, firstname, lastname, email, password, companyname, kvknumber, vatnumber, workshopowner) {
     const response = await axios.put(`${baseUrl}users/workshopowner/${userId}`, {
             firstName: firstname,
             lastName: lastname,
             email: email,
+            password: password,
             companyName: companyname,
             kvkNumber: kvknumber,
             vatNumber: vatnumber,
@@ -56,16 +57,17 @@ export async function updateWorkshopOwner(token, userId, firstname, lastname, em
             },
             signal: controller.signal,
         });
-    return response.data;
+    return response;
 }
 
 
-export async function updateCustomer(token, userId, firstname, lastname, email, workshopowner) {
+export async function updateCustomer(token, userId, firstname, lastname, email, password, workshopowner) {
     const response = await axios.put(`${baseUrl}users/customer/${userId}`, {
             firstName: firstname,
             lastName: lastname,
             email: email,
-            workshopOwner: workshopowner
+            password: password,
+            workshopOwner: workshopowner,
         },
         {
             headers: {
@@ -75,6 +77,6 @@ export async function updateCustomer(token, userId, firstname, lastname, email, 
             // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
             signal: controller.signal,
         });
-    return response.data;
+    return response;
 }
 
