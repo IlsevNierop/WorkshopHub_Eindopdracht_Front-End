@@ -8,8 +8,6 @@
     margin: 4rem;
     gap: 5rem;
     align-items: center;
-
-
 }
 
 .profile {
@@ -21,6 +19,7 @@
 }
 
 .left-side__profile {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,10 +29,39 @@
 }
 
 .profile-pic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
     width: 150px;
     height: 150px;
     object-fit: cover;
+}
+
+.placeholder-photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    background-color: var(--color-grey-300);
+    text-decoration: none;
+}
+
+.link__upload-photo {
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+.photo-icon {
+    position: absolute;
+    z-index: 1;
+    padding: 0.25rem;
+    border-radius: 50px;
+    background-color: var(--color-grey-200);
+    top: 130px;
+    right: 30px;
 }
 
 .verification {

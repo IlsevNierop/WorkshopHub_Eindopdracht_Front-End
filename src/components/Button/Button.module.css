@@ -10,7 +10,7 @@
 
 .button:hover {
     background-color: var(--color-terracotta-orange);
-
+    cursor: pointer;
 }
 
 .button:focus {
