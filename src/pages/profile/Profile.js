@@ -13,17 +13,13 @@ import {fetchDataCustomer, fetchDataWorkshopOwner, updateCustomer, updateWorksho
 function Profile() {
 
     const {user: {id, authorities, workshopowner}} = useContext(AuthContext);
+    const token = localStorage.getItem('token');
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    // const [editedValues, setEditedValues] = useState({
-    //     firstname: userData.firstname,
-    //     lastname: userData.lastname,
-    //     email: userData.email,
-    //     companyname: userData.companyname,
-    //     kvknumber: userData.kvknumber,
-    //     vatnumber: userData.vatnumber,
-    // });
+    const {register, handleSubmit, formState: {errors}} = useForm();
+    const navigate = useNavigate();
+    const controller = new AbortController();
 
 
     const handleChange = (event) => {
@@ -32,82 +28,67 @@ function Profile() {
             ...prevValues,
             [name]: value,
         }));
-
-        // setEditedValues((prevValues) => ({
-        //     ...prevValues,
-        //     [name]: value,
-        // }));
     };
 
-    const {register, handleSubmit, formState: {errors}} = useForm();
-
-    const navigate = useNavigate();
-
-    // const controller = new AbortController();
-
-    const token = localStorage.getItem('token');
 
     useEffect(() => {
-            async function fetchUserData() {
-                if (workshopowner) {
-                    try {
-                        const {
-                            firstName,
-                            lastName,
-                            email,
-                            profilePicUrl,
-                            companyName,
-                            kvkNumber,
-                            vatNumber,
-                            workshopOwnerVerified
-                        } = await fetchDataWorkshopOwner(token, id);
+        async function fetchUserData() {
+            if (workshopowner) {
+                try {
+                    const {
+                        firstName,
+                        lastName,
+                        email,
+                        profilePicUrl,
+                        companyName,
+                        kvkNumber,
+                        vatNumber,
+                        workshopOwnerVerified
+                    } = await fetchDataWorkshopOwner(token, id);
 
-                        setUserData({
-                            firstname: firstName,
-                            lastname: lastName,
-                            email: email,
-                            profilepic: profilePicUrl,
-                            companyname: companyName,
-                            kvknumber: kvkNumber,
-                            vatnumber: vatNumber,
-                            workshopownerverified: workshopOwnerVerified
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                } else {
-                    try {
-                        const {
-                            firstName,
-                            lastName,
-                            email,
-                            profilePicUrl,
-                        } = await fetchDataCustomer(token, id);
-
-
-                        setUserData({
-                            firstname: firstName,
-                            lastname: lastName,
-                            email: email,
-                            profilepic: profilePicUrl,
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
+                    setUserData({
+                        firstname: firstName,
+                        lastname: lastName,
+                        email: email,
+                        profilepic: profilePicUrl,
+                        companyname: companyName,
+                        kvknumber: kvkNumber,
+                        vatnumber: vatNumber,
+                        workshopownerverified: workshopOwnerVerified
+                    });
+                } catch (e) {
+                    console.log(e);
                 }
+            } else {
+                try {
+                    const {
+                        firstName,
+                        lastName,
+                        email,
+                        profilePicUrl,
+                    } = await fetchDataCustomer(token, id);
 
+
+                    setUserData({
+                        firstname: firstName,
+                        lastname: lastName,
+                        email: email,
+                        profilepic: profilePicUrl,
+                    });
+                } catch (e) {
+                    console.log(e);
+                }
             }
 
-            void fetchUserData();
-            // return function cleanup() {
-//     //     console.log("cleanup profile aangeroepen")
-//     //     controller.abort();
-//     // }
-        }, []
-    );
+        }
+
+        void fetchUserData();
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
 //
 //     // TODO re-usable try and catch block
-//     // TODO js file for all api requests
 //
 
     async function handleFormSubmit(data) {
@@ -146,7 +127,8 @@ function Profile() {
                         <section className={styles["left-side__profile"]}>
                             {/*TODO placeholder voor als iemnad geen foto heeft*/}
                             {userData && userData.profilepic != null &&
-                                <img className={styles["profile-pic"]} src={userData.profilepic} alt="Profielfoto"/>}
+                                <img className={styles["profile-pic"]} src={userData.profilepic}
+                                     alt="Profielfoto"/>}
                             {userData && userData.workshopownerverified &&
                                 <div className={styles["verification"]}>
                                     <Check size={20} color="#52B706"/>

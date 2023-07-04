@@ -1,9 +1,20 @@
 import axios from "axios";
 
+const controller = new AbortController();
+
 const baseUrl = "http://localhost:8080/"
 
 
 // ............user api requests
+
+export async function signIn(email, password) {
+    const response = await axios.post(`${baseUrl}signin`, {
+            email: email,
+            password: password
+        },
+        {signal: controller.signal,});
+    return response.data
+}
 
 export async function fetchDataWorkshopOwner(token, userId) {
     const response = await axios.get(`${baseUrl}users/workshopowner/${userId}`, {
@@ -11,7 +22,7 @@ export async function fetchDataWorkshopOwner(token, userId) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        // signal: controller.signal,
+        signal: controller.signal,
     });
     return response.data;
 }
@@ -23,7 +34,7 @@ export async function fetchDataCustomer(token, userId) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-        // signal: controller.signal,
+        signal: controller.signal,
     });
     return response.data;
 }
@@ -43,10 +54,10 @@ export async function updateWorkshopOwner(token, userId, firstname, lastname, em
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
+            signal: controller.signal,
         });
     return response.data;
 }
-
 
 
 export async function updateCustomer(token, userId, firstname, lastname, email, workshopowner) {
@@ -61,7 +72,8 @@ export async function updateCustomer(token, userId, firstname, lastname, email, 
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-        // signal: controller.signal,
+            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
         });
     return response.data;
 }
