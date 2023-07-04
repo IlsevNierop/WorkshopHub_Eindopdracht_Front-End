@@ -6,13 +6,21 @@ import {useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
 import {Camera, Check, Image} from "@phosphor-icons/react";
-import {fetchDataCustomer, fetchDataWorkshopOwner, signIn, updateCustomer, updateWorkshopOwner} from "../../api/api";
+import {
+    fetchDataCustomer,
+    fetchDataWorkshopOwner,
+    signIn,
+    updateCustomer,
+    updateWorkshopOwner,
+    uploadProfilePic
+} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import Select from "react-select";
+import Modal from 'react-modal';
 
 function Profile() {
 
-    const {login, user: {id, authorities, workshopowner}} = useContext(AuthContext);
+    const {login, user: {id, workshopowner}} = useContext(AuthContext);
     const token = localStorage.getItem('token');
 
     const [userData, setUserData] = useState(null);
@@ -24,6 +32,9 @@ function Profile() {
         value: true,
         label: "Workshop eigenaar"
     } : {value: false, label: "Consument"});
+    const [file, setFile] = useState([]);
+    const [previewUrl, setPreviewUrl] = useState('');
+
     const navigate = useNavigate();
     const controller = new AbortController();
 
@@ -32,8 +43,36 @@ function Profile() {
         {value: true, label: "Workshop eigenaar"}
     ];
 
-    // console.log(userType);
+    // ...................MODAL
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
 
+    Modal.setAppElement('#root');
+
+
+    let subtitle;
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+        // references are now sync'd and can be accessed.
+
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
 
     useEffect(() => {
         async function fetchUserData() {
@@ -155,17 +194,80 @@ function Profile() {
             } catch (e) {
                 setError(errorHandling(e));
             }
-
         }
+    }
 
+    function handleImageChange(e) {
+        // Sla het gekozen bestand op
+        const uploadedFile = e.target.files[0];
+        console.log(uploadedFile);
+        // Sla het gekozen bestand op in de state
+        setFile(uploadedFile);
+        // Sla de preview URL op zodat we deze kunnen laten zien in een <img>
+        setPreviewUrl(URL.createObjectURL(uploadedFile));
+    }
 
+    async function sendImage(e) {
+        // Voorkom een refresh op submit
+        e.preventDefault();
+        // maak een nieuw FormData object (ingebouwd type van JavaScript)
+        const formData = new FormData();
+        // Voeg daar ons bestand uit de state aan toe onder de key "file"
+        formData.append("file", file);
+
+        try {
+            const response = await uploadProfilePic(token, id, formData);
+            console.log(response);
+
+            setUserData({
+                ...userData,
+                profilepic: response.data,
+            });
+            window.location.reload();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
     }
 
 
     return (
         <>
+
+
             <main className={`outer-container ${styles["profile__outer-container"]}`}>
                 <div className={`inner-container ${styles["profile__inner-container"]}`}>
+
+                    {/*// TODO error form is not connected */}
+                    <div>
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onAfterOpen={afterOpenModal}
+                            onRequestClose={closeModal}
+                            style={customStyles}
+                            contentLabel="Upload profile picture"
+                        >
+                            <h4>Afbeelding uploaden</h4>
+                            <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
+                                <label className={styles["label__input-field__profile-picture"]} htmlFor="profile-picture">
+                                    Kies afbeelding:
+                                    <input className={styles["input-field__profile-picture"]} type="file" name="profile-picture" id="profile-picture"
+                                           onChange={handleImageChange}/>
+                                </label>
+                                {previewUrl &&
+                                    <label className={styles["profile-picture__preview__label"]}>
+                                        Preview:
+                                        <img className={styles["profile-picture__preview"]} src={previewUrl} alt="Voorbeeld van de gekozen afbeelding"
+                                             />
+                                    </label>
+                                }
+                                <Button
+                                    type="submit"
+                                >Uploaden</Button>
+                            </form>
+                        </Modal>
+                    </div>
 
 
                     <div className={styles["profile"]}>
@@ -173,7 +275,7 @@ function Profile() {
                             {/*TODO placeholder voor als iemnad geen foto heeft*/}
                             {userData && userData.profilepic == null &&
                                 <>
-                                    <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera
+                                    <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
                                         className={styles["photo-icon"]} size={32}/>
                                         <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
                                 </>
@@ -181,7 +283,7 @@ function Profile() {
 
                             {userData && userData.profilepic != null &&
                                 <>
-                                    <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera
+                                    <Link to="#" className={styles["link__upload-photo"]} onClick={openModal}><Camera
                                         className={styles["photo-icon"]} size={32}/></Link>
                                     <img className={styles["profile-pic"]} src={userData.profilepic}
                                          alt="Profielfoto"/>

@@ -80,3 +80,15 @@ export async function updateCustomer(token, userId, firstname, lastname, email, 
     return response;
 }
 
+export async function uploadProfilePic(token, userId, formData) {
+    const response = await axios.post(`${baseUrl}uploadprofilepic/${userId}`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+        },
+            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
+        });
+    return response;
+}
+

@@ -49,14 +49,44 @@
     text-decoration: none;
 }
 
+.form__upload-profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label__input-field__profile-picture {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-field__profile-picture {
+    font-family: 'Raleway', sans-serif;
+}
+
+.profile-picture__preview__label {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.profile-picture__preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
 .link__upload-photo {
     text-decoration: none;
     color: var(--color-black);
 }
 
+
+
 .photo-icon {
     position: absolute;
-    z-index: 1;
+    z-index: 0.5;
     padding: 0.25rem;
     border-radius: 50px;
     background-color: var(--color-grey-200);
