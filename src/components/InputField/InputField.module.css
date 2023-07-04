@@ -6,6 +6,11 @@
     align-items: center;
 }
 
+.input-field__column {
+    display: flex;
+    flex-direction: column;
+}
+
 .input-field {
     border: solid 1px var(--color-grey-500);
     color: var(--color-black);
@@ -16,3 +21,21 @@
     min-width: 200px;
 }
 
+.input-field__error {
+    border: solid 1px var(--color-warning);
+}
+
+.input-field__error-message {
+    color: var(--color-warning);
+}
+
+.error__row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error__row > p {
+    width: 200px;
+    text-align: left;
+    color: var(--color-warning);
+}
