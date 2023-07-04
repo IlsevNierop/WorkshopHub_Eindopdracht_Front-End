@@ -8,11 +8,11 @@ export const AuthContext = createContext(null);
 
 
 function AuthContextProvider({children}) {
-    // TODO persist on refresh
 
     const [authData, setAuthData] = useState({
         isAuth: false,
-        user: null
+        user: null,
+        status: "pending",
     });
 
     const navigate = useNavigate();
@@ -42,7 +42,8 @@ function AuthContextProvider({children}) {
                 id: id,
                 authorities: authorities,
                 workshopowner: workshopowner,
-            }
+            },
+            status: "done",
         });
 
 
@@ -59,7 +60,8 @@ function AuthContextProvider({children}) {
         setAuthData({
             ...authData,
             isAuth: false,
-            user: null
+            user: null,
+            status: "done",
         })
         console.log("Gebruiker is uitgelogd!");
         navigate("/");

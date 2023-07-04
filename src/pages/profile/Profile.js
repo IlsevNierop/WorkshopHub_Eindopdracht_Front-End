@@ -8,21 +8,18 @@ import Button from "../../components/Button/Button";
 import {useNavigate} from "react-router-dom";
 import {Check} from "@phosphor-icons/react";
 import bakken1 from "../../assets/temppicsworkshop/Bakken1.jpg";
+import {fetchDataCustomer, fetchDataWorkshopOwner, updateCustomer, updateWorkshopOwner} from "../../api/api";
 
 function Profile() {
 
     const {user: {id, authorities, workshopowner}} = useContext(AuthContext);
+    const token = localStorage.getItem('token');
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    // const [editedValues, setEditedValues] = useState({
-    //     firstname: userData.firstname,
-    //     lastname: userData.lastname,
-    //     email: userData.email,
-    //     companyname: userData.companyname,
-    //     kvknumber: userData.kvknumber,
-    //     vatnumber: userData.vatnumber,
-    // });
+    const {register, handleSubmit, formState: {errors}} = useForm();
+    const navigate = useNavigate();
+    const controller = new AbortController();
 
 
     const handleChange = (event) => {
@@ -31,47 +28,24 @@ function Profile() {
             ...prevValues,
             [name]: value,
         }));
-
-        // setEditedValues((prevValues) => ({
-        //     ...prevValues,
-        //     [name]: value,
-        // }));
     };
-
-    const {register, handleSubmit, formState: {errors}} = useForm();
-
-    const navigate = useNavigate();
-
-    // const controller = new AbortController();
-
-    const token = localStorage.getItem('token');
 
 
     useEffect(() => {
         async function fetchUserData() {
-
             if (workshopowner) {
                 try {
                     const {
-                        data: {
-                            firstName,
-                            lastName,
-                            email,
-                            profilePicUrl,
-                            companyName,
-                            kvkNumber,
-                            vatNumber,
-                            workshopOwnerVerified
-                        }
-                    } = await axios.get(`http://localhost:8080/users/workshopowner/${id}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
+                        firstName,
+                        lastName,
+                        email,
+                        profilePicUrl,
+                        companyName,
+                        kvkNumber,
+                        vatNumber,
+                        workshopOwnerVerified
+                    } = await fetchDataWorkshopOwner(token, id);
 
-                    console.log(firstName, lastName, email, workshopOwnerVerified, companyName, kvkNumber, vatNumber);
                     setUserData({
                         firstname: firstName,
                         lastname: lastName,
@@ -81,73 +55,48 @@ function Profile() {
                         kvknumber: kvkNumber,
                         vatnumber: vatNumber,
                         workshopownerverified: workshopOwnerVerified
-                    })
-
+                    });
                 } catch (e) {
                     console.log(e);
                 }
-
             } else {
                 try {
                     const {
-                        data: {
-                            firstName,
-                            lastName,
-                            email,
-                            profilePicUrl
-                        }
-                    } = await axios.get(`http://localhost:8080/users/customer/${id}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
+                        firstName,
+                        lastName,
+                        email,
+                        profilePicUrl,
+                    } = await fetchDataCustomer(token, id);
 
-                    console.log(firstName, lastName, email, profilePicUrl);
+
                     setUserData({
                         firstname: firstName,
                         lastname: lastName,
                         email: email,
-                        profilepic: profilePicUrl
-                    })
-
-
+                        profilepic: profilePicUrl,
+                    });
                 } catch (e) {
                     console.log(e);
                 }
-
             }
-
 
         }
 
-        // TODO re-usable try and catch block
-        // TODO js file for all api requests
-
-
         void fetchUserData();
-
-        // return function cleanup() {
-        //     console.log("cleanup profile aangeroepen")
-        //     controller.abort();
-        // }
-
-    }, [])
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
+//
+//     // TODO re-usable try and catch block
+//
 
     async function handleFormSubmit(data) {
         console.log(data)
 
         if (workshopowner) {
             try {
-                const response = await axios.put(`http://localhost:8080/users/workshopowner/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, companyName: data.companyname, kvkNumber: data.kvknumber, vatnumber: data.vatnumber, workshopOwner: workshopowner},
-                {headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    // signal: controller.signal,
-                });
-                window.location.reload();
+                const response = await updateWorkshopOwner(token, id, data.firstname, data.lastname, data.email, data.companyname, data.kvknumber, data.vatnumber, workshopowner);
 
             } catch (e) {
                 console.log(e);
@@ -155,21 +104,15 @@ function Profile() {
 
         } else {
             try {
-                const response = await axios.put(`http://localhost:8080/users/customer/${id}`, {firstName: data.firstname, lastName: data.lastname, email: data.email, workshopOwner: workshopowner},
-                    {headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        // signal: controller.signal,
-                    });
-                window.location.reload();
+
+                const response = await updateCustomer(token, id, data.firstname, data.lastname, data.email, workshopowner);
 
             } catch (e) {
                 console.log(e);
             }
 
         }
-
+        window.location.reload();
     }
 
 
@@ -184,7 +127,8 @@ function Profile() {
                         <section className={styles["left-side__profile"]}>
                             {/*TODO placeholder voor als iemnad geen foto heeft*/}
                             {userData && userData.profilepic != null &&
-                                <img className={styles["profile-pic"]} src={userData.profilepic} alt="Profielfoto"/>}
+                                <img className={styles["profile-pic"]} src={userData.profilepic}
+                                     alt="Profielfoto"/>}
                             {userData && userData.workshopownerverified &&
                                 <div className={styles["verification"]}>
                                     <Check size={20} color="#52B706"/>

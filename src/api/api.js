@@ -1,0 +1,80 @@
+import axios from "axios";
+
+const controller = new AbortController();
+
+const baseUrl = "http://localhost:8080/"
+
+
+// ............user api requests
+
+export async function signIn(email, password) {
+    const response = await axios.post(`${baseUrl}signin`, {
+            email: email,
+            password: password
+        },
+        {signal: controller.signal,});
+    return response.data
+}
+
+export async function fetchDataWorkshopOwner(token, userId) {
+    const response = await axios.get(`${baseUrl}users/workshopowner/${userId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+
+
+export async function fetchDataCustomer(token, userId) {
+    const response = await axios.get(`${baseUrl}users/customer/${userId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+
+export async function updateWorkshopOwner(token, userId, firstname, lastname, email, companyname, kvknumber, vatnumber, workshopowner) {
+    const response = await axios.put(`${baseUrl}users/workshopowner/${userId}`, {
+            firstName: firstname,
+            lastName: lastname,
+            email: email,
+            companyName: companyname,
+            kvkNumber: kvknumber,
+            vatNumber: vatnumber,
+            workshopOwner: workshopowner
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+
+export async function updateCustomer(token, userId, firstname, lastname, email, workshopowner) {
+    const response = await axios.put(`${baseUrl}users/customer/${userId}`, {
+            firstName: firstname,
+            lastName: lastname,
+            email: email,
+            workshopOwner: workshopowner
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
+        });
+    return response.data;
+}
+

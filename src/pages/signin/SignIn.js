@@ -4,6 +4,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {useForm} from 'react-hook-form';
 import axios from "axios";
 import Button from "../../components/Button/Button";
+import {signIn, updateWorkshopOwner} from "../../api/api";
 
 function SignIn() {
     const {login} = useContext(AuthContext);
@@ -11,26 +12,22 @@ function SignIn() {
     const {register, formState: {errors}, handleSubmit} = useForm();
     const controller = new AbortController();
 
-    // useEffect(() => {
-    //
-    //     return function cleanup() {
-    //         console.log("cleanup sign in aangeroepen")
-    //         controller.abort();
-    //     }
-    // }, []);
+    useEffect(() => {
 
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
 
     const handleFormSubmit = async (data) => {
-        try {
-            const response = await axios.post("http://localhost:8080/signin", {
-                email: data.email,
-                password: data.password
-            }, {signal: controller.signal,});
-            console.log(response.data.jwt);
-            login(response.data.jwt, "/");
 
-        } catch (data) {
-            console.error("Onjuist email en wachtwoord combinatie", data);
+        try {
+            const {jwt} = await signIn(data.email, data.password, data.email);
+            console.log(jwt);
+            login(jwt, "/profiel");
+
+        } catch (e) {
+            console.log(e);
         }
     }
 
