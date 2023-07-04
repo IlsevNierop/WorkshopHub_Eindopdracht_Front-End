@@ -17,7 +17,7 @@ function Profile() {
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [updateMessage, toggleUpdateMessage] = useState(false);
     const [userType, setUserType] = useState(workshopowner ? {
@@ -173,14 +173,16 @@ function Profile() {
                             {/*TODO placeholder voor als iemnad geen foto heeft*/}
                             {userData && userData.profilepic == null &&
                                 <>
-                                <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera className={styles["photo-icon"]} size={32} />
-                                <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
+                                    <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera
+                                        className={styles["photo-icon"]} size={32}/>
+                                        <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
                                 </>
                             }
 
                             {userData && userData.profilepic != null &&
                                 <>
-                                    <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera className={styles["photo-icon"]} size={32} /></Link>
+                                    <Link className={styles["link__upload-photo"]} to="/uploadprofielfoto"><Camera
+                                        className={styles["photo-icon"]} size={32}/></Link>
                                     <img className={styles["profile-pic"]} src={userData.profilepic}
                                          alt="Profielfoto"/>
                                 </>
@@ -210,8 +212,6 @@ function Profile() {
                             }
                             <h1>Mijn Profiel</h1>
 
-                            {error && <p className="error-message">{error}</p>}
-
                             <form className={styles["profile__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                                 {userData &&
 
@@ -226,7 +226,7 @@ function Profile() {
                                                 required:
                                                     {
                                                         value: true,
-                                                        message: "Dit veld is verplicht",
+                                                        message: "Voornaam is verplicht",
                                                     }
                                             }
                                             }
@@ -247,7 +247,7 @@ function Profile() {
                                                 required:
                                                     {
                                                         value: true,
-                                                        message: "Dit veld is verplicht",
+                                                        message: "Achternaam is verplicht",
                                                     }
                                             }
                                             }
@@ -267,8 +267,11 @@ function Profile() {
                                                 required:
                                                     {
                                                         value: true,
-                                                        message: "Dit veld is verplicht",
-                                                    }
+                                                        message: "E-mail is verplicht",
+                                                    }, pattern: {
+                                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
+                                                    message: "Vul een geldig e-mailadres in"
+                                                }
                                             }
                                             }
                                             register={register}
@@ -287,8 +290,20 @@ function Profile() {
                                                         required:
                                                             {
                                                                 value: true,
-                                                                message: "Dit veld is verplicht",
-                                                            }
+                                                                message: "Wachtwoord is verplicht",
+                                                            },
+                                                        minLength: {
+                                                            value: 8,
+                                                            message: 'Wachtwoord moet minstens 8 karakters lang zijn',
+                                                        },
+                                                        maxLength: {
+                                                            value: 20,
+                                                            message: 'Wachtwoord mag niet meer dan 20 karakters lang zijn',
+                                                        },
+                                                        pattern: {
+                                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\\!\\#\\@\\$\\%\\&\\/\\(\\)\\=\\?\\*\\-\\+\\_\\.\\:\\;\\,\\{\\}\\^])[A-Za-z0-9!#@$%&/()=?*+-_.:;,{}].+$/,
+                                                            message: "Ongeldig wachtwoord. Het moet aan de volgende eisen voldoen: \n- Minimaal 1 kleine letter. \n- Minimaal 1 hoofdletter. \n- Minimaal 1 getal \n- Minimaal 1 symbool."
+                                                        }
                                                     }
                                                     }
                                                     register={register}
@@ -327,7 +342,7 @@ function Profile() {
                                                         required:
                                                             {
                                                                 value: true,
-                                                                message: "Dit veld is verplicht",
+                                                                message: "Bedrijfsnaam is verplicht",
                                                             }
                                                     }
                                                     }
@@ -340,7 +355,7 @@ function Profile() {
 
 
                                                 <InputField
-                                                    type="text"
+                                                    type="number"
                                                     name="kvknumber"
                                                     label="KvK nummer: "
                                                     validation={{
@@ -348,7 +363,7 @@ function Profile() {
                                                         required:
                                                             {
                                                                 value: true,
-                                                                message: "Dit veld is verplicht",
+                                                                message: "KvK nummer is verplicht en moet uit getallen bestaan",
                                                             }
                                                     }
                                                     }
@@ -368,7 +383,7 @@ function Profile() {
                                                         required:
                                                             {
                                                                 value: true,
-                                                                message: "Dit veld is verplicht",
+                                                                message: "BTW nummer is verplicht",
                                                             }
                                                     }
                                                     }
@@ -391,6 +406,7 @@ function Profile() {
                                     >Verstuur
                                     </Button>
                                 }
+                                {error && <p className="error-message">{error}</p>}
 
                             </form>
 
