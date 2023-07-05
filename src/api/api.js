@@ -39,6 +39,36 @@ export async function fetchDataCustomer(token, userId) {
     return response.data;
 }
 
+export async function createWorkshopOwner(firstname, lastname, email, password, workshopowner, companyname, kvknumber, vatnumber) {
+    const response = await axios.post(`${baseUrl}users/workshopowner`, {
+            firstName: firstname,
+            lastName: lastname,
+            email: email,
+            password: password,
+            workshopOwner: workshopowner,
+            companyName: companyname,
+            kvkNumber: kvknumber,
+            vatNumber: vatnumber,
+        },
+        {
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+export async function createCustomer(firstname, lastname, email, password, workshopowner) {
+    const response = await axios.post(`${baseUrl}users/customer`, {
+            firstName: firstname,
+            lastName: lastname,
+            email: email,
+            password: password,
+            workshopOwner: workshopowner,
+        },
+        {signal: controller.signal,});
+    return response.data;
+}
+
+
 export async function updateWorkshopOwner(token, userId, firstname, lastname, email, password, companyname, kvknumber, vatnumber, workshopowner) {
     const response = await axios.put(`${baseUrl}users/workshopowner/${userId}`, {
             firstName: firstname,
@@ -94,8 +124,8 @@ export async function uploadProfilePic(token, userId, formData) {
 
 export async function resetPassword(email, password) {
     const response = await axios.put(`${baseUrl}users/passwordrequest/${email}`, {
-            newPassword: password
-        });
+        newPassword: password
+    });
     return response;
 }
 

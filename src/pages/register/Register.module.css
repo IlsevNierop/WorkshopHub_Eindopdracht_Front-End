@@ -1,0 +1,56 @@
+.register__outer-container {
+    flex-grow: 1;
+    background-color: var(--color-grey-100);
+}
+
+.register__inner-container {
+    flex-direction: column;
+    margin: 4rem;
+    gap: 2rem;
+    align-items: center;
+}
+
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-fields-personal {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
+
+.register-fields-company {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+}
+
+
+.user-type__label {
+    display: flex;
+    flex-direction: row;
+    max-width: 380px;
+    gap: 1rem;
+}
+
+.user-type__dropdown {
+    font-size: 12px;
+    min-width: 200px;
+}
+
+.row__pop-up__successful {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.row__pop-up__successful h3 {
+    font-weight: normal;
+}
+

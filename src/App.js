@@ -9,6 +9,7 @@ import Profile from "./pages/profile/Profile";
 import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
 import {returnHighestAuthority} from "./helper/returnHighestAuthority";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
+import Register from "./pages/register/Register";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
+                    <Route path="/registreren" element={<Register/>}/>
                     {/*TODO isAuth ook toevoegen?*/}
                     <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <NewWorkshop/> : <Home />}/>
 

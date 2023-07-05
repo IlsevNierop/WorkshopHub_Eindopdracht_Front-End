@@ -53,7 +53,7 @@ function ResetPassword() {
         },
     };
 
-//TODO below seems to be unneccesary?
+//TODO setappelement seems to be unneccesary?
     Modal.setAppElement('#root');
 
 
@@ -75,7 +75,7 @@ function ResetPassword() {
         <>
             <main className={`outer-container ${styles["password__outer-container"]}`}>
                 <div className={`inner-container ${styles["password__inner-container"]}`}>
-                    <header className={styles["header-password"]}>
+                    <section className={styles["top-password"]}>
 
                         <Modal
                             isOpen={modalIsOpen}
@@ -96,7 +96,7 @@ function ResetPassword() {
                         {/*Dit is niet de juiste manier, maar omdat ik niet met emails werk, kan ik niet de echte situatie (met validatielink in email) nabootsen*/}
                         <h4>Weet je het wachtwoord niet meer? </h4>
                         <h4>Vul hieronder je e-mailadres in en kies een nieuw wachtwoord.</h4>
-                    </header>
+                    </section>
 
                     <form className={styles["reset-password__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                         <InputField

@@ -223,6 +223,7 @@ function Profile() {
                 ...userData,
                 profilepic: response.data,
             });
+            //TODO na wijzigen foto is dit nodig, om de foto direct te tonen. Na 1e keer uploaden niet
             window.location.reload();
 
         } catch (e) {
@@ -418,10 +419,14 @@ function Profile() {
                                                     showPassword={showPassword}
                                                 >
                                                 </InputField>
+                                                {/*TODO maak dropdown onderdeel van hook form*/}
                                                 <div className={styles["user-type__row"]}>
                                                     <h4 className={styles["user-type__label"]}>Consument/
                                                         workshop eigenaar: </h4>
-                                                    <Select className={styles["user-type__dropdown"]}       defaultValue={userType} onChange={setUserType} options={optionsUserType}
+                                                    <Select className={styles["user-type__dropdown"]}
+                                                            defaultValue={userType}
+                                                            onChange={setUserType}
+                                                            options={optionsUserType}
                                                             isMulti={false}
                                                     />
                                                 </div>
@@ -467,7 +472,11 @@ function Profile() {
                                                             {
                                                                 value: true,
                                                                 message: "KvK nummer is verplicht en moet uit getallen bestaan",
-                                                            }
+                                                            },
+                                                        maxLength: {
+                                                            value: 10,
+                                                            message: 'KvK nummer mag niet meer dan 10 getallen zijn',
+                                                        },
                                                     }
                                                     }
                                                     register={register}
