@@ -5,7 +5,7 @@ import InputField from "../../components/InputField/InputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
-import {Camera, Check, Eye, EyeClosed, Image} from "@phosphor-icons/react";
+import {Camera, Check, Eye, EyeClosed, Image, X} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
     fetchDataWorkshopOwner,
@@ -56,6 +56,7 @@ function Profile() {
         },
     };
 
+    //TODO below seems to be unneccesary?
     Modal.setAppElement('#root');
 
 
@@ -152,7 +153,6 @@ function Profile() {
                     // after updating profile information (like workshopowner & email, which are part of the jwt token) the user needs to be automatically logged in again, in order to also update the jwt token to match new user details.
                     try {
                         const {jwt} = await signIn(data.email, data.password);
-                        console.log(jwt);
                         login(jwt);
                         toggleUpdateMessage(true);
                         setTimeout(() => {
@@ -247,7 +247,10 @@ function Profile() {
                             style={customStyles}
                             contentLabel="Upload profile picture"
                         >
-                            <h4>Afbeelding uploaden</h4>
+                            <div className={styles["top-row__upload-profile-picture"]}>
+                            <h3>Afbeelding uploaden</h3>
+                            <Link to="#" onClick={closeModal}><X size={18}/></Link>
+                        </div>
                             <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
                                 <label className={styles["label__input-field__profile-picture"]} htmlFor="profile-picture">
                                     Kies afbeelding:

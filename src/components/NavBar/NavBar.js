@@ -3,7 +3,7 @@ import {Link, NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
 import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mobile.svg";
-import {Eye, EyeClosed, Heart, X} from "@phosphor-icons/react";
+import {Heart, X} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
 import Button from "../Button/Button";
@@ -34,6 +34,7 @@ function NavBar() {
         },
     };
 
+    //TODO below seems to be unneccesary?
     Modal.setAppElement('#root');
 
 
@@ -149,7 +150,7 @@ function NavBar() {
 
 
                         <div className={styles["bottom-links__signin"]}>
-                            <Link className={styles["bottom-link"]} to="/resetwachtwoord" onClick={closeModal}>
+                            <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={closeModal}>
                                 <p>Wachtwoord vergeten?</p></Link>
 
                             <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"

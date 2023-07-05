@@ -49,6 +49,13 @@
     text-decoration: none;
 }
 
+.top-row__upload-profile-picture {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
 .form__upload-profile-picture {
     display: flex;
     flex-direction: column;
