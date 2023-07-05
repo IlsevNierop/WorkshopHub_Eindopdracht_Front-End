@@ -1,12 +1,16 @@
+
+
 .signin__outer-container {
+    flex-grow: 1;
+    background-color: var(--color-grey-100);
+}
+
+.signin__inner-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    /*TODO fix flex grow */
-    flex-grow: 1;
-    margin: 4rem;
-    background-color: var(--color-grey-100);
+    padding: 4rem;
+    /*align-items: center;*/
+
 }
 
 

@@ -25,7 +25,7 @@ function Profile() {
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: 'onTouched'});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [updateMessage, toggleUpdateMessage] = useState(false);
     const [userType, setUserType] = useState(workshopowner ? {
@@ -58,7 +58,6 @@ function Profile() {
     Modal.setAppElement('#root');
 
 
-    let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModal() {
@@ -66,12 +65,12 @@ function Profile() {
     }
 
     function afterOpenModal() {
-        // references are now sync'd and can be accessed.
 
     }
 
     function closeModal() {
         setIsOpen(false);
+        reset();
     }
 
     useEffect(() => {
@@ -216,6 +215,8 @@ function Profile() {
         try {
             const response = await uploadProfilePic(token, id, formData);
             console.log(response);
+            closeModal();
+            reset();
 
             setUserData({
                 ...userData,
@@ -413,10 +414,7 @@ function Profile() {
                                                 <div className={styles["user-type__row"]}>
                                                     <h4 className={styles["user-type__label"]}>Consument/
                                                         workshop eigenaar: </h4>
-                                                    <Select className={styles["user-type__dropdown"]}
-                                                            defaultValue={userType}
-                                                            onChange={setUserType}
-                                                            options={optionsUserType}
+                                                    <Select className={styles["user-type__dropdown"]}       defaultValue={userType} onChange={setUserType} options={optionsUserType}
                                                             isMulti={false}
                                                     />
                                                 </div>
