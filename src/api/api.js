@@ -86,8 +86,15 @@ export async function uploadProfilePic(token, userId, formData) {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
-            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
-            signal: controller.signal,
+        // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+        signal: controller.signal,
+    });
+    return response;
+}
+
+export async function resetPassword(email, password) {
+    const response = await axios.put(`${baseUrl}users/passwordrequest/${email}`, {
+            newPassword: password
         });
     return response;
 }

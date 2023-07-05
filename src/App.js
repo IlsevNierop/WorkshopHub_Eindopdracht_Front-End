@@ -8,6 +8,7 @@ import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
 import {returnHighestAuthority} from "./helper/returnHighestAuthority";
+import ResetPassword from "./pages/resetPassword/ResetPassword";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
+                    <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     {/*TODO isAuth ook toevoegen?*/}
                     <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <NewWorkshop/> : <Home />}/>
 
