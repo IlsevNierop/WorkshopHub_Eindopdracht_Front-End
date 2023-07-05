@@ -40,6 +40,7 @@ body {
 
 :global .outer-container {
     display: flex;
+    flex-direction: row;
     width: 100%;
     justify-content: center;
 }
@@ -48,6 +49,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 0 1 1200px;
+    max-width: 1200px;
     margin-inline: 1rem;
     gap: 1rem;
 }

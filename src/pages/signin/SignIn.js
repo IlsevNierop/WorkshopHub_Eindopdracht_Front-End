@@ -6,12 +6,17 @@ import Button from "../../components/Button/Button";
 import {signIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 
+//TODO check of met modal kan in navbar
+
 function SignIn() {
     const {login} = useContext(AuthContext);
 
     const {register, formState: {errors}, handleSubmit} = useForm();
     const [error, toggleError] = useState('');
     const controller = new AbortController();
+
+    //TODO styling main gaat niet goed  - zie achtergrond kleur en footer helemaal beneden
+    //TODO wachtwoord vergeten - link naar registreren - validatie input field email
 
     useEffect(() => {
 

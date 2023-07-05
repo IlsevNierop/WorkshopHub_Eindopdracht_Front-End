@@ -132,9 +132,7 @@ function Profile() {
             controller.abort();
         }
     }, []);
-//
-//     // TODO re-usable try and catch block
-//
+
 
     const handleChange = (event) => {
         const {name, value} = event.target;
@@ -239,7 +237,6 @@ function Profile() {
             <main className={`outer-container ${styles["profile__outer-container"]}`}>
                 <div className={`inner-container ${styles["profile__inner-container"]}`}>
 
-                    {/*// TODO error form is not connected */}
                     <div>
                         <Modal
                             isOpen={modalIsOpen}
@@ -272,7 +269,6 @@ function Profile() {
 
                     <div className={styles["profile"]}>
                         <section className={styles["left-side__profile"]}>
-                            {/*TODO placeholder voor als iemnad geen foto heeft*/}
                             {userData && userData.profilepic == null &&
                                 <>
                                     <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
@@ -542,8 +538,7 @@ function Profile() {
                         </div>
                     }
 
-
-                    {/*TODO add wijzig profiel - input fields & wijzig password*/}
+                    {/*TODO add wijzig password - dubbel veld?*/}
 
                 </div>
             </main>
