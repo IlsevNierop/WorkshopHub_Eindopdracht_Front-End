@@ -5,7 +5,7 @@ import InputField from "../../components/InputField/InputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
-import {Camera, Check, Image} from "@phosphor-icons/react";
+import {Camera, Check, Eye, EyeClosed, Image} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
     fetchDataWorkshopOwner,
@@ -34,6 +34,7 @@ function Profile() {
     } : {value: false, label: "Consument"});
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -382,7 +383,8 @@ function Profile() {
                                         {editProfile &&
                                             <>
                                                 <InputField
-                                                    type="password"
+                                                    classNameLabel="password-input-field"
+                                                    type={showPassword? "text" : "password"}
                                                     name="password"
                                                     label="Wachtwoord: "
                                                     validation={{
@@ -409,6 +411,8 @@ function Profile() {
                                                     errors={errors}
                                                     value={userData.password}
                                                     onChange={handleChange}
+                                                    setShowPassword={setShowPassword}
+                                                    showPassword={showPassword}
                                                 >
                                                 </InputField>
                                                 <div className={styles["user-type__row"]}>

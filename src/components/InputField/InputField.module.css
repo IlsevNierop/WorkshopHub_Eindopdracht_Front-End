@@ -22,6 +22,15 @@
     min-width: 200px;
 }
 
+.password-input-field {
+    position: relative;
+}
+.password-visibility {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
 .input-field__error {
     border: solid 1px var(--color-warning);
 }

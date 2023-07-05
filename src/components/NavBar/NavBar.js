@@ -3,7 +3,7 @@ import {Link, NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
 import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mobile.svg";
-import {Heart, X} from "@phosphor-icons/react";
+import {Eye, EyeClosed, Heart, X} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
 import Button from "../Button/Button";
@@ -18,7 +18,9 @@ function NavBar() {
 
     const {isAuth, user, logout, login} = useContext(AuthContext);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
-    const [error, toggleError] = useState('');
+    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
 
     // ...................MODAL
     const customStyles = {
@@ -47,6 +49,8 @@ function NavBar() {
 
     function closeModal() {
         setIsOpen(false);
+        setError('');
+        setShowPassword(false);
         reset();
     }
 
@@ -58,7 +62,7 @@ function NavBar() {
             closeModal();
 
         } catch (e) {
-            toggleError(errorHandling(e));
+            setError(errorHandling(e));
             console.log(error);
         }
     }
@@ -120,19 +124,21 @@ function NavBar() {
                                 errors={errors}
                             >
                             </InputField>
-                            <InputField
-                                type="password"
-                                name="password"
-                                label="Wachtwoord: "
-                                validation={{
-                                    required:
-                                        {
-                                            value: true,
-                                            message: "Wachtwoord is verplicht",
-                                        }
-                                }}
-                                register={register}
-                                errors={errors}
+                            <InputField classNameLabel="password-input-field"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        label="Wachtwoord: "
+                                        validation={{
+                                            required:
+                                                {
+                                                    value: true,
+                                                    message: "Wachtwoord is verplicht",
+                                                }
+                                        }}
+                                        register={register}
+                                        errors={errors}
+                                        setShowPassword={setShowPassword}
+                                        showPassword={showPassword}
                             >
                             </InputField>
                             {error && <p className="error-message">{error}</p>}
@@ -143,7 +149,8 @@ function NavBar() {
 
 
                         <div className={styles["bottom-links__signin"]}>
-                            <Link className={styles["bottom-link"]} to="/resetwachtwoord" onClick={closeModal}><p>Wachtwoord vergeten?</p></Link>
+                            <Link className={styles["bottom-link"]} to="/resetwachtwoord" onClick={closeModal}>
+                                <p>Wachtwoord vergeten?</p></Link>
 
                             <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
                                                               onClick={closeModal}>Registreer</Link> je
