@@ -100,6 +100,7 @@ function Profile() {
                         vatnumber: vatNumber,
                         workshopownerverified: workshopOwnerVerified
                     });
+                    setError('');
                 } catch (e) {
                     setError(errorHandling(e));
                     console.log(error);
@@ -120,6 +121,7 @@ function Profile() {
                         email: email,
                         profilepic: profilePicUrl,
                     });
+                    setError('');
                 } catch (e) {
                     setError(errorHandling(e));
                     console.log(error);

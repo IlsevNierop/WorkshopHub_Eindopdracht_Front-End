@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import styles from "./Home.module.css";
 import Select from 'react-select';
 import 'react-date-range/dist/styles.css'; // main css file of date range calendar
@@ -8,6 +8,8 @@ import {Heart, Star} from "@phosphor-icons/react";
 import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {AuthContext} from "../../context/AuthContext";
+import {fetchDataCustomer, fetchDataWorkshopOwner, fetchWorkshopData} from "../../api/api";
+import {errorHandling} from "../../helper/errorHandling";
 
 {/*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
 }
@@ -41,7 +43,6 @@ const optionsSortValue = [
 
 function Home() {
     const {user} = useContext(AuthContext);
-    console.log(user);
 
 
     const [category, setCategory] = useState([]);
@@ -50,6 +51,10 @@ function Home() {
     const [sortValue, setSortValue] = useState([]);
     const [valueSlider, setValueSlider] = useState(0);
     const [minRating, setMinRating] = useState(0);
+    const [error, setError] = useState('');
+    const controller = new AbortController();
+    const [workshopData, setWorkshopData] = useState([]);
+    const [loading, toggleLoading] = useState(false);
 
 
     const [dateRange, setDateRange] = useState([
@@ -75,15 +80,48 @@ function Home() {
         setMinRating(e.target.value);
     }
 
+    //TODO volgende pagina / laad volgende x workshops
+
+    useEffect(() => {
+            async function fetchDataWorkshops() {
+                toggleLoading(true);
+                try {
+                    const response = await fetchWorkshopData();
+                    console.log(response);
+                    setWorkshopData(response);
+                    if (response) {
+                        setError('');
+                    }
+
+                } catch (e) {
+                    setError(errorHandling(e));
+                    console.log(error);
+                }
+                toggleLoading(false);
+            }
+
+            void fetchDataWorkshops();
+
+            return function cleanup() {
+                controller.abort();
+            }
+        }
+
+        , []);
+
 
     return (
 
         <main className={`outer-container ${styles["home__outer-container"]}`}>
             <div className={`inner-container ${styles["home__inner-container"]}`}>
-                <header className={styles["homepage__header"]}>
-                    <h1 className={styles["homepage__header__h1"]}><span className={styles["logo__capital-letter"]}>W</span>orkshop<span className={styles["logo__capital-letter"]}>H</span>ub</h1>
+                <section className={styles["homepage__top"]}>
+                    <h1 className={styles["homepage__top__h1"]}><span
+                        className={styles["logo__capital-letter"]}>W</span>orkshop<span
+                        className={styles["logo__capital-letter"]}>H</span>ub</h1>
                     <h3>De plek om een creatieve workshop te boeken</h3>
-                </header>
+                </section>
+                {loading && <p>Loading...</p>}
+                {error && <p className="error-message">{error}</p>}
 
                 <section className={styles["filter__row__workshop-tiles"]}>
                     <h4>Filter je zoekopdracht:</h4>
@@ -91,11 +129,11 @@ function Home() {
                     <div className={styles["sort"]}>
                         <h4>Sorteer op:</h4>
                         <Select className={styles["sort__dropdown"]}
-                            placeholder="Datum"
-                            defaultValue={sortValue}
-                            onChange={setSortValue}
-                            options={optionsSortValue}
-                            isMulti={false}
+                                placeholder="Datum"
+                                defaultValue={sortValue}
+                                onChange={setSortValue}
+                                options={optionsSortValue}
+                                isMulti={false}
 
                         />
                     </div>
@@ -177,6 +215,8 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
+
+                                    {/*TODO make component*/}
                                     <div className={styles["label-stars"]}>
                                         <Star size={20} color="black"
                                               weight="light"/>
@@ -302,80 +342,30 @@ function Home() {
 
                     </section>
 
+                    {/*//TODO make heart a link*/}
+
                     <section className={styles["overview__workshop-tiles"]}>
-                        <WorkshopTile
-                            image={bakken1}
-                            heartColor="#fe5c5c"
-                            heartWeight="fill"
-                            workshoptitle="Indonesische kook workshop"
-                            price="99"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            workshoptitle="Indonesische kook workshop"
-                            price="75"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        >
+                        {workshopData && workshopData.map((workshop) => {
+                            return (
+                                <WorkshopTile
+                                    key={workshop.id}
+                                    image={workshop.workshopPicUrl}
+                                    // TODO based on user
+                                    heartColor={workshop.isFavourite ? "#fe5c5c" : null}
+                                    heartWeight={workshop.isFavourite ? "fill" : null}
 
-                        </WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            heartColor="#fe5c5c"
-                            heartWeight="fill"
-                            workshoptitle="Indonesische kook workshop"
-                            price="33"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        >
+                                    workshoptitle={workshop.title}
+                                    price={workshop.price}
+                                    location={workshop.location}
+                                    // TODO transform date
+                                    date={workshop.date}
+                                    category1={workshop.workshopCategory1}
+                                    category2={workshop.workshopCategory2}
+                                ></WorkshopTile>
+                            )
+                        })
+                        }
 
-                        </WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            workshoptitle="Indonesische kook workshop"
-                            price="99"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            workshoptitle="Indonesische kook workshop"
-                            price="42"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            workshoptitle="Indonesische kook workshop"
-                            price="100"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            heartColor="#fe5c5c"
-                            heartWeight="fill"
-                            workshoptitle="Indonesische kook workshop"
-                            price="95"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
                         <WorkshopTile
                             image={bakken1}
                             heartColor="#fe5c5c"

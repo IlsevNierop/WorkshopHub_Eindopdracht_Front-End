@@ -6,7 +6,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     max-width: 255px;
     margin-bottom: 2rem;
 }
@@ -32,8 +32,11 @@
 .information-workshop-column {
     display: flex;
     flex-direction: column;
-    padding: 5px;
-    gap: 29px;
+    justify-content: space-between;
+    padding: 10px 8px 8px 8px;
+    /*padding-top: 5px;*/
+    gap: 30px;
+    min-height: 125px;
 }
 
 .top-row-workshop {

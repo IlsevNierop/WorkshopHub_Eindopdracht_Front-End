@@ -5,10 +5,10 @@ import {Heart} from "@phosphor-icons/react";
 import bakken1 from "../../assets/temppicsworkshop/Bakken1.jpg";
 
 // image nog als variabele invoegen - straks bij fetchen data
-function WorkshopTile({workshoptitle, price, location, date, category1, category2, heartColor, heartWeight}) {
+function WorkshopTile({workshoptitle, image, price, location, date, category1, category2, heartColor, heartWeight}) {
     return (
         <div className={styles["workshop-tile"]}>
-            <img className={styles["workshop-image"]} src={bakken1} alt={category1}/>
+            <img className={styles["workshop-image"]} src={image} alt={category1}/>
             <Heart className={styles["favourite-icon"]} size={24} color={heartColor}
                    weight={heartWeight}/>
             <div className={styles["information-workshop-column"]}>
