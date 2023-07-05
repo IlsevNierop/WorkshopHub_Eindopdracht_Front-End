@@ -5,7 +5,7 @@ import InputField from "../../components/InputField/InputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
-import {Camera, Check, Image} from "@phosphor-icons/react";
+import {Camera, Check, Eye, EyeClosed, Image} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
     fetchDataWorkshopOwner,
@@ -25,7 +25,7 @@ function Profile() {
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    const {register, handleSubmit, formState: {errors}} = useForm({mode: 'onTouched'});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [updateMessage, toggleUpdateMessage] = useState(false);
     const [userType, setUserType] = useState(workshopowner ? {
@@ -34,6 +34,7 @@ function Profile() {
     } : {value: false, label: "Consument"});
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -58,7 +59,6 @@ function Profile() {
     Modal.setAppElement('#root');
 
 
-    let subtitle;
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModal() {
@@ -66,12 +66,12 @@ function Profile() {
     }
 
     function afterOpenModal() {
-        // references are now sync'd and can be accessed.
 
     }
 
     function closeModal() {
         setIsOpen(false);
+        reset();
     }
 
     useEffect(() => {
@@ -216,6 +216,8 @@ function Profile() {
         try {
             const response = await uploadProfilePic(token, id, formData);
             console.log(response);
+            closeModal();
+            reset();
 
             setUserData({
                 ...userData,
@@ -381,7 +383,8 @@ function Profile() {
                                         {editProfile &&
                                             <>
                                                 <InputField
-                                                    type="password"
+                                                    classNameLabel="password-input-field"
+                                                    type={showPassword? "text" : "password"}
                                                     name="password"
                                                     label="Wachtwoord: "
                                                     validation={{
@@ -408,15 +411,14 @@ function Profile() {
                                                     errors={errors}
                                                     value={userData.password}
                                                     onChange={handleChange}
+                                                    setShowPassword={setShowPassword}
+                                                    showPassword={showPassword}
                                                 >
                                                 </InputField>
                                                 <div className={styles["user-type__row"]}>
                                                     <h4 className={styles["user-type__label"]}>Consument/
                                                         workshop eigenaar: </h4>
-                                                    <Select className={styles["user-type__dropdown"]}
-                                                            defaultValue={userType}
-                                                            onChange={setUserType}
-                                                            options={optionsUserType}
+                                                    <Select className={styles["user-type__dropdown"]}       defaultValue={userType} onChange={setUserType} options={optionsUserType}
                                                             isMulti={false}
                                                     />
                                                 </div>

@@ -2,10 +2,11 @@
 .button {
     color: white;
     text-transform: uppercase;
-    background-color: var(--color-terracotta);
-    border: solid 2px var(--color-light-orange);
+    background-color: var(--color-light-orange);
+    border: solid 2px var(--color-white);
     border-radius: 25px;
     padding: 10px 20px;
+    width: fit-content;
 }
 
 .button:hover {
@@ -14,6 +15,7 @@
 }
 
 .button:focus {
-    background-color: var(--color-light-orange);
-    border: solid 2px var(--color-white);
+    background-color: var(--color-terracotta);
+    border: solid 2px var(--color-light-orange);
+
 }
