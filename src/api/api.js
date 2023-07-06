@@ -146,3 +146,18 @@ export async function fetchWorkshopData() {
     });
     return response.data;
 }
+export async function fetchWorkshopDataLoggedIn(token, id) {
+    const response = await axios.get(`${baseUrl}workshops`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                userId: id
+            },
+            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
+        });
+    return response.data;
+}

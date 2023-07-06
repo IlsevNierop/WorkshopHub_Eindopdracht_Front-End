@@ -28,7 +28,7 @@ export function errorHandling(e) {
     } else if (e.response.status === 403) {
         return "Je hebt niet de juiste rechten voor deze handeling en/of pagina.";
     } else if (e.response.status === 404 && e.response.data.includes("doesn't exist")) {
-        return "Deze gebruiker, workshop, boeking of review bestaat niet | 404";
+        return "Deze gebruiker, workshop, boeking of review bestaat niet";
     } else if (e.response.status === 404) {
         return "Oeps, deze pagina is niet gevonden | 404";
     } else if (e.response.status >= 500 && e.response.status < 600) {

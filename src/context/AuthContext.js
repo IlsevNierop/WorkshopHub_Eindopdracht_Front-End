@@ -47,7 +47,6 @@ function AuthContextProvider({children}) {
         });
 
 
-        console.log(decodedToken);
         localStorage.setItem('token', jwt_token);
 
         console.log("Gebruiker is ingelogd!");

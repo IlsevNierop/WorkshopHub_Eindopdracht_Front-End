@@ -8,11 +8,14 @@ import {Heart, Star} from "@phosphor-icons/react";
 import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {AuthContext} from "../../context/AuthContext";
-import {fetchDataCustomer, fetchDataWorkshopOwner, fetchWorkshopData} from "../../api/api";
+import {fetchDataCustomer, fetchDataWorkshopOwner, fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
+import {updateDateFormat} from "../../helper/updateDateFormat";
+import {sortArray} from "../../helper/sortArray";
+import {filterWorkshopArray} from "../../helper/filterWorkshopArray";
 
-{/*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
-}
+// {TODO /*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
+// }
 const optionsCategory = [
     // { value: "all", label: "Alle workshops" },
     {value: "baking", label: "Bakken"},
@@ -21,6 +24,7 @@ const optionsCategory = [
     {value: "cooking", label: "Koken"},
 ];
 
+// TODO steden inladen vanuit backend
 const optionsLocation = [
     {value: "amsterdam", label: "Amsterdam"},
     {value: "utrecht", label: "Utrecht"},
@@ -36,24 +40,27 @@ const optionsEnvironment = [
 
 const optionsSortValue = [
     {value: "date", label: "Datum"},
-    {value: "price", label: "Prijs"},
+    {value: "pricelowtohigh", label: "Prijs - laag naar hoog"},
+    {value: "pricehightolow", label: "Prijs - hoog naar laag"},
     {value: "popular", label: "Populariteit"},
 ];
 
 
 function Home() {
     const {user} = useContext(AuthContext);
+    const token = localStorage.getItem('token');
 
 
     const [category, setCategory] = useState([]);
     const [location, setLocation] = useState([]);
     const [environment, setEnvironment] = useState([]);
     const [sortValue, setSortValue] = useState([]);
-    const [valueSlider, setValueSlider] = useState(0);
+    const [priceSlider, setPriceSlider] = useState(0);
     const [minRating, setMinRating] = useState(0);
     const [error, setError] = useState('');
     const controller = new AbortController();
     const [workshopData, setWorkshopData] = useState([]);
+    const [originalWorkshopData, setOriginalWorkshopData] = useState([]);
     const [loading, toggleLoading] = useState(false);
 
 
@@ -65,15 +72,16 @@ function Home() {
         }
     ]);
 
+
     // console.log(category);
+    console.log(dateRange);
     // console.log(location);
     // console.log(environment);
-    // console.log(valueSlider);
-    // console.log(dateRange);
+    // console.log(priceSlider);
     // console.log(minRating);
 
     const changeValueSlider = (e) => {
-        setValueSlider(e.target.value);
+        setPriceSlider(e.target.value);
     }
 
     const handleChangeRating = (e) => {
@@ -85,22 +93,46 @@ function Home() {
     useEffect(() => {
             async function fetchDataWorkshops() {
                 toggleLoading(true);
-                try {
-                    const response = await fetchWorkshopData();
-                    console.log(response);
-                    setWorkshopData(response);
-                    if (response) {
-                        setError('');
-                    }
+                setError('');
+                if (user != null) {
+                    try {
+                        const response = await fetchWorkshopDataLoggedIn(token, user.id);
+                        // console.log(response);
+                        setWorkshopData(response);
+                        setOriginalWorkshopData(response);
+                        if (response) {
+                            setError('');
+                        }
 
-                } catch (e) {
-                    setError(errorHandling(e));
-                    console.log(error);
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                    }
+                    toggleLoading(false);
+                } else {
+                    try {
+                        const response = await fetchWorkshopData();
+                        // console.log(response);
+                        setWorkshopData(response);
+                        setOriginalWorkshopData(response);
+                        if (response) {
+                            setError('');
+                        }
+
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                    }
+                    toggleLoading(false);
                 }
-                toggleLoading(false);
             }
 
             void fetchDataWorkshops();
+            console.log("test workshop data")
+            console.log(workshopData)
+            console.log("test original workshopdata")
+            console.log(originalWorkshopData)
+
 
             return function cleanup() {
                 controller.abort();
@@ -108,6 +140,24 @@ function Home() {
         }
 
         , []);
+
+    useEffect(() => {
+
+        setWorkshopData(sortArray(workshopData, sortValue.value));
+
+    }, [sortValue]);
+
+
+    useEffect(() => {
+        console.log("test")
+        // console.log(originalWorkshopData);
+
+        filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange);
+        // setWorkshopData()
+
+
+    }, [category, location, environment, priceSlider, minRating, dateRange]);
+
 
 
     return (
@@ -187,7 +237,7 @@ function Home() {
                         </div>
                         <div className={styles["filter-item"]}>
                             <h5>Maximale prijs</h5>
-                            <p>{valueSlider}</p>
+                            <p>{priceSlider}</p>
                             <label>
                                 <input
                                     type='range'
@@ -195,7 +245,7 @@ function Home() {
                                     min={1}
                                     max={400}
                                     step={1}
-                                    value={valueSlider}
+                                    value={priceSlider}
                                     className={styles["price-slider"]}>
                                 </input>
                             </label>
@@ -350,15 +400,13 @@ function Home() {
                                 <WorkshopTile
                                     key={workshop.id}
                                     image={workshop.workshopPicUrl}
-                                    // TODO based on user
                                     heartColor={workshop.isFavourite ? "#fe5c5c" : null}
                                     heartWeight={workshop.isFavourite ? "fill" : null}
 
                                     workshoptitle={workshop.title}
                                     price={workshop.price}
                                     location={workshop.location}
-                                    // TODO transform date
-                                    date={workshop.date}
+                                    date={updateDateFormat(workshop.date)}
                                     category1={workshop.workshopCategory1}
                                     category2={workshop.workshopCategory2}
                                 ></WorkshopTile>
@@ -366,26 +414,26 @@ function Home() {
                         })
                         }
 
-                        <WorkshopTile
-                            image={bakken1}
-                            heartColor="#fe5c5c"
-                            heartWeight="fill"
-                            workshoptitle="Indonesische kook workshop"
-                            price="80"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
-                        <WorkshopTile
-                            image={bakken1}
-                            workshoptitle="Indonesische kook workshop"
-                            price="42"
-                            location="Utrecht"
-                            date="01-01-2023"
-                            category1="koken"
-                            category2="bakken"
-                        ></WorkshopTile>
+                        {/*<WorkshopTile*/}
+                        {/*    image={bakken1}*/}
+                        {/*    heartColor="#fe5c5c"*/}
+                        {/*    heartWeight="fill"*/}
+                        {/*    workshoptitle="Indonesische kook workshop"*/}
+                        {/*    price="80"*/}
+                        {/*    location="Utrecht"*/}
+                        {/*    date="01-01-2023"*/}
+                        {/*    category1="koken"*/}
+                        {/*    category2="bakken"*/}
+                        {/*></WorkshopTile>*/}
+                        {/*<WorkshopTile*/}
+                        {/*    image={bakken1}*/}
+                        {/*    workshoptitle="Indonesische kook workshop"*/}
+                        {/*    price="42"*/}
+                        {/*    location="Utrecht"*/}
+                        {/*    date="01-01-2023"*/}
+                        {/*    category1="koken"*/}
+                        {/*    category2="bakken"*/}
+                        {/*></WorkshopTile>*/}
 
 
                     </section>

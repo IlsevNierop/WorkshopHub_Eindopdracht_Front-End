@@ -25,7 +25,7 @@ function Profile() {
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
     const [error, setError] = useState('');
     const [updateMessage, toggleUpdateMessage] = useState(false);
     const [userType, setUserType] = useState(workshopowner ? {
@@ -146,6 +146,9 @@ function Profile() {
     };
 
     async function handleFormSubmit(data) {
+        data.preventDefault();
+        setError('');
+        console.log("Form submit");
 
         if (userType.value) {
             try {
@@ -154,6 +157,7 @@ function Profile() {
                 if (response.status === 200) {
                     // after updating profile information (like workshopowner & email, which are part of the jwt token) the user needs to be automatically logged in again, in order to also update the jwt token to match new user details.
                     try {
+                        console.log(data.email, data.password)
                         const {jwt} = await signIn(data.email, data.password);
                         login(jwt);
                         toggleUpdateMessage(true);
@@ -195,6 +199,7 @@ function Profile() {
                 setError(errorHandling(e));
             }
         }
+        reset();
     }
 
     function handleImageChange(e) {
@@ -225,7 +230,8 @@ function Profile() {
                 ...userData,
                 profilepic: response.data,
             });
-            //TODO na wijzigen foto is dit nodig, om de foto direct te tonen. Na 1e keer uploaden niet
+            console.log(userData);
+            //TODO na wijzigen foto is dit nodig, om de foto direct te tonen. Na 1e keer uploaden niet, kan dit op andere manier?
             window.location.reload();
 
         } catch (e) {
@@ -251,20 +257,23 @@ function Profile() {
                             contentLabel="Upload profile picture"
                         >
                             <div className={styles["top-row__upload-profile-picture"]}>
-                            <h3>Afbeelding uploaden</h3>
-                            <Link to="#" onClick={closeModal}><X size={18}/></Link>
-                        </div>
+                                <h3>Afbeelding uploaden</h3>
+                                <Link to="#" onClick={closeModal}><X size={18}/></Link>
+                            </div>
                             <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
-                                <label className={styles["label__input-field__profile-picture"]} htmlFor="profile-picture">
+                                <label className={styles["label__input-field__profile-picture"]}
+                                       htmlFor="profile-picture">
                                     Kies afbeelding:
-                                    <input className={styles["input-field__profile-picture"]} type="file" name="profile-picture" id="profile-picture"
+                                    <input className={styles["input-field__profile-picture"]} type="file"
+                                           name="profile-picture" id="profile-picture"
                                            onChange={handleImageChange}/>
                                 </label>
                                 {previewUrl &&
                                     <label className={styles["profile-picture__preview__label"]}>
                                         Preview:
-                                        <img className={styles["profile-picture__preview"]} src={previewUrl} alt="Voorbeeld van de gekozen afbeelding"
-                                             />
+                                        <img className={styles["profile-picture__preview"]} src={previewUrl}
+                                             alt="Voorbeeld van de gekozen afbeelding"
+                                        />
                                     </label>
                                 }
                                 <Button
@@ -314,7 +323,6 @@ function Profile() {
                         <section className={styles["profile-fields"]}>
 
                             {updateMessage && <h4>Je profiel is succesvol aangepast</h4>
-
                             }
                             <h1>Mijn Profiel</h1>
 
@@ -390,7 +398,7 @@ function Profile() {
                                             <>
                                                 <InputField
                                                     classNameLabel="password-input-field"
-                                                    type={showPassword? "text" : "password"}
+                                                    type={showPassword ? "text" : "password"}
                                                     name="password"
                                                     label="Wachtwoord: "
                                                     validation={{
@@ -523,9 +531,9 @@ function Profile() {
                                 {error && <p className="error-message">{error}</p>}
 
                             </form>
-
-
                         </section>
+
+
                     </div>
 
                     {userData && !editProfile &&
