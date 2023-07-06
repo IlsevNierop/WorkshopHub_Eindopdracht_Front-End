@@ -143,21 +143,25 @@ function Home() {
 
     useEffect(() => {
 
+
         setWorkshopData(sortArray(workshopData, sortValue.value));
+        console.log(workshopData);
 
     }, [sortValue]);
 
 
     useEffect(() => {
-        console.log("test")
         // console.log(originalWorkshopData);
-
-        filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange);
-        // setWorkshopData()
+        const filteredWorkshopArray = filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange, sortValue.value);
+        if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
+            setWorkshopData(filteredWorkshopArray);
+        }
+        if (filteredWorkshopArray && filteredWorkshopArray.length === 0){
+            setWorkshopData(originalWorkshopData);
+        }
 
 
     }, [category, location, environment, priceSlider, minRating, dateRange]);
-
 
 
     return (
