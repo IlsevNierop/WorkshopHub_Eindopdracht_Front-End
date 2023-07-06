@@ -13,40 +13,14 @@ import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormat} from "../../helper/updateDateFormat";
 import {sortArray} from "../../helper/sortArray";
 import {filterWorkshopArray} from "../../helper/filterWorkshopArray";
+import Button from "../../components/Button/Button";
+import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 
-// {TODO /*De value opties voor categorie, locatie, omgeving moeten vanuit de bank-end ingeladen worden - lijst is langer*/
-// }
-const optionsCategory = [
-    // { value: "all", label: "Alle workshops" },
-    {value: "baking", label: "Bakken"},
-    {value: "knitting", label: "Breien"},
-    {value: "dance", label: "Dans"},
-    {value: "cooking", label: "Koken"},
-];
 
-// TODO steden inladen vanuit backend
-const optionsLocation = [
-    {value: "amsterdam", label: "Amsterdam"},
-    {value: "utrecht", label: "Utrecht"},
-    {value: "leiden", label: "Leiden"},
-    {value: "woerden", label: "Woerden"},
-];
-
-const optionsEnvironment = [
-    {value: "indoors", label: "Binnen"},
-    {value: "outdoors", label: "Buiten"},
-    {value: "inandoutdoors", label: "Binnen en buiten"},
-];
-
-const optionsSortValue = [
-    {value: "date", label: "Datum"},
-    {value: "pricelowtohigh", label: "Prijs - laag naar hoog"},
-    {value: "pricehightolow", label: "Prijs - hoog naar laag"},
-    {value: "popular", label: "Populariteit"},
-];
 
 
 function Home() {
+
     const {user} = useContext(AuthContext);
     const token = localStorage.getItem('token');
 
@@ -62,6 +36,33 @@ function Home() {
     const [workshopData, setWorkshopData] = useState([]);
     const [originalWorkshopData, setOriginalWorkshopData] = useState([]);
     const [loading, toggleLoading] = useState(false);
+    const [optionsCategory, setOptionsCategory] = useState([]);
+    const [optionsLocation, setOptionsLocation] = useState([]);
+
+
+    //TODO alles wissen button onderaan filters
+
+
+
+    // const optionsLocation = [
+    //     {value: "amsterdam", label: "Amsterdam"},
+    //     {value: "utrecht", label: "Utrecht"},
+    //     {value: "leiden", label: "Leiden"},
+    //     {value: "woerden", label: "Woerden"},
+    // ];
+
+    const optionsEnvironment = [
+        {value: "indoors", label: "Binnen"},
+        {value: "outdoors", label: "Buiten"},
+        {value: "inandoutdoors", label: "Binnen en buiten"},
+    ];
+
+    const optionsSortValue = [
+        {value: "date", label: "Datum"},
+        {value: "pricelowtohigh", label: "Prijs - laag naar hoog"},
+        {value: "pricehightolow", label: "Prijs - hoog naar laag"},
+        {value: "popular", label: "Populariteit"},
+    ];
 
 
     const [dateRange, setDateRange] = useState([
@@ -88,6 +89,14 @@ function Home() {
         setMinRating(e.target.value);
     }
 
+    function removeAllFilters() {
+        setCategory([]);
+        setLocation([]);
+        setEnvironment([]);
+        setPriceSlider(0);
+        setMinRating(0);
+    }
+
     //TODO volgende pagina / laad volgende x workshops
 
     useEffect(() => {
@@ -97,9 +106,9 @@ function Home() {
                 if (user != null) {
                     try {
                         const response = await fetchWorkshopDataLoggedIn(token, user.id);
-                        // console.log(response);
                         setWorkshopData(response);
                         setOriginalWorkshopData(response);
+
                         if (response) {
                             setError('');
                         }
@@ -112,9 +121,9 @@ function Home() {
                 } else {
                     try {
                         const response = await fetchWorkshopData();
-                        // console.log(response);
                         setWorkshopData(response);
                         setOriginalWorkshopData(response);
+
                         if (response) {
                             setError('');
                         }
@@ -128,11 +137,6 @@ function Home() {
             }
 
             void fetchDataWorkshops();
-            console.log("test workshop data")
-            console.log(workshopData)
-            console.log("test original workshopdata")
-            console.log(originalWorkshopData)
-
 
             return function cleanup() {
                 controller.abort();
@@ -143,15 +147,24 @@ function Home() {
 
     useEffect(() => {
 
+        function setOptions () {
+            setOptionsCategory(createOptionsObjectSelectDropdown(originalWorkshopData, "workshopCategory1", "workshopCategory2"));
+            setOptionsLocation(createOptionsObjectSelectDropdown(originalWorkshopData, "location",));
+        }
+
+        void setOptions();
+
+    }, [originalWorkshopData])
+
+    useEffect(() => {
+
 
         setWorkshopData(sortArray(workshopData, sortValue.value));
-        console.log(workshopData);
 
     }, [sortValue]);
 
 
     useEffect(() => {
-        // console.log(originalWorkshopData);
         const filteredWorkshopArray = filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange, sortValue.value);
         if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
             setWorkshopData(filteredWorkshopArray);
@@ -183,7 +196,7 @@ function Home() {
                     <div className={styles["sort"]}>
                         <h4>Sorteer op:</h4>
                         <Select className={styles["sort__dropdown"]}
-                                placeholder="Datum"
+                                placeholder="Selecteer.."
                                 defaultValue={sortValue}
                                 onChange={setSortValue}
                                 options={optionsSortValue}
@@ -198,10 +211,11 @@ function Home() {
 
                         <div className={styles["filter-item"]}>
 
+                            {/*//TODO bij remove all filters - ook de waardes leegmaken voor de niet select filters*/}
                             <h5>Categorie</h5>
                             <Select
                                 placeholder="Selecteer.."
-                                defaultValue={category}
+                                value={category}
                                 onChange={setCategory}
                                 options={optionsCategory}
                                 isMulti={true}
@@ -232,7 +246,7 @@ function Home() {
                             <h5>Locatie</h5>
                             <Select
                                 placeholder="Selecteer.."
-                                defaultValue={location}
+                                value={location}
                                 onChange={setLocation}
                                 options={optionsLocation}
                                 isMulti={true}
@@ -272,15 +286,15 @@ function Home() {
 
                                     {/*TODO make component*/}
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
                                     </div>
                                 </label>
@@ -297,13 +311,13 @@ function Home() {
                                     <div className={styles["label-stars"]}>
                                         <Star size={20} color="#e7cf07"
                                               weight="fill"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
                                     </div>
                                 </label>
@@ -322,11 +336,11 @@ function Home() {
                                               weight="fill"/>
                                         <Star size={20} color="#e7cf07"
                                               weight="fill"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
                                     </div>
                                 </label>
@@ -347,9 +361,9 @@ function Home() {
                                               weight="fill"/>
                                         <Star size={20} color="#e7cf07"
                                               weight="fill"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
                                     </div>
                                 </label>
@@ -372,7 +386,7 @@ function Home() {
                                               weight="fill"/>
                                         <Star size={20} color="#e7cf07"
                                               weight="fill"/>
-                                        <Star size={20} color="black"
+                                        <Star size={20} color="#bfbdbd"
                                               weight="light"/>
                                     </div>
                                 </label>
@@ -385,13 +399,19 @@ function Home() {
                             <h5>Omgeving</h5>
                             <Select
                                 placeholder="Selecteer.."
-                                defaultValue={environment}
+                                value={environment}
                                 onChange={setEnvironment}
                                 options={optionsEnvironment}
                                 isMulti={false}
 
                             />
                         </div>
+
+                        {/*//TODO alleen zichtbaar als er filters ingesteld zijn*/}
+                        <Button
+                            type="text"
+                            onClick={removeAllFilters}>
+                            Alle filters wissen</Button>
 
 
                     </section>

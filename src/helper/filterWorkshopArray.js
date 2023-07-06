@@ -17,6 +17,8 @@ export function filterWorkshopArray(originalWorkshopData, category, location, en
             }
         }
     }
+
+    // TODO filter for all filters
     // if (category.length > 0) {
     //     let filteredWorkshopsCategory;
     //     for (let i = 0; i < category.length; i++) {
