@@ -1,0 +1,36 @@
+
+.container__rating {
+    display: inline-block;
+    height: 20px;
+
+}
+
+.star__rating {
+    margin-right: 5px;
+}
+
+.container-half-star {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+
+}
+
+.container-half-star::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+}
+
+.star__rating__full-half-star {
+    position: absolute;
+    clip-path: inset(0 50% 0 0);
+}
+
+.star__rating__empty-half-star {
+    position: absolute;
+    clip-path: inset(0 0 0 50%);
+}

@@ -15,6 +15,7 @@ import {sortArray} from "../../helper/sortArray";
 import {filterWorkshopArray} from "../../helper/filterWorkshopArray";
 import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
+import StarRating from "../../components/StarRating/StarRating";
 
 
 
@@ -38,18 +39,6 @@ function Home() {
     const [loading, toggleLoading] = useState(false);
     const [optionsCategory, setOptionsCategory] = useState([]);
     const [optionsLocation, setOptionsLocation] = useState([]);
-
-
-    //TODO alles wissen button onderaan filters
-
-
-
-    // const optionsLocation = [
-    //     {value: "amsterdam", label: "Amsterdam"},
-    //     {value: "utrecht", label: "Utrecht"},
-    //     {value: "leiden", label: "Leiden"},
-    //     {value: "woerden", label: "Woerden"},
-    // ];
 
     const optionsEnvironment = [
         {value: "indoors", label: "Binnen"},
@@ -181,6 +170,7 @@ function Home() {
 
         <main className={`outer-container ${styles["home__outer-container"]}`}>
             <div className={`inner-container ${styles["home__inner-container"]}`}>
+
                 <section className={styles["homepage__top"]}>
                     <h1 className={styles["homepage__top__h1"]}><span
                         className={styles["logo__capital-letter"]}>W</span>orkshop<span
@@ -286,16 +276,7 @@ function Home() {
 
                                     {/*TODO make component*/}
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
+                                        <StarRating rating={0}></StarRating>
                                     </div>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="one-star">
@@ -309,16 +290,8 @@ function Home() {
                                         onChange={handleChangeRating}
                                     />
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
+                                        <StarRating rating={1}></StarRating>
+
                                     </div>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="two-star">
@@ -332,16 +305,8 @@ function Home() {
                                         onChange={handleChangeRating}
                                     />
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
+                                        <StarRating rating={2}></StarRating>
+
                                     </div>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="three-star">
@@ -355,16 +320,8 @@ function Home() {
                                         onChange={handleChangeRating}
                                     />
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
+                                        <StarRating rating={3}></StarRating>
+
                                     </div>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="four-star">
@@ -378,16 +335,7 @@ function Home() {
                                         onChange={handleChangeRating}
                                     />
                                     <div className={styles["label-stars"]}>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#e7cf07"
-                                              weight="fill"/>
-                                        <Star size={20} color="#bfbdbd"
-                                              weight="light"/>
+                                        <StarRating rating={4}></StarRating>
                                     </div>
                                 </label>
                             </div>
