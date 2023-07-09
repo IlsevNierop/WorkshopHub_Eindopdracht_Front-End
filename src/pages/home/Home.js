@@ -18,8 +18,6 @@ import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjec
 import StarRating from "../../components/StarRating/StarRating";
 
 
-
-
 function Home() {
 
     const {user} = useContext(AuthContext);
@@ -136,7 +134,7 @@ function Home() {
 
     useEffect(() => {
 
-        function setOptions () {
+        function setOptions() {
             setOptionsCategory(createOptionsObjectSelectDropdown(originalWorkshopData, "workshopCategory1", "workshopCategory2"));
             setOptionsLocation(createOptionsObjectSelectDropdown(originalWorkshopData, "location",));
         }
@@ -158,7 +156,7 @@ function Home() {
         if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
             setWorkshopData(filteredWorkshopArray);
         }
-        if (filteredWorkshopArray && filteredWorkshopArray.length === 0){
+        if (filteredWorkshopArray && filteredWorkshopArray.length === 0) {
             setWorkshopData(originalWorkshopData);
         }
 
@@ -273,11 +271,7 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
-
-                                    {/*TODO make component*/}
-                                    <div className={styles["label-stars"]}>
-                                        <StarRating rating={0}></StarRating>
-                                    </div>
+                                    <StarRating rating={0}></StarRating>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="one-star">
                                     <input
@@ -289,10 +283,7 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
-                                    <div className={styles["label-stars"]}>
-                                        <StarRating rating={1}></StarRating>
-
-                                    </div>
+                                    <StarRating rating={1}></StarRating>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="two-star">
                                     <input
@@ -304,10 +295,7 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
-                                    <div className={styles["label-stars"]}>
-                                        <StarRating rating={2}></StarRating>
-
-                                    </div>
+                                    <StarRating rating={2}></StarRating>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="three-star">
                                     <input
@@ -319,10 +307,7 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
-                                    <div className={styles["label-stars"]}>
-                                        <StarRating rating={3}></StarRating>
-
-                                    </div>
+                                    <StarRating rating={3}></StarRating>
                                 </label>
                                 <label className={styles["rating-row"]} htmlFor="four-star">
                                     <input
@@ -334,16 +319,12 @@ function Home() {
                                             : null}
                                         onChange={handleChangeRating}
                                     />
-                                    <div className={styles["label-stars"]}>
-                                        <StarRating rating={4}></StarRating>
-                                    </div>
+                                    <StarRating rating={4}></StarRating>
                                 </label>
                             </div>
                         </div>
 
                         <div className={styles["filter-item"]}>
-
-
                             <h5>Omgeving</h5>
                             <Select
                                 placeholder="Selecteer.."
