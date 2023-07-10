@@ -17,8 +17,7 @@ export function getWorkshopsFilteredCategories(originalWorkshopData, category) {
 
     const uniqueArrayCategories = Array.from(new Set(arrayCategories.map(JSON.stringify))).map(JSON.parse);
 
-    if (uniqueArrayCategories.length === 0) {
-        // console.log("null")
+    if (category.length === 0) {
         return originalWorkshopData;
     }
     return uniqueArrayCategories;

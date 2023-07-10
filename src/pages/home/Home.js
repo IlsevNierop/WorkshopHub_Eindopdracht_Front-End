@@ -41,7 +41,7 @@ function Home() {
     const optionsEnvironment = [
         {value: "INDOORS", label: "Binnen"},
         {value: "OUTDOORS", label: "Buiten"},
-        {value: "IN_AND_OUTDOORS", label: "Binnen en buiten"},
+        {value: "IN_AND_OUTDOORS", label: "Gedeeltelijk binnen en buiten"},
     ];
 
     const optionsSortValue = [
@@ -61,13 +61,6 @@ function Home() {
     ]);
 
 
-    // console.log(category);
-    // console.log(dateRange);
-    // console.log(location);
-    // console.log(priceSlider);
-    // console.log("home")
-    // console.log(minRating);
-    // console.log(environment);
 
     const changeValueSlider = (e) => {
         setPriceSlider(e.target.value);
@@ -90,8 +83,6 @@ function Home() {
         setEnvironment([]);
         setPriceSlider(400);
         setMinRating(0);
-        console.log("test original")
-        console.log(originalWorkshopData)
         setWorkshopData(originalWorkshopData);
     }
 
@@ -164,15 +155,7 @@ function Home() {
 
     useEffect(() => {
         const filteredWorkshopArray = filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange, sortValue.value);
-        // if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
-        //     setWorkshopData(filteredWorkshopArray);
-        // }
-        // if (filteredWorkshopArray && filteredWorkshopArray.length === 0) {
-        //     setWorkshopData(originalWorkshopData);
-        // }
         setWorkshopData(filteredWorkshopArray);
-
-
     }, [category, location, environment, priceSlider, minRating, dateRange]);
 
 
@@ -337,14 +320,14 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Omgeving</h5>
+                            <h5>Waar vindt de workshop plaats</h5>
                             <Select
                                 placeholder="Selecteer.."
                                 value={environment}
                                 onChange={setEnvironment}
                                 options={optionsEnvironment}
                                 isMulti={false}
-
+                                isClearable={true}
                             />
                         </div>
 

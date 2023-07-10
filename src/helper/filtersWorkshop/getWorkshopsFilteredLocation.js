@@ -16,8 +16,7 @@ export function getWorkshopsFilteredLocation(filteredWorkshopsByDate, location) 
 
     const uniqueArrayLocations = Array.from(new Set(arrayLocations.map(JSON.stringify))).map(JSON.parse);
 
-    if (uniqueArrayLocations.length === 0) {
-        // console.log("null locations")
+    if (location.length === 0) {
         return filteredWorkshopsByDate;
     }
     return uniqueArrayLocations;

@@ -1,5 +1,8 @@
 export function getWorkshopsFilteredEnvironment(array, environment) {
-    return array.filter((workshop) => {
-        return workshop.inOrOutdoors === environment.value;
-    });
+    if (environment != null && environment.value) {
+        return array.filter((workshop) => {
+            return workshop.inOrOutdoors === environment.value;
+        });
+    }
+    return array;
 }
