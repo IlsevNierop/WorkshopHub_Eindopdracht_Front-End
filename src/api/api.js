@@ -1,11 +1,18 @@
+/*////////////////////////
+    Table of Contents
+    1. User API requests
+    2. Workshop API requests
+    3.
+    4.
+    */
+
 import axios from "axios";
 
 const controller = new AbortController();
 
 const baseUrl = "http://localhost:8080/"
 
-
-// ............user api requests
+/* --------------- 1 User API requests ----------------------- */
 
 export async function signIn(email, password) {
     const response = await axios.post(`${baseUrl}signin`, {
@@ -129,3 +136,41 @@ export async function resetPassword(email, password) {
     return response;
 }
 
+
+/* --------------- 2 Workshop API requests ----------------------- */
+
+export async function fetchWorkshopData() {
+    const response = await axios.get(`${baseUrl}workshops`,
+        {
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+export async function fetchWorkshopDataLoggedIn(token, id) {
+    const response = await axios.get(`${baseUrl}workshops`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                userId: id
+            },
+            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+
+export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, isFavourite) {
+    const response = await axios.put(`${baseUrl}workshops/favourite/${userId}/${workshopId}?favourite=${!isFavourite}`, null,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+    return response;
+}

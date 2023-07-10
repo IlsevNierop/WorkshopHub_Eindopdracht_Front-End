@@ -2,7 +2,7 @@
     flex-grow:1;
 }
 
-.homepage__header__h1 {
+.homepage__top__h1 {
     font-family: Allerta Stencil, sans-serif;
     font-size: 48px;
     font-weight: lighter;
@@ -12,7 +12,7 @@
     color: var(--color-terracotta);
 }
 
-.homepage__header {
+.homepage__top {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,8 +41,8 @@
 .sidebar__workshop-tiles {
     display: flex;
     flex-direction: row;
-    /*gap: 3rem;*/
-    justify-content: space-between;
+    gap: 3.5rem;
+    margin-bottom: 5rem;
 }
 
 .sidebar__filter {
@@ -109,17 +109,17 @@
     align-items: center;
 }
 
-.label-stars {
-    height: 20px;
-}
+/*.label-stars {*/
+/*    height: 20px;*/
+/*}*/
 
 
 .overview__workshop-tiles {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     max-width: 800px;
     flex-wrap: wrap;
-    /*margin-left: 1rem;*/
+    gap: 1rem;
 }
 

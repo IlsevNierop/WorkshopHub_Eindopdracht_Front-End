@@ -8,7 +8,7 @@ export function errorHandling(e) {
     } else if (e.response.status === 400 && e.response.data.includes("not yet approved")) {
         return "Deze workshop kan pas gepubliceerd worden nadat een administrator goedkeuring heeft gegeven";
     } else if (e.response.status === 400 && e.response.data.includes("relation")) {
-        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere workshops/boekingen/reviews of accounts";
+        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere workshops/boekingen/reviews of accounts. Je dient eerst de andere items te verwijderen voordat je dit itemt kunt verwijderen. ";
     } else if (e.response.status === 400 && e.response.data.includes("verified the workshop for publishing")) {
         return "Deze workshop kan niet verwijderd worden, omdat de workshop eigenaar de workshop gepubliceerd heeft";
     } else if (e.response.status === 400 && e.response.data.includes("already exists with the email")) {
@@ -27,8 +27,16 @@ export function errorHandling(e) {
         return "Pas als je account geverifieerd is kun je een workshop aanmaken en publiceren.";
     } else if (e.response.status === 403) {
         return "Je hebt niet de juiste rechten voor deze handeling en/of pagina.";
-    } else if (e.response.status === 404 && e.response.data.includes("doesn't exist")) {
-        return "Deze gebruiker, workshop, boeking of review bestaat niet | 404";
+    } else if (e.response.status === 404 && e.response.data.includes("doesn't exist") && e.response.data.includes("user")) {
+        return "Deze gebruiker bestaat niet.";
+    }  else if (e.response.status === 404 && e.response.data.includes("doesn't exist") && e.response.data.includes("workshop")) {
+        return "Deze workshop bestaat niet.";
+    }  else if (e.response.status === 404 && e.response.data.includes("doesn't exist") && e.response.data.includes("review")) {
+        return "Deze review bestaat niet.";
+    } else if (e.response.status === 404 && e.response.data.includes("doesn't exist") && e.response.data.includes("booking")) {
+        return "Deze boeking bestaat niet.";
+    } else if (e.response.status === 404 && e.response.data.includes("doesn't exist") && e.response.data.includes("file")) {
+        return "Dit bestand bestaat niet.";
     } else if (e.response.status === 404) {
         return "Oeps, deze pagina is niet gevonden | 404";
     } else if (e.response.status >= 500 && e.response.status < 600) {

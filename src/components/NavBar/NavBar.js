@@ -31,6 +31,7 @@ function NavBar() {
             bottom: 'auto',
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
+            overlay: {zIndex: 1000}
         },
     };
 
@@ -56,6 +57,9 @@ function NavBar() {
     }
 
     async function handleFormSubmit(data) {
+        //React hook form should take care of prevent default, but for some reason, the page refreshes on pressing enter.
+        // data.preventDefault();
+        setError('');
         try {
             const {jwt} = await signIn(data.email, data.password);
             reset();
@@ -99,7 +103,7 @@ function NavBar() {
                         onAfterOpen={afterOpenModal}
                         onRequestClose={closeModal}
                         style={customStyles}
-                        contentLabel="Upload profile picture"
+                        contentLabel="Sign in"
                     >
 
                         <div className={styles["top-row__signin"]}>

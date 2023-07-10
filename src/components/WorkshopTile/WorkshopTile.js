@@ -1,33 +1,226 @@
 import styles from "./WorkshopTile.module.css";
 
-import React from 'react';
-import {Heart} from "@phosphor-icons/react";
-import bakken1 from "../../assets/temppicsworkshop/Bakken1.jpg";
+import React, {useContext, useState} from 'react';
+import {Heart, X} from "@phosphor-icons/react";
+import Button from "../Button/Button";
+import {addOrRemoveWorkshopFavourites, signIn, uploadProfilePic} from "../../api/api";
+import {errorHandling} from "../../helper/errorHandling";
+import {AuthContext} from "../../context/AuthContext";
+import Modal from "react-modal";
+import {Link} from "react-router-dom";
+import InputField from "../InputField/InputField";
+import {useForm} from "react-hook-form";
 
-// image nog als variabele invoegen - straks bij fetchen data
-function WorkshopTile({workshoptitle, price, location, date, category1, category2, heartColor, heartWeight}) {
+function WorkshopTile({
+                          workshoptitle,
+                          workshopId,
+                          image,
+                          price,
+                          location,
+                          date,
+                          category1,
+                          category2,
+                          isFavourite
+                      }) {
+    const {user, login} = useContext(AuthContext);
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const token = localStorage.getItem('token');
+    const [error, setError] = useState('');
+    const [favourite, setFavourite] = useState(isFavourite);
+    const [showPassword, setShowPassword] = useState(false);
+
+
+    async function addOrRemoveFavouriteWorkshop() {
+        setError('');
+        if (user == null) {
+            openModal();
+        }
+        if (user != null) {
+            try {
+                const response = await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
+                setFavourite(!favourite);
+
+            } catch (e) {
+                setError(errorHandling(e));
+                openModal2();
+                setTimeout(() => {
+                    closeModal2();
+                }, 2000);
+                console.log(e);
+            }
+        }
+    }
+
+    // ...................MODAL
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            overlay: {zIndex: 1000}
+        },
+    };
+
+    //TODO below seems to be unneccesary?
+    Modal.setAppElement('#root');
+
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen2, setIsOpen2] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+    function openModal2() {
+        setIsOpen2(true);
+    }
+
+    function afterOpenModal2() {
+
+    }
+
+    function closeModal2() {
+        setIsOpen2(false);
+        setError('');
+    }
+
+    async function handleFormSubmit(data) {
+        //React hook form should take care of prevent default, but for some reason, the page refreshes on pressing enter.
+        // data.preventDefault();
+        setError('');
+        try {
+            const {jwt} = await signIn(data.email, data.password);
+            reset();
+            login(jwt, "/");
+            closeModal();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
+
+
     return (
-        <div className={styles["workshop-tile"]}>
-            <img className={styles["workshop-image"]} src={bakken1} alt={category1}/>
-            <Heart className={styles["favourite-icon"]} size={24} color={heartColor}
-                   weight={heartWeight}/>
-            <div className={styles["information-workshop-column"]}>
-                <div className={styles["top-row-workshop"]}>
-                    <h4>{workshoptitle}</h4>
-                    <h6>€{price},00</h6>
+        <>
+            <Modal
+                isOpen={modalIsOpen2}
+                onAfterOpen={afterOpenModal2}
+                onRequestClose={closeModal2}
+                style={customStyles}
+                contentLabel="Data error"
+            >
+                    {error && <p className="error-message">{error}</p>}
+            </Modal>
+
+
+
+            {/*//TODO make this sign in modal a component?*/}
+            <Modal
+                isOpen={modalIsOpen}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="Sign in"
+            >
+                <div className={styles["top-row__signin"]}>
+                    <h3>Inloggen</h3>
+                    <Link to="#" onClick={closeModal}><X size={18}/></Link>
                 </div>
-                <div className={styles["bottom-row-workshop"]}>
-                    <div className={styles["bottom-column-workshop"]}>
-                        <h6>{location}</h6>
-                        <p>{date}</p>
+                <p>Om deze workshop aan je favorieten toe te voegen, dien je eerst in te loggen:</p>
+                <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
+                    <InputField
+                        type="text"
+                        name="email"
+                        label="Email: "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "E-mail is verplicht",
+                                }, pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
+                                message: "Vul een geldig e-mailadres in"
+                            }
+                        }}
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField classNameLabel="password-input-field"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                label="Wachtwoord: "
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Wachtwoord is verplicht",
+                                        }
+                                }}
+                                register={register}
+                                errors={errors}
+                                setShowPassword={setShowPassword}
+                                showPassword={showPassword}
+                    >
+                    </InputField>
+                    {error && <p className="error-message">{error}</p>}
+                    <Button
+                        type="submit"
+                    >Inloggen</Button>
+                </form>
+
+
+                <div className={styles["bottom-links__signin"]}>
+                    <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={closeModal}>
+                        <p>Wachtwoord vergeten?</p></Link>
+
+                    <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
+                                                      onClick={closeModal}>Registreer</Link> je
+                        dan eerst.</p>
+                </div>
+
+            </Modal>
+
+            <div className={styles["workshop-tile"]}>
+                <img className={styles["workshop-image"]} src={image} alt={category1}/>
+                <Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>
+                    <Heart className={styles["favourite-icon"]} size={24}
+                           color={favourite ? "#fe5c5c" : null}
+                           weight={favourite ? "fill" : null}/></Button>
+                <div className={styles["information-workshop-column"]}>
+                    <div className={styles["top-row-workshop"]}>
+                        <h4>{workshoptitle}</h4>
+                        <h6>€{price},00</h6>
                     </div>
-                    <div className={styles["category-workshop-row"]}>
-                        <p>{category1}</p>
-                        {category2 && <p>{category2}</p>}
+                    <div className={styles["bottom-row-workshop"]}>
+                        <div className={styles["bottom-column-workshop"]}>
+                            <h6>{location}</h6>
+                            <p>{date}</p>
+                        </div>
+                        <div className={styles["category-workshop-row"]}>
+                            <p>{category1}</p>
+                            {category2 && <p>{category2}</p>}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
