@@ -12,7 +12,7 @@ import {fetchDataCustomer, fetchDataWorkshopOwner, fetchWorkshopData, fetchWorks
 import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormat} from "../../helper/updateDateFormat";
 import {sortArray} from "../../helper/sortArray";
-import {filterWorkshopArray} from "../../helper/filterWorkshopArray";
+import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopArray";
 import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 import StarRating from "../../components/StarRating/StarRating";
@@ -28,7 +28,7 @@ function Home() {
     const [location, setLocation] = useState([]);
     const [environment, setEnvironment] = useState([]);
     const [sortValue, setSortValue] = useState([]);
-    const [priceSlider, setPriceSlider] = useState(0);
+    const [priceSlider, setPriceSlider] = useState(400);
     const [minRating, setMinRating] = useState(0);
     const [error, setError] = useState('');
     const controller = new AbortController();
@@ -39,9 +39,9 @@ function Home() {
     const [optionsLocation, setOptionsLocation] = useState([]);
 
     const optionsEnvironment = [
-        {value: "indoors", label: "Binnen"},
-        {value: "outdoors", label: "Buiten"},
-        {value: "inandoutdoors", label: "Binnen en buiten"},
+        {value: "INDOORS", label: "Binnen"},
+        {value: "OUTDOORS", label: "Buiten"},
+        {value: "IN_AND_OUTDOORS", label: "Binnen en buiten"},
     ];
 
     const optionsSortValue = [
@@ -62,11 +62,12 @@ function Home() {
 
 
     // console.log(category);
-    console.log(dateRange);
+    // console.log(dateRange);
     // console.log(location);
-    // console.log(environment);
     // console.log(priceSlider);
+    // console.log("home")
     // console.log(minRating);
+    // console.log(environment);
 
     const changeValueSlider = (e) => {
         setPriceSlider(e.target.value);
@@ -78,10 +79,20 @@ function Home() {
 
     function removeAllFilters() {
         setCategory([]);
+        setDateRange([
+            {
+                startDate: new Date(),
+                endDate: null,
+                key: 'selection'
+            }
+        ]);
         setLocation([]);
         setEnvironment([]);
-        setPriceSlider(0);
+        setPriceSlider(400);
         setMinRating(0);
+        console.log("test original")
+        console.log(originalWorkshopData)
+        setWorkshopData(originalWorkshopData);
     }
 
     //TODO volgende pagina / laad volgende x workshops
@@ -153,12 +164,13 @@ function Home() {
 
     useEffect(() => {
         const filteredWorkshopArray = filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange, sortValue.value);
-        if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
-            setWorkshopData(filteredWorkshopArray);
-        }
-        if (filteredWorkshopArray && filteredWorkshopArray.length === 0) {
-            setWorkshopData(originalWorkshopData);
-        }
+        // if (filteredWorkshopArray && filteredWorkshopArray.length > 0) {
+        //     setWorkshopData(filteredWorkshopArray);
+        // }
+        // if (filteredWorkshopArray && filteredWorkshopArray.length === 0) {
+        //     setWorkshopData(originalWorkshopData);
+        // }
+        setWorkshopData(filteredWorkshopArray);
 
 
     }, [category, location, environment, priceSlider, minRating, dateRange]);
@@ -215,8 +227,8 @@ function Home() {
 
 
                             <h5>Wanneer</h5>
-                            {/*Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
-                            {/*kijken of ik de kalendar kleiner kan maken*/}
+                            {/*TODO Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
+                            {/*TODO kijken of ik de kalendar kleiner kan maken*/}
                             <DateRange
                                 // className={styles["calendar-item"]}
                                 editableDateInputs={true}

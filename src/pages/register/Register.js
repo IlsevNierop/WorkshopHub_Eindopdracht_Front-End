@@ -285,13 +285,13 @@ function Register() {
                                     errors={errors}
                                 >
                                 </InputField>
-
                             </div>
                         }
+                        {/*//TODO check button disablen als niet alle required velden zijn ingevuld*/}
                         <Button
                             type="submit"
-                        >Verstuur
-                        </Button>
+                            disabled= {error? "disabled" : null}
+                        >Verstuur</Button>
                         {error && <p className="error-message">{error}</p>}
 
                     </form>
