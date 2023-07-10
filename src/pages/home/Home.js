@@ -4,11 +4,9 @@ import Select from 'react-select';
 import 'react-date-range/dist/styles.css'; // main css file of date range calendar
 import 'react-date-range/dist/theme/default.css'; // theme css file of date range calendar
 import {DateRange} from 'react-date-range';
-import {Heart, Star} from "@phosphor-icons/react";
-import bakken1 from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/Bakken1.jpg";
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {AuthContext} from "../../context/AuthContext";
-import {fetchDataCustomer, fetchDataWorkshopOwner, fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
+import {fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormat} from "../../helper/updateDateFormat";
 import {sortArray} from "../../helper/sortArray";
@@ -59,7 +57,6 @@ function Home() {
             key: 'selection'
         }
     ]);
-
 
 
     const changeValueSlider = (e) => {
@@ -168,7 +165,7 @@ function Home() {
                     <h1 className={styles["homepage__top__h1"]}><span
                         className={styles["logo__capital-letter"]}>W</span>orkshop<span
                         className={styles["logo__capital-letter"]}>H</span>ub</h1>
-                    <h3>De plek om een creatieve workshop te boeken</h3>
+                    <h3>Dé plek om een creatieve workshop te boeken</h3>
                 </section>
                 {loading && <p>Loading...</p>}
                 {error && <p className="error-message">{error}</p>}
@@ -184,7 +181,6 @@ function Home() {
                                 onChange={setSortValue}
                                 options={optionsSortValue}
                                 isMulti={false}
-
                         />
                     </div>
                 </section>
@@ -194,7 +190,6 @@ function Home() {
 
                         <div className={styles["filter-item"]}>
 
-                            {/*//TODO bij remove all filters - ook de waardes leegmaken voor de niet select filters*/}
                             <h5>Categorie</h5>
                             <Select
                                 placeholder="Selecteer.."
@@ -225,7 +220,6 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-
                             <h5>Locatie</h5>
                             <Select
                                 placeholder="Selecteer.."
@@ -233,9 +227,9 @@ function Home() {
                                 onChange={setLocation}
                                 options={optionsLocation}
                                 isMulti={true}
-
                             />
                         </div>
+
                         <div className={styles["filter-item"]}>
                             <h5>Maximale prijs</h5>
                             <p>{priceSlider}</p>
@@ -253,7 +247,6 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-
                             <h5>Minimale beoordeling</h5>
                             <div className={styles["rating-column"]}>
                                 <label className={styles["rating-row"]} htmlFor="zero-star">
@@ -331,12 +324,10 @@ function Home() {
                             />
                         </div>
 
-                        {/*//TODO alleen zichtbaar als er filters ingesteld zijn*/}
                         <Button
                             type="text"
                             onClick={removeAllFilters}>
                             Alle filters wissen</Button>
-
 
                     </section>
 
@@ -347,10 +338,9 @@ function Home() {
                             return (
                                 <WorkshopTile
                                     key={workshop.id}
+                                    workshopId={workshop.id}
                                     image={workshop.workshopPicUrl}
-                                    heartColor={workshop.isFavourite ? "#fe5c5c" : null}
-                                    heartWeight={workshop.isFavourite ? "fill" : null}
-
+                                    isFavourite={workshop.isFavourite}
                                     workshoptitle={workshop.title}
                                     price={workshop.price}
                                     location={workshop.location}
@@ -361,29 +351,6 @@ function Home() {
                             )
                         })
                         }
-
-                        {/*<WorkshopTile*/}
-                        {/*    image={bakken1}*/}
-                        {/*    heartColor="#fe5c5c"*/}
-                        {/*    heartWeight="fill"*/}
-                        {/*    workshoptitle="Indonesische kook workshop"*/}
-                        {/*    price="80"*/}
-                        {/*    location="Utrecht"*/}
-                        {/*    date="01-01-2023"*/}
-                        {/*    category1="koken"*/}
-                        {/*    category2="bakken"*/}
-                        {/*></WorkshopTile>*/}
-                        {/*<WorkshopTile*/}
-                        {/*    image={bakken1}*/}
-                        {/*    workshoptitle="Indonesische kook workshop"*/}
-                        {/*    price="42"*/}
-                        {/*    location="Utrecht"*/}
-                        {/*    date="01-01-2023"*/}
-                        {/*    category1="koken"*/}
-                        {/*    category2="bakken"*/}
-                        {/*></WorkshopTile>*/}
-
-
                     </section>
 
                 </div>

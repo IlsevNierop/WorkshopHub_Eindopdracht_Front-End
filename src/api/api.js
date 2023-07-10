@@ -142,10 +142,11 @@ export async function resetPassword(email, password) {
 export async function fetchWorkshopData() {
     const response = await axios.get(`${baseUrl}workshops`,
         {
-        signal: controller.signal,
-    });
+            signal: controller.signal,
+        });
     return response.data;
 }
+
 export async function fetchWorkshopDataLoggedIn(token, id) {
     const response = await axios.get(`${baseUrl}workshops`,
         {
@@ -160,4 +161,16 @@ export async function fetchWorkshopDataLoggedIn(token, id) {
             signal: controller.signal,
         });
     return response.data;
+}
+
+
+export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, isFavourite) {
+    const response = await axios.put(`${baseUrl}workshops/favourite/${userId}/${workshopId}?favourite=${!isFavourite}`, null,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+    return response;
 }
