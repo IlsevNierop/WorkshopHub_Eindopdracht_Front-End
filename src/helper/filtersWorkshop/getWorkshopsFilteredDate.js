@@ -1,7 +1,7 @@
 import {transformDateRangeToDateFormat} from "../transformDateRangeToDateFormat";
 
-export function getWorkshopsFilteredDate(filteredWorkshopsByCategories, dateRange) {
-    return filteredWorkshopsByCategories.filter((workshop) => {
+export function getWorkshopsFilteredDate(array, dateRange) {
+    return array.filter((workshop) => {
         const startDate = transformDateRangeToDateFormat(dateRange[0].startDate);
         const endDate = dateRange[0].endDate ? transformDateRangeToDateFormat(dateRange[0].endDate) : null;
 

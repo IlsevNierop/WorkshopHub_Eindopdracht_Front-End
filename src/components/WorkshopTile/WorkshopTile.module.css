@@ -6,7 +6,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    /*justify-content: space-between;*/
     max-width: 255px;
     margin-bottom: 2rem;
     height: 385px;
@@ -56,7 +55,6 @@
     gap: 10px;
     justify-content: space-between;
     align-items: flex-end;
-    /*max-height: 10px;*/
 }
 
 .category-workshop-row > p {

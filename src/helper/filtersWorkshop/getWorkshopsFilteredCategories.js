@@ -1,9 +1,9 @@
-export function getWorkshopsFilteredCategories(originalWorkshopData, category) {
+export function getWorkshopsFilteredCategories(array, category) {
     let arrayCategories = [];
 
     if (category.length > 0) {
         for (let i = 0; i < category.length; i++) {
-            const filteredWorkshopsCategory = originalWorkshopData.filter((workshop) => {
+            const filteredWorkshopsCategory = array.filter((workshop) => {
                 return (
                     category[i].label === workshop.workshopCategory1 ||
                     category[i].label === workshop.workshopCategory2
@@ -18,7 +18,7 @@ export function getWorkshopsFilteredCategories(originalWorkshopData, category) {
     const uniqueArrayCategories = Array.from(new Set(arrayCategories.map(JSON.stringify))).map(JSON.parse);
 
     if (category.length === 0) {
-        return originalWorkshopData;
+        return array;
     }
     return uniqueArrayCategories;
 }

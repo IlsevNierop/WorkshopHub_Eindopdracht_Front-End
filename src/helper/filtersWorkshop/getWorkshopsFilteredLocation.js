@@ -1,9 +1,9 @@
-export function getWorkshopsFilteredLocation(filteredWorkshopsByDate, location) {
+export function getWorkshopsFilteredLocation(array, location) {
     let arrayLocations = [];
 
     if (location.length > 0) {
         for (let i = 0; i < location.length; i++) {
-            const filteredWorkshopsLocations = filteredWorkshopsByDate.filter((workshop) => {
+            const filteredWorkshopsLocations = array.filter((workshop) => {
                 return (
                     location[i].value === workshop.location
                 );
@@ -17,7 +17,7 @@ export function getWorkshopsFilteredLocation(filteredWorkshopsByDate, location) 
     const uniqueArrayLocations = Array.from(new Set(arrayLocations.map(JSON.stringify))).map(JSON.parse);
 
     if (location.length === 0) {
-        return filteredWorkshopsByDate;
+        return array;
     }
     return uniqueArrayLocations;
 }

@@ -25,10 +25,12 @@ export function createOptionsObjectSelectDropdown(array, variable1, variable2) {
 
         const uniqueArray = Array.from(new Set(arrayAllOptions.map(JSON.stringify))).map(JSON.parse);
 
-        return uniqueArray.map((value) => {
-                return {value: `${value}`, label: `${value}`}
-            }
-        );
+        return uniqueArray
+            .map((value) => ({
+                value: `${value}`,
+                label: `${value}`,
+            }))
+            .sort((a, b) => a.label.localeCompare(b.label));
     }
 
 }
