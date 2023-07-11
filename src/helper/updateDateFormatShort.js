@@ -1,4 +1,4 @@
-export function updateDateFormat(date) {
+export function updateDateFormatShort(date) {
 
     const parts = date.split("-");
 

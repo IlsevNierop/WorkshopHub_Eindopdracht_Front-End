@@ -10,7 +10,7 @@ import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
 import {returnHighestAuthority} from "./helper/returnHighestAuthority";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
 import Register from "./pages/register/Register";
-
+import WorkshopPage from "./pages/workshopPage/WorkshopPage";
 
 function App() {
 
@@ -24,14 +24,13 @@ function App() {
                 <NavBar></NavBar>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/workshop/:workshopId" element={<WorkshopPage/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     <Route path="/registreren" element={<Register/>}/>
                     {/*TODO isAuth ook toevoegen?*/}
                     <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <NewWorkshop/> : <Home />}/>
-
-                    {/*<Route path="/aanmelden" element={<Register />} />*/}
-                    {/*<Route path="/workshop" element={<WorkshopPage />} />*/}
+                    {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>
                 <Footer></Footer>
             </div>

@@ -1,0 +1,107 @@
+.workshop-page__outer-container {
+    flex-grow:1;
+    background-color: var(--color-grey-100);
+}
+
+/*//TODO css grid toevoegen? */
+
+.top-part__workshop-page__overview {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+    height: 350px;
+    margin-bottom: 2rem;
+}
+
+.left-side__top__workshop {
+    display: flex;
+    flex-direction: column;
+}
+
+.workshop-owner-rating {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    height: 30px;
+}
+
+.right-side__top__workshop {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.companyname__workshop-info{
+   margin-bottom: 1rem;
+}
+
+.workshop-info {
+   margin-bottom: 0.5rem;
+}
+
+.workshop-image {
+    border-radius: 0.5rem;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    margin-top: 1rem;
+}
+
+.bottom__column__workshop-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.bottom__column__workshop-info > p {
+    color: var(--color-grey-500);
+    font-size: 0.625rem;
+}
+
+.category-workshop-row {
+    max-height: 25px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.category-workshop-row > p {
+    color: var(--color-grey-500);
+    border: 1px solid var(--color-grey-300);
+    padding: 1px 4px;
+    border-radius: 15px;
+    text-transform: lowercase;
+    margin-right: 0.5rem;
+}
+
+.bottom-part__workshop-page__overview {
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+}
+
+
+.left-side__bottom__workshop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 400px;
+}
+
+.right-side__bottom__workshop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 400px;
+}
+
+
+.right-side__bottom__workshop > ul > li {
+    font-size: 0.75rem;
+    display: list-item;
+
+}

@@ -87,6 +87,7 @@ function WorkshopTile({
         setShowPassword(false);
         reset();
     }
+
     function openModal2() {
         setIsOpen2(true);
     }
@@ -129,34 +130,39 @@ function WorkshopTile({
                 style={customStyles}
                 contentLabel="Data error"
             >
-                    {error && <p className="error-message">{error}</p>}
+                {error && <p className="error-message">{error}</p>}
             </Modal>
 
-            <SignIn  modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal} customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}> </SignIn>
+            <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+                    customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
+                    register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
+                    error={error}> </SignIn>
 
-            <div className={styles["workshop-tile"]}>
-                <img className={styles["workshop-image"]} src={image} alt={category1}/>
-                <Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>
-                    <Heart className={styles["favourite-icon"]} size={24}
-                           color={favourite ? "#fe5c5c" : null}
-                           weight={favourite ? "fill" : null}/></Button>
-                <div className={styles["information-workshop-column"]}>
-                    <div className={styles["top-row-workshop"]}>
-                        <h4>{workshoptitle}</h4>
-                        <h6>€{price},00</h6>
-                    </div>
-                    <div className={styles["bottom-row-workshop"]}>
-                        <div className={styles["bottom-column-workshop"]}>
-                            <h6>{location}</h6>
-                            <p>{date}</p>
+            <Link className={styles["workshop-tile__link"]} to={`/workshop/${workshopId}`}>
+                <div className={styles["workshop-tile"]}>
+                    <img className={styles["workshop-image"]} src={image} alt={category1}/>
+                    <Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>
+                        <Heart className={styles["favourite-icon"]} size={24}
+                               color={favourite ? "#fe5c5c" : "282828"}
+                               weight={favourite ? "fill" : "light"}/></Button>
+                    <div className={styles["information-workshop-column"]}>
+                        <div className={styles["top-row-workshop"]}>
+                            <h4>{workshoptitle}</h4>
+                            <h6>€ {price.toFixed(2).replace('.', ',')}</h6>
                         </div>
-                        <div className={styles["category-workshop-row"]}>
-                            <p>{category1}</p>
-                            {category2 && <p>{category2}</p>}
+                        <div className={styles["bottom-row-workshop"]}>
+                            <div className={styles["bottom-column-workshop"]}>
+                                <h6>{location}</h6>
+                                <p>{date}</p>
+                            </div>
+                            <div className={styles["category-workshop-row"]}>
+                                <p>{category1}</p>
+                                {category2 && <p>{category2}</p>}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         </>
     );
 }
