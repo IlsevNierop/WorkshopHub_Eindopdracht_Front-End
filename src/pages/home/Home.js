@@ -213,7 +213,6 @@ function Home() {
                             {/*TODO Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
                             {/*TODO kijken of ik de kalendar kleiner kan maken*/}
                             <DateRange
-                                // className={styles["calendar-item"]}
                                 editableDateInputs={true}
                                 onChange={item => setDateRange([item.selection])}
                                 moveRangeOnFirstSelection={false}
