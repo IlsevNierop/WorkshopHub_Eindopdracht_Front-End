@@ -18,7 +18,7 @@ function InputField({type, name, label, validation, register, errors, children, 
                            placeholder={placeholder}
 
                     />
-                    {classNameLabel === "password-input-field" &&
+                    {name === "password" &&
                         <Link className={styles["password-visibility"]} to="#"
                               onClick={() => setShowPassword(!showPassword)}> {showPassword ?
                             <Eye size={18} color="#bfbdbd"/> : <EyeClosed size={18} color="#bfbdbd"/>}</Link>}
