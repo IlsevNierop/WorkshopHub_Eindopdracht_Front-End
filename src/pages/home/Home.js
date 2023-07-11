@@ -8,7 +8,7 @@ import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {AuthContext} from "../../context/AuthContext";
 import {fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {updateDateFormat} from "../../helper/updateDateFormat";
+import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {sortArray} from "../../helper/sortArray";
 import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopArray";
 import Button from "../../components/Button/Button";
@@ -20,6 +20,7 @@ function Home() {
 
     const {user} = useContext(AuthContext);
     const token = localStorage.getItem('token');
+    const controller = new AbortController();
 
 
     const [category, setCategory] = useState([]);
@@ -29,7 +30,6 @@ function Home() {
     const [priceSlider, setPriceSlider] = useState(400);
     const [minRating, setMinRating] = useState(0);
     const [error, setError] = useState('');
-    const controller = new AbortController();
     const [workshopData, setWorkshopData] = useState([]);
     const [originalWorkshopData, setOriginalWorkshopData] = useState([]);
     const [loading, toggleLoading] = useState(false);
@@ -178,6 +178,7 @@ function Home() {
                     <div className={styles["sort"]}>
                         <h4>Sorteer op:</h4>
                         <Select className={styles["sort__dropdown"]}
+                                id="select-dropdown-sort"
                                 placeholder="Selecteer.."
                                 defaultValue={sortValue}
                                 onChange={setSortValue}
@@ -194,6 +195,7 @@ function Home() {
 
                             <h5>Categorie</h5>
                             <Select
+                                id="select-dropdown-category"
                                 placeholder="Selecteer.."
                                 value={category}
                                 onChange={setCategory}
@@ -224,6 +226,7 @@ function Home() {
                         <div className={styles["filter-item"]}>
                             <h5>Locatie</h5>
                             <Select
+                                id="select-dropdown-location"
                                 placeholder="Selecteer.."
                                 value={location}
                                 onChange={setLocation}
@@ -237,6 +240,7 @@ function Home() {
                             <p>{priceSlider}</p>
                             <label>
                                 <input
+                                    id="price-slider"
                                     type='range'
                                     onChange={changeValueSlider}
                                     min={1}
@@ -317,6 +321,7 @@ function Home() {
                         <div className={styles["filter-item"]}>
                             <h5>Waar vindt de workshop plaats</h5>
                             <Select
+                                id="select-dropdown-environment"
                                 placeholder="Selecteer.."
                                 value={environment}
                                 onChange={setEnvironment}
@@ -347,7 +352,7 @@ function Home() {
                                     workshoptitle={workshop.title}
                                     price={workshop.price}
                                     location={workshop.location}
-                                    date={updateDateFormat(workshop.date)}
+                                    date={updateDateFormatShort(workshop.date)}
                                     category1={workshop.workshopCategory1}
                                     category2={workshop.workshopCategory2}
                                 ></WorkshopTile>

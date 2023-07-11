@@ -1,15 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
-import logoMobile from "../../../../workshophub-eindopdracht/src/assets/logo-mobile.svg";
 import {Heart, X} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
-import Button from "../Button/Button";
 import Modal from "react-modal";
 import {useForm} from "react-hook-form";
-import InputField from "../InputField/InputField";
 import {signIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import SignIn from "../SignIn/SignIn";
