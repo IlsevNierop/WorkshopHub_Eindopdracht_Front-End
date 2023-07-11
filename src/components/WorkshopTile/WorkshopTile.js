@@ -1,6 +1,6 @@
 import styles from "./WorkshopTile.module.css";
 
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Heart, X} from "@phosphor-icons/react";
 import Button from "../Button/Button";
 import {addOrRemoveWorkshopFavourites, signIn, uploadProfilePic} from "../../api/api";
@@ -10,6 +10,8 @@ import Modal from "react-modal";
 import {Link} from "react-router-dom";
 import InputField from "../InputField/InputField";
 import {useForm} from "react-hook-form";
+import SignIn from "../SignIn/SignIn";
+import {sortArray} from "../../helper/sortArray";
 
 function WorkshopTile({
                           workshoptitle,
@@ -114,7 +116,9 @@ function WorkshopTile({
         }
     }
 
-
+    useEffect(() => {
+        setFavourite(isFavourite);
+    }, [isFavourite]);
 
     return (
         <>
@@ -128,74 +132,7 @@ function WorkshopTile({
                     {error && <p className="error-message">{error}</p>}
             </Modal>
 
-
-
-            {/*//TODO make this sign in modal a component?*/}
-            <Modal
-                isOpen={modalIsOpen}
-                onAfterOpen={afterOpenModal}
-                onRequestClose={closeModal}
-                style={customStyles}
-                contentLabel="Sign in"
-            >
-                <div className={styles["top-row__signin"]}>
-                    <h3>Inloggen</h3>
-                    <Link to="#" onClick={closeModal}><X size={18}/></Link>
-                </div>
-                <p>Om deze workshop aan je favorieten toe te voegen, dien je eerst in te loggen:</p>
-                <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
-                    <InputField
-                        type="text"
-                        name="email"
-                        label="Email: "
-                        validation={{
-                            required:
-                                {
-                                    value: true,
-                                    message: "E-mail is verplicht",
-                                }, pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
-                                message: "Vul een geldig e-mailadres in"
-                            }
-                        }}
-                        register={register}
-                        errors={errors}
-                    >
-                    </InputField>
-                    <InputField classNameLabel="password-input-field"
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                label="Wachtwoord: "
-                                validation={{
-                                    required:
-                                        {
-                                            value: true,
-                                            message: "Wachtwoord is verplicht",
-                                        }
-                                }}
-                                register={register}
-                                errors={errors}
-                                setShowPassword={setShowPassword}
-                                showPassword={showPassword}
-                    >
-                    </InputField>
-                    {error && <p className="error-message">{error}</p>}
-                    <Button
-                        type="submit"
-                    >Inloggen</Button>
-                </form>
-
-
-                <div className={styles["bottom-links__signin"]}>
-                    <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={closeModal}>
-                        <p>Wachtwoord vergeten?</p></Link>
-
-                    <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
-                                                      onClick={closeModal}>Registreer</Link> je
-                        dan eerst.</p>
-                </div>
-
-            </Modal>
+            <SignIn  modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal} customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}> </SignIn>
 
             <div className={styles["workshop-tile"]}>
                 <img className={styles["workshop-image"]} src={image} alt={category1}/>

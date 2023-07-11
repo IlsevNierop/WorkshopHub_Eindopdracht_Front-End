@@ -129,7 +129,8 @@ function Home() {
             }
         }
 
-        , []);
+        , [user]);
+
 
     useEffect(() => {
 
@@ -157,6 +158,7 @@ function Home() {
 
 
     return (
+
 
         <main className={`outer-container ${styles["home__outer-container"]}`}>
             <div className={`inner-container ${styles["home__inner-container"]}`}>
@@ -334,6 +336,7 @@ function Home() {
                     {/*//TODO make heart a link*/}
 
                     <section className={styles["overview__workshop-tiles"]}>
+                        {/*//TODO workshopdata wordt geupdate - na in of uitloggen - maar hij wordt niet gerenderd*/}
                         {workshopData && workshopData.map((workshop) => {
                             return (
                                 <WorkshopTile

@@ -64,6 +64,7 @@ function AuthContextProvider({children}) {
         })
         console.log("Gebruiker is uitgelogd!");
         navigate("/");
+
     }
 
     const data = {
