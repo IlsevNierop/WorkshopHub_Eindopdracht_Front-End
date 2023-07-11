@@ -14,6 +14,7 @@ import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopAr
 import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 import StarRating from "../../components/StarRating/StarRating";
+import Slider from "../../components/Slider/Slider";
 
 
 function Home() {
@@ -218,8 +219,8 @@ function Home() {
                                 moveRangeOnFirstSelection={false}
                                 ranges={dateRange}
                                 minDate={new Date()}
-                                rangeColors={['#c2683a', '#c2683a', '#c2683a']}
-                                color={'#c2683a'}
+                                rangeColors={['#375673', '#375673', '#375673']}
+                                color={'#375673'}
                             />
                         </div>
 
@@ -238,81 +239,91 @@ function Home() {
                         <div className={styles["filter-item"]}>
                             <h5>Maximale prijs</h5>
                             <p>{priceSlider}</p>
-                            <label>
-                                <input
-                                    id="price-slider"
-                                    type='range'
-                                    onChange={changeValueSlider}
-                                    min={1}
-                                    max={400}
-                                    step={1}
-                                    value={priceSlider}
-                                    className={styles["price-slider"]}>
-                                </input>
-                            </label>
+                           <Slider
+                               id="price"
+                               changeHandler={changeValueSlider}
+                               minRange="1"
+                               maxRange="400"
+                               step="1"
+                               value={priceSlider}
+                           >
+                           </Slider>
+
+                            {/*<label>*/}
+                            {/*    <input*/}
+                            {/*        id="price-slider"*/}
+                            {/*        type='range'*/}
+                            {/*        onChange={changeValueSlider}*/}
+                            {/*        min={1}*/}
+                            {/*        max={400}*/}
+                            {/*        step={1}*/}
+                            {/*        value={priceSlider}*/}
+                            {/*        className={styles["price-slider"]}>*/}
+                            {/*    </input>*/}
+                            {/*</label>*/}
                         </div>
 
                         <div className={styles["filter-item"]}>
                             <h5>Minimale beoordeling</h5>
                             <div className={styles["rating-column"]}>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="0"
+                                       id="zero-star"
+                                       checked={minRating === 0 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
                                 <label className={styles["rating-row"]} htmlFor="zero-star">
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value="0"
-                                        id="zero-star"
-                                        checked={minRating === 0 ? "checked"
-                                            : null}
-                                        onChange={handleChangeRating}
-                                    />
                                     <StarRating rating={0}></StarRating>
                                 </label>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="1"
+                                       id="one-star"
+                                       checked={minRating === 1 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
                                 <label className={styles["rating-row"]} htmlFor="one-star">
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value="1"
-                                        id="one-star"
-                                        checked={minRating === 1 ? "checked"
-                                            : null}
-                                        onChange={handleChangeRating}
-                                    />
                                     <StarRating rating={1}></StarRating>
                                 </label>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="2"
+                                       id="two-star"
+                                       checked={minRating === 2 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
                                 <label className={styles["rating-row"]} htmlFor="two-star">
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value="2"
-                                        id="two-star"
-                                        checked={minRating === 2 ? "checked"
-                                            : null}
-                                        onChange={handleChangeRating}
-                                    />
                                     <StarRating rating={2}></StarRating>
                                 </label>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="3"
+                                       id="three-star"
+                                       checked={minRating === 3 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
                                 <label className={styles["rating-row"]} htmlFor="three-star">
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value="3"
-                                        id="three-star"
-                                        checked={minRating === 3 ? "checked"
-                                            : null}
-                                        onChange={handleChangeRating}
-                                    />
                                     <StarRating rating={3}></StarRating>
                                 </label>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="4"
+                                       id="four-star"
+                                       checked={minRating === 4 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
                                 <label className={styles["rating-row"]} htmlFor="four-star">
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value="4"
-                                        id="four-star"
-                                        checked={minRating === 4 ? "checked"
-                                            : null}
-                                        onChange={handleChangeRating}
-                                    />
                                     <StarRating rating={4}></StarRating>
                                 </label>
                             </div>
@@ -338,10 +349,7 @@ function Home() {
 
                     </section>
 
-                    {/*//TODO make heart a link*/}
-
                     <section className={styles["overview__workshop-tiles"]}>
-                        {/*//TODO workshopdata wordt geupdate - na in of uitloggen - maar hij wordt niet gerenderd*/}
                         {workshopData && workshopData.map((workshop) => {
                             return (
                                 <WorkshopTile
