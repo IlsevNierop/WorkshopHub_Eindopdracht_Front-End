@@ -1,0 +1,39 @@
+
+.slider {
+    /*-webkit-appearance: none;*/
+    width: 100%;
+    /*height: 8px;*/
+    /*background-color: var(--color-earth-blue-light);*/
+    /*border-radius: 4px;*/
+    /*position: relative;*/
+}
+
+/*!*dit werkt allemaal niet *!*/
+/*.slider::-webkit-slider-runnable-track {*/
+/*    background-color: transparent;*/
+/*}*/
+
+/*.slider::-webkit-slider-thumb {*/
+/*    -webkit-appearance: none;*/
+/*    appearance: none;*/
+/*    width: 16px;*/
+/*    height: 16px;*/
+/*    background-color: var(--color-earth-blue);*/
+/*    border-radius: 50%;*/
+/*    cursor: pointer;*/
+/*    position: relative;*/
+/*    z-index: 2;*/
+/*}*/
+
+/*.slider::-webkit-slider-runnable-track::before {*/
+/*    content: '';*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100%;*/
+/*    height: 8px;*/
+/*    background-color: var(--color-earth-blue);*/
+/*    border-radius: 4px;*/
+/*    z-index: 1;*/
+/*}*/
