@@ -213,11 +213,8 @@ function Profile() {
     }
 
     async function sendImage(e) {
-        // Voorkom een refresh op submit
         e.preventDefault();
-        // maak een nieuw FormData object (ingebouwd type van JavaScript)
         const formData = new FormData();
-        // Voeg daar ons bestand uit de state aan toe onder de key "file"
         formData.append("file", file);
 
         try {
@@ -239,7 +236,6 @@ function Profile() {
             console.log(error);
         }
     }
-
 
     return (
         <>
