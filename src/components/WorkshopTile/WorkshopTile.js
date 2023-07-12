@@ -141,10 +141,10 @@ function WorkshopTile({
             <Link className={styles["workshop-tile__link"]} to={`/workshop/${workshopId}`}>
                 <div className={styles["workshop-tile"]}>
                     <img className={styles["workshop-image"]} src={image} alt={category1}/>
-                    <Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>
+                    <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
                         <Heart className={styles["favourite-icon"]} size={24}
                                color={favourite ? "#fe5c5c" : "282828"}
-                               weight={favourite ? "fill" : "light"}/></Button>
+                               weight={favourite ? "fill" : "light"}/></Link>
                     <div className={styles["information-workshop-column"]}>
                         <div className={styles["top-row-workshop"]}>
                             <h4>{workshoptitle}</h4>
