@@ -3,7 +3,10 @@
     background-color: var(--color-grey-100);
 }
 
-/*//TODO css grid toevoegen? */
+.workshop-page__inner-container {
+    align-items: center;
+    margin: 2rem;
+}
 
 .top-part__workshop-page__overview {
     display: flex;
@@ -80,28 +83,40 @@
 
 .bottom-part__workshop-page__overview {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 2.5rem;
 }
 
 
-.left-side__bottom__workshop {
+.description__bottom__workshop {
     display: flex;
     flex-direction: column;
+    /*align-items: center;*/
     gap: 0.5rem;
-    width: 400px;
-}
-
-.right-side__bottom__workshop {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 400px;
+    width: 600px;
+    padding: 2rem 0.5rem;
+    border-top: solid 2px var(--color-grey-500);
 }
 
 
-.right-side__bottom__workshop > ul > li {
+.reviews__bottom__workshop {
+    border-top: solid 2px var(--color-grey-500);
+    padding: 2rem 0.5rem;
+    width: 300px;
+}
+
+.info__bottom__workshop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 300px;
+}
+
+
+.info__bottom__workshop > ul > li {
     font-size: 0.75rem;
     display: list-item;
 
 }
+
+

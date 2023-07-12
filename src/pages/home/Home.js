@@ -211,8 +211,6 @@ function Home() {
 
                         <div className={styles["filter-item"]}>
                             <h5>Wanneer</h5>
-                            {/*TODO Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
-                            {/*TODO kijken of ik de kalendar kleiner kan maken*/}
                             <DateRange
                                 label="date-range"
                                 editableDateInputs={true}

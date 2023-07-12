@@ -1,7 +1,7 @@
 import styles from "../workshopPage/WorkshopPage.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
-import {fetchDataWorkshopOwner, fetchSingleWorkshopData} from "../../api/api";
+import {fetchDataWorkshopOwner, fetchSingleWorkshopData, fetchSingleWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
@@ -13,6 +13,8 @@ import {updateTimeFormat} from "../../helper/updateTimeFormat";
 import {Heart} from "@phosphor-icons/react";
 import Button from "../../components/Button/Button";
 import {createArrayListFromString} from "../../helper/createArrayListFromString";
+import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
+import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 
 function WorkshopPage() {
 
@@ -31,71 +33,19 @@ function WorkshopPage() {
                 toggleLoading(true);
                 setError('');
                 if (user != null) {
-                    // try {
-                    //     const response = await fetchWorkshopDataLoggedIn(token, user.id);
-                    //     setWorkshopData(response);
-                    //     setOriginalWorkshopData(response);
-                    //
-                    //     if (response) {
-                    //         setError('');
-                    //     }
-                    //
-                    // } catch (e) {
-                    //     setError(errorHandling(e));
-                    //     console.log(error);
-                    // }
-                    // toggleLoading(false);
+                    try {
+                        const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
+                        setSingleWorkshopData(response);
+                        setError('');
+
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                    }
+                    toggleLoading(false);
                 } else {
                     try {
                         const response = await fetchSingleWorkshopData(workshopId);
-                        // const {
-                        //     amountOfFavsAndBookings,
-                        //     amountOfParticipants,
-                        //     averageRatingWorkshopOwnerReviews,
-                        //     date,
-                        //     description,
-                        //     endTime,
-                        //     highlightedInfo,
-                        //     inOrOutdoors,
-                        //     isFavourite,
-                        //     location,
-                        //     numberOfReviews,
-                        //     price,
-                        //     spotsAvailable,
-                        //     startTime,
-                        //     title,
-                        //     workshopCategory1,
-                        //     workshopCategory2,
-                        //     workshopOwnerCompanyName,
-                        //     workshopOwnerReviews,
-                        //     workshopPicUrl,
-                        //
-                        //
-                        // } = await fetchSingleWorkshopData(workshopId);
-
-                        // setSingleWorkshopData({
-                        //     popularityScore: amountOfFavsAndBookings,
-                        //     maxParticipants: amountOfParticipants,
-                        //     averageRating: averageRatingWorkshopOwnerReviews,
-                        //     date: date,
-                        //     description: description,
-                        //     endTime: endTime,
-                        //     highlightedInfo: highlightedInfo,
-                        //     inOrOutdoors: inOrOutdoors,
-                        //     isFavourite: isFavourite,
-                        //     location: location,
-                        //     numberOfReviews: numberOfReviews,
-                        //     price: price,
-                        //     spotsAvailable: spotsAvailable,
-                        //     startTime: startTime,
-                        //     title: title,
-                        //     workshopCategory1: workshopCategory1,
-                        //     workshopCategory2: workshopCategory2,
-                        //     companyName: workshopOwnerCompanyName,
-                        //     reviews: workshopOwnerReviews,
-                        //     workshopPicUrl: workshopPicUrl,
-                        // });
-
                         setSingleWorkshopData(response);
                         setError('');
 
@@ -121,13 +71,12 @@ function WorkshopPage() {
     return (
 
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
-            <div className={`inner-container ${styles["workshop-page-container"]}`}>
+            <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
                 <h1>{singleWorkshopData.title}</h1>
 
-                <section className={styles["top-part__workshop-page__overview"]}>
+                <article className={styles["top-part__workshop-page__overview"]}>
 
-
-                    <div className={styles["left-side__top__workshop"]}>
+                    <aside className={styles["left-side__top__workshop"]}>
 
                         <div className={styles["workshop-owner-rating"]}>
                             <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}></StarRating>
@@ -147,10 +96,10 @@ function WorkshopPage() {
                         {/*           color={favourite ? "#fe5c5c" : "282828"}*/}
                         {/*           weight={favourite ? "fill" : "light"}/></Button>*/}
 
-                    </div>
+                    </aside>
                     {Object.keys(singleWorkshopData).length > 0 &&
-                        <div className={styles["right-side__top__workshop"]}>
-                            <div className={styles["top__column__workshop-info"]}>
+                        <aside className={styles["right-side__top__workshop"]}>
+                            <section className={styles["top__column__workshop-info"]}>
 
                                 <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
@@ -162,9 +111,9 @@ function WorkshopPage() {
                                 <h5 className={styles["workshop-info"]}> {singleWorkshopData.location} </h5>
                                 <h5 className={styles["workshop-info"]}> {getInOrOutdoors(singleWorkshopData.inOrOutdoors)} </h5>
                                 <h5 className={styles["workshop-info"]}> max. {singleWorkshopData.amountOfParticipants} deelnemers </h5>
-                            </div>
+                            </section>
 
-                            <div className={styles["bottom__column__workshop-info"]}>
+                            <section className={styles["bottom__column__workshop-info"]}>
                                 {/*TODO on submit button boeken*/}
                                 <Button type="text">
                                     Boeken
@@ -177,25 +126,69 @@ function WorkshopPage() {
                                     {singleWorkshopData.workshopCategory2 &&
                                         <p>{singleWorkshopData.workshopCategory2}</p>}
                                 </div>
-                            </div>
-                        </div>
+                            </section>
+                        </aside>
                     }
-                </section>
+                </article>
 
                 {Object.keys(singleWorkshopData).length > 0 &&
                     <section className={styles["bottom-part__workshop-page__overview"]}>
-                        <div className={styles["left-side__bottom__workshop"]}>
-                            <h4>{singleWorkshopData.title}</h4>
+                        <article className={styles["description__bottom__workshop"]}>
+                            <h4>Omschrijving workshop</h4>
                             <p>{singleWorkshopData.description}</p>
-                        </div>
+                        </article>
 
-                        <div className={styles["right-side__bottom__workshop"]}>
+
+
+
+                        <article className={styles["reviews__bottom__workshop"]}>
+                            <h4>Reviews</h4>
+                            {singleWorkshopData.workshopOwnerReviews.length > 0 ?
+                                <>
+                                    <div className={styles["workshop-owner-rating"]}>
+                                        <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}></StarRating>
+                                        <p>
+                                            {singleWorkshopData.averageRatingWorkshopOwnerReviews} / 5 (
+                                            {singleWorkshopData.numberOfReviews === 1
+                                                ? `${singleWorkshopData.numberOfReviews} review`
+                                                : `${singleWorkshopData.numberOfReviews} reviews`}
+                                            )
+                                        </p>
+                                    </div>
+
+                                    {singleWorkshopData.workshopOwnerReviews.map((review) => {
+                                        return (
+                                            <>
+                                            <StarRating rating={review.rating}></StarRating>
+                                                <p>{review.rating}</p>
+                                                <p>{review.firstNameReviewer}</p>
+                                                <p>Datum workshop: {updateDateFormatShort(review.workshopDate)}</p>
+                                                <h5>Workshop: {review.workshopTitle}</h5>
+                                                <p>{review.reviewDescription}</p>
+                                            </>
+                                        )
+                                    })
+                                    }
+
+
+                                </>
+                                :
+                                <>
+                                    <div className={styles["zero-review"]}>
+                                        <p>Nog geen reviews</p>
+                                        {/*    TODO button toevoegen om review achter te laten? */}
+                                    </div>
+                                </>
+                            }
+                        </article>
+
+                        <div className={styles["info__bottom__workshop"]}>
                             <h5>Belangrijk om te weten</h5>
 
                             {singleWorkshopData.highlightedInfo &&
                                 <ul>{(singleWorkshopData.highlightedInfo.split(".")).map((info) => {
                                     return (
-                                        <li key={info.slice(0,3)}>{info}</li>
+                                        <li key={info.slice(0, 3)}>{info}</li>
                                     )
                                 })
                                 }</ul>

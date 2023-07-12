@@ -170,8 +170,8 @@ export async function fetchSingleWorkshopData(workshopId) {
         });
     return response.data;
 }
-export async function fetchSingleWorkshopDataLoggedIn(token, id) {
-    const response = await axios.get(`${baseUrl}workshops`,
+export async function fetchSingleWorkshopDataLoggedIn(token, id, workshopId) {
+    const response = await axios.get(`${baseUrl}workshops/${workshopId}`,
         {
             headers: {
                 "Content-Type": "application/json",
