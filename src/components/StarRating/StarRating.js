@@ -14,7 +14,7 @@ function StarRating({rating}) {
     }
 
     return (
-        <div className={styles["container__rating"]}>
+        <section className={styles["container__rating"]}>
             {[...new Array(totalStars)].map((_, index) => {
                 if (index < totalFilledStars) {
                     return <Star className={styles["star__rating"]} size={20} color="#F6AE2D" weight="fill"
@@ -35,7 +35,7 @@ function StarRating({rating}) {
                                  color="#bfbdbd" weight="light" key={index}/>;
                 }
             })}
-        </div>
+        </section>
     );
 }
 

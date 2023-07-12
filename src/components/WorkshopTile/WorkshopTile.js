@@ -139,18 +139,18 @@ function WorkshopTile({
                     error={error}> </SignIn>
 
             <Link className={styles["workshop-tile__link"]} to={`/workshop/${workshopId}`}>
-                <div className={styles["workshop-tile"]}>
+                <article className={styles["workshop-tile"]}>
                     <img className={styles["workshop-image"]} src={image} alt={category1}/>
                     <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
                         <Heart className={styles["favourite-icon"]} size={24}
                                color={favourite ? "#fe5c5c" : "282828"}
                                weight={favourite ? "fill" : "light"}/></Link>
-                    <div className={styles["information-workshop-column"]}>
-                        <div className={styles["top-row-workshop"]}>
+                    <aside className={styles["information-workshop-column"]}>
+                        <section className={styles["top-row-workshop"]}>
                             <h4>{workshoptitle}</h4>
                             <h6>€ {price.toFixed(2).replace('.', ',')}</h6>
-                        </div>
-                        <div className={styles["bottom-row-workshop"]}>
+                        </section>
+                        <section className={styles["bottom-row-workshop"]}>
                             <div className={styles["bottom-column-workshop"]}>
                                 <h6>{location}</h6>
                                 <p>{date}</p>
@@ -159,9 +159,9 @@ function WorkshopTile({
                                 <p>{category1}</p>
                                 {category2 && <p>{category2}</p>}
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </section>
+                    </aside>
+                </article>
             </Link>
         </>
     );

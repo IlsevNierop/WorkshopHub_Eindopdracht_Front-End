@@ -15,7 +15,7 @@ function NavBar() {
 
 
     const {isAuth, user, logout, login} = useContext(AuthContext);
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const {register, handleSubmit, formState: {errors}, reset, onErrors} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -54,10 +54,11 @@ function NavBar() {
         reset();
     }
 
-    async function handleFormSubmit(data) {
+    async function handleFormSubmit(data, e) {
         //React hook form should take care of prevent default, but for some reason, the page refreshes on pressing enter.
-        // data.preventDefault();
+        // e.preventDefault();
         setError('');
+        console.log(data)
         try {
             const {jwt} = await signIn(data.email, data.password);
             reset();
@@ -69,6 +70,7 @@ function NavBar() {
             console.log(error);
         }
     }
+
 
 
     return (
