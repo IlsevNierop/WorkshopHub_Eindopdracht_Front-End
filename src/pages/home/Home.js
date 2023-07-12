@@ -15,6 +15,7 @@ import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 import StarRating from "../../components/StarRating/StarRating";
 import Slider from "../../components/Slider/Slider";
+import InputField from "../../components/InputField/InputField";
 
 
 function Home() {
@@ -159,8 +160,6 @@ function Home() {
 
 
     return (
-
-
         <main className={`outer-container ${styles["home__outer-container"]}`}>
             <div className={`inner-container ${styles["home__inner-container"]}`}>
 
@@ -190,8 +189,8 @@ function Home() {
                     </div>
                 </section>
 
-                <div className={styles["sidebar__workshop-tiles"]}>
-                    <section className={styles["sidebar__filter"]}>
+                <section className={styles["workshop-tiles__filters"]}>
+                    <aside className={styles["sidebar__filter"]}>
 
                         <div className={styles["filter-item"]}>
 
@@ -209,8 +208,6 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-
-
                             <h5>Wanneer</h5>
                             {/*TODO Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
                             {/*TODO kijken of ik de kalendar kleiner kan maken*/}
@@ -241,31 +238,43 @@ function Home() {
                         <div className={styles["filter-item"]}>
                             <h5>Maximale prijs</h5>
                             <p>{priceSlider}</p>
-                           <Slider
-                               id="price"
-                               name="price-slider"
-                               changeHandler={changeValueSlider}
-                               minRange="1"
-                               maxRange="400"
-                               step="1"
-                               value={priceSlider}
-                           >
-                           </Slider>
+                            <Slider
+                                id="price"
+                                name="price-slider"
+                                changeHandler={changeValueSlider}
+                                minRange="1"
+                                maxRange="400"
+                                step="1"
+                                value={priceSlider}
+                            >
+                            </Slider>
                         </div>
 
                         <div className={styles["filter-item"]}>
                             <h5>Minimale beoordeling</h5>
                             <div className={styles["rating-column"]}>
-                                <input className={styles["radio-checkbox"]}
-                                       type="radio"
-                                       name="rating"
-                                       value="0"
-                                       id="zero-star"
-                                       checked={minRating === 0 ? "checked"
-                                           : null}
-                                       onChange={handleChangeRating}
-                                />
+                                {/*<InputField*/}
+                                {/*    classNameLabel="rating-row"*/}
+                                {/*    classNameInputField="radio-checkbox"*/}
+                                {/*    name="zero-star"*/}
+                                {/*    type="radio"*/}
+                                {/*    value="0"*/}
+                                {/*    nameInputField="rating"*/}
+                                {/*    onChange={handleChangeRating}*/}
+                                {/*    checked={minRating === 0 ? "checked"*/}
+                                {/*        : null}*/}
+                                {/*></InputField>*/}
+
                                 <label className={styles["rating-row"]} htmlFor="zero-star">
+                                    <input className={styles["radio-checkbox"]}
+                                           type="radio"
+                                           name="rating"
+                                           value="0"
+                                           id="zero-star"
+                                           checked={minRating === 0 ? "checked"
+                                               : null}
+                                           onChange={handleChangeRating}
+                                    />
                                     <StarRating rating={0}></StarRating>
                                 </label>
                                 <input className={styles["radio-checkbox"]}
@@ -316,6 +325,18 @@ function Home() {
                                 <label className={styles["rating-row"]} htmlFor="four-star">
                                     <StarRating rating={4}></StarRating>
                                 </label>
+                                <input className={styles["radio-checkbox"]}
+                                       type="radio"
+                                       name="rating"
+                                       value="5"
+                                       id="five-star"
+                                       checked={minRating === 5 ? "checked"
+                                           : null}
+                                       onChange={handleChangeRating}
+                                />
+                                <label className={styles["rating-row"]} htmlFor="five-star">
+                                    <StarRating rating={5}></StarRating>
+                                </label>
                             </div>
                         </div>
 
@@ -338,7 +359,7 @@ function Home() {
                             onClick={removeAllFilters}>
                             Alle filters wissen</Button>
 
-                    </section>
+                    </aside>
 
 
                     <section className={styles["overview__workshop-tiles"]}>
@@ -361,7 +382,7 @@ function Home() {
                         }
                     </section>
 
-                </div>
+                </section>
             </div>
         </main>
     )

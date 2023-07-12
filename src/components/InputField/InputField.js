@@ -3,7 +3,7 @@ import styles from "../InputField/InputField.module.css";
 import {Eye, EyeClosed} from "@phosphor-icons/react";
 import {Link} from "react-router-dom";
 
-function InputField({type, name, label, validation, register, errors, children, value, onChange, placeholder, classNameLabel, setShowPassword, showPassword}) {
+function InputField({type, name, label, validation, register, errors, children, value, placeholder, classNameLabel, setShowPassword, showPassword}) {
     return (
             <div className={styles["input-field__column"]}>
                 <label className={`${styles[classNameLabel]} ${styles['label__input-field']}`} htmlFor={`${name}-field`}>
@@ -14,7 +14,6 @@ function InputField({type, name, label, validation, register, errors, children, 
                            type={type}
                            id={`${name}-field`}
                            {...register(name, validation)}
-                           onChange={onChange}
                            placeholder={placeholder}
 
                     />
