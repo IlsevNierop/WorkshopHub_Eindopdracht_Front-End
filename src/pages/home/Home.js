@@ -180,6 +180,7 @@ function Home() {
                         <h4>Sorteer op:</h4>
                         <Select className={styles["sort__dropdown"]}
                                 id="select-dropdown-sort"
+                                name="select-dropdown-sort"
                                 placeholder="Selecteer.."
                                 defaultValue={sortValue}
                                 onChange={setSortValue}
@@ -197,6 +198,7 @@ function Home() {
                             <h5>Categorie</h5>
                             <Select
                                 id="select-dropdown-category"
+                                name="select-dropdown-category"
                                 placeholder="Selecteer.."
                                 value={category}
                                 onChange={setCategory}
@@ -227,6 +229,7 @@ function Home() {
                             <h5>Locatie</h5>
                             <Select
                                 id="select-dropdown-location"
+                                name="select-dropdown-location"
                                 placeholder="Selecteer.."
                                 value={location}
                                 onChange={setLocation}
@@ -240,6 +243,7 @@ function Home() {
                             <p>{priceSlider}</p>
                            <Slider
                                id="price"
+                               name="price-slider"
                                changeHandler={changeValueSlider}
                                minRange="1"
                                maxRange="400"
@@ -247,19 +251,6 @@ function Home() {
                                value={priceSlider}
                            >
                            </Slider>
-
-                            {/*<label>*/}
-                            {/*    <input*/}
-                            {/*        id="price-slider"*/}
-                            {/*        type='range'*/}
-                            {/*        onChange={changeValueSlider}*/}
-                            {/*        min={1}*/}
-                            {/*        max={400}*/}
-                            {/*        step={1}*/}
-                            {/*        value={priceSlider}*/}
-                            {/*        className={styles["price-slider"]}>*/}
-                            {/*    </input>*/}
-                            {/*</label>*/}
                         </div>
 
                         <div className={styles["filter-item"]}>
@@ -332,6 +323,7 @@ function Home() {
                             <h5>Waar vindt de workshop plaats</h5>
                             <Select
                                 id="select-dropdown-environment"
+                                name="select-dropdown-environment"
                                 placeholder="Selecteer.."
                                 value={environment}
                                 onChange={setEnvironment}
@@ -347,6 +339,7 @@ function Home() {
                             Alle filters wissen</Button>
 
                     </section>
+
 
                     <section className={styles["overview__workshop-tiles"]}>
                         {workshopData && workshopData.map((workshop) => {
