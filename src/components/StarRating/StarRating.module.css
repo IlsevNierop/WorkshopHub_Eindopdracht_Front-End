@@ -1,8 +1,6 @@
 
 .container__rating {
     display: inline-block;
-    height: 20px;
-
 }
 
 .star__rating {
@@ -12,10 +10,25 @@
 .container-half-star {
     position: relative;
     display: inline-block;
+    margin-right: 5px;
+}
+
+/*without this code the half stars are not properly aligned*/
+.size-16 .container-half-star, .size-16 .container__rating  {
+    height: 16px;
+    width: 16px;
+}
+.size-14 .container-half-star, .size-14 .container__rating  {
+    height: 14px;
+    width: 14px;
+}
+.size-20 .container-half-star, .size-20 .container__rating  {
     height: 20px;
     width: 20px;
-    margin-right: 5px;
-
+}
+.size-26 .container-half-star, .size-26 .container__rating  {
+    height: 26px;
+    width: 26px;
 }
 
 .container-half-star::before {

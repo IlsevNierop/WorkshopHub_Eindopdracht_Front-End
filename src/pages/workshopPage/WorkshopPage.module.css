@@ -8,12 +8,13 @@
     margin: 2rem;
 }
 
-.top-part__workshop-page__overview {
+.top-part__workshop-page {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 2.5rem;
     height: 350px;
+    width: 550px;
     margin-bottom: 2rem;
 }
 
@@ -25,6 +26,7 @@
 .workshop-owner-rating {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
     gap: 0.5rem;
     align-items: center;
     height: 30px;
@@ -61,7 +63,7 @@
 }
 
 .bottom__column__workshop-info > p {
-    color: var(--color-grey-500);
+    color: var(--color-grey-700);
     font-size: 0.625rem;
 }
 
@@ -73,22 +75,23 @@
 }
 
 .category-workshop-row > p {
-    color: var(--color-grey-500);
+    color: var(--color-grey-700);
     border: 1px solid var(--color-grey-300);
     padding: 1px 4px;
     border-radius: 15px;
     text-transform: lowercase;
     margin-right: 0.5rem;
+    font-size: 10px;
 }
 
-.bottom-part__workshop-page__overview {
+.middle-part__workshop-page {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
 }
 
 
-.description__bottom__workshop {
+.description__middle-part__workshop {
     display: flex;
     flex-direction: column;
     /*align-items: center;*/
@@ -98,25 +101,69 @@
     border-top: solid 2px var(--color-grey-500);
 }
 
+.bottom-part__workshop {
+    display: flex;
+    flex-direction: row;
+    width: 550px;
+    gap: 2.5rem;
+}
+
 
 .reviews__bottom__workshop {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 300px;
     border-top: solid 2px var(--color-grey-500);
-    padding: 2rem 0.5rem;
-    width: 300px;
+    padding: 0.5rem;
+}
+
+.container__reviews {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.container__individual-review {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    width: 250px;
+    border: solid 1px var(--color-grey-500)
+}
+
+.top-row__review {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.name-reviewer {
+    font-weight: normal;
+    color: var(--color-grey-700);
+}
+
+.date-review {
+    color: var(--color-grey-700);
 }
 
 .info__bottom__workshop {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 300px;
+    width: 250px;
+    border-top: solid 2px var(--color-grey-500);
+    padding: 0.5rem;
 }
 
 
-.info__bottom__workshop > ul > li {
+.list-item {
     font-size: 0.75rem;
     display: list-item;
-
+    list-style-type: disc;
 }
 
 
