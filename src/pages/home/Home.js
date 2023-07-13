@@ -211,8 +211,6 @@ function Home() {
 
                         <div className={styles["filter-item"]}>
                             <h5>Wanneer</h5>
-                            {/*TODO Onderstreept nog in het blauw, kijken of ik dat kan wijzigen*/}
-                            {/*TODO kijken of ik de kalendar kleiner kan maken*/}
                             <DateRange
                                 label="date-range"
                                 editableDateInputs={true}
@@ -263,72 +261,72 @@ function Home() {
                                     classNameInputField="radio-checkbox"
                                     name="zero-star"
                                     type="radio"
-                                    value="0"
+                                    value={0}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={0}></StarRating>
+                                    <StarRating rating={0} size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
                                     classNameInputField="radio-checkbox"
                                     name="one-star"
                                     type="radio"
-                                    value="1"
+                                    value={1}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={1}></StarRating>
+                                    <StarRating rating={1}  size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
                                     classNameInputField="radio-checkbox"
                                     name="two-star"
                                     type="radio"
-                                    value="2"
+                                    value={2}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={2}></StarRating>
+                                    <StarRating rating={2}  size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
                                     classNameInputField="radio-checkbox"
                                     name="three-star"
                                     type="radio"
-                                    value="3"
+                                    value={3}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={3}></StarRating>
+                                    <StarRating rating={3} size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
                                     classNameInputField="radio-checkbox"
                                     name="four-star"
                                     type="radio"
-                                    value="4"
+                                    value={4}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={4}></StarRating>
+                                    <StarRating rating={4} size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
                                     classNameInputField="radio-checkbox"
                                     name="five-star"
                                     type="radio"
-                                    value="5"
+                                    value={5}
                                     nameInputField="rating"
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={5}></StarRating>
+                                    <StarRating rating={5} size={20}></StarRating>
                                 </InputField>
                             </div>
                         </div>

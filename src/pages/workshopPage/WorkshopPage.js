@@ -1,27 +1,38 @@
 import styles from "../workshopPage/WorkshopPage.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
-import {fetchDataWorkshopOwner, fetchSingleWorkshopData} from "../../api/api";
+import {
+    addOrRemoveWorkshopFavourites,
+    fetchSingleWorkshopData,
+    fetchSingleWorkshopDataLoggedIn,
+    signIn
+} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import StarRating from "../../components/StarRating/StarRating";
-import {traverseTwoPhase} from "react-dom/test-utils";
 import {updateDateFormatLong} from "../../helper/updateDateFormatLong";
 import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
-import {Heart} from "@phosphor-icons/react";
 import Button from "../../components/Button/Button";
-import {createArrayListFromString} from "../../helper/createArrayListFromString";
+import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
+import Modal from "react-modal";
+import SignIn from "../../components/SignIn/SignIn";
+import {useForm} from "react-hook-form";
+import {Heart} from "@phosphor-icons/react";
 
 function WorkshopPage() {
 
     const {workshopId} = useParams();
     const controller = new AbortController();
-    const {user} = useContext(AuthContext);
+    const {user, login} = useContext(AuthContext);
     const token = localStorage.getItem('token');
 
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const [favourite, setFavourite] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    //TODO not using loading atm
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
 
@@ -31,72 +42,22 @@ function WorkshopPage() {
                 toggleLoading(true);
                 setError('');
                 if (user != null) {
-                    // try {
-                    //     const response = await fetchWorkshopDataLoggedIn(token, user.id);
-                    //     setWorkshopData(response);
-                    //     setOriginalWorkshopData(response);
-                    //
-                    //     if (response) {
-                    //         setError('');
-                    //     }
-                    //
-                    // } catch (e) {
-                    //     setError(errorHandling(e));
-                    //     console.log(error);
-                    // }
-                    // toggleLoading(false);
+                    try {
+                        const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
+                        setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
+                        setError('');
+
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                    }
+                    toggleLoading(false);
                 } else {
                     try {
                         const response = await fetchSingleWorkshopData(workshopId);
-                        // const {
-                        //     amountOfFavsAndBookings,
-                        //     amountOfParticipants,
-                        //     averageRatingWorkshopOwnerReviews,
-                        //     date,
-                        //     description,
-                        //     endTime,
-                        //     highlightedInfo,
-                        //     inOrOutdoors,
-                        //     isFavourite,
-                        //     location,
-                        //     numberOfReviews,
-                        //     price,
-                        //     spotsAvailable,
-                        //     startTime,
-                        //     title,
-                        //     workshopCategory1,
-                        //     workshopCategory2,
-                        //     workshopOwnerCompanyName,
-                        //     workshopOwnerReviews,
-                        //     workshopPicUrl,
-                        //
-                        //
-                        // } = await fetchSingleWorkshopData(workshopId);
-
-                        // setSingleWorkshopData({
-                        //     popularityScore: amountOfFavsAndBookings,
-                        //     maxParticipants: amountOfParticipants,
-                        //     averageRating: averageRatingWorkshopOwnerReviews,
-                        //     date: date,
-                        //     description: description,
-                        //     endTime: endTime,
-                        //     highlightedInfo: highlightedInfo,
-                        //     inOrOutdoors: inOrOutdoors,
-                        //     isFavourite: isFavourite,
-                        //     location: location,
-                        //     numberOfReviews: numberOfReviews,
-                        //     price: price,
-                        //     spotsAvailable: spotsAvailable,
-                        //     startTime: startTime,
-                        //     title: title,
-                        //     workshopCategory1: workshopCategory1,
-                        //     workshopCategory2: workshopCategory2,
-                        //     companyName: workshopOwnerCompanyName,
-                        //     reviews: workshopOwnerReviews,
-                        //     workshopPicUrl: workshopPicUrl,
-                        // });
-
                         setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
                         setError('');
 
                     } catch (e) {
@@ -110,6 +71,7 @@ function WorkshopPage() {
             void fetchDataSingleWorkshop();
             console.log(singleWorkshopData);
 
+
             return function cleanup() {
                 controller.abort();
             }
@@ -118,39 +80,151 @@ function WorkshopPage() {
         , []);
 
 
+    async function addOrRemoveFavouriteWorkshop() {
+        setError('');
+        if (user == null) {
+            openModal();
+        }
+        if (user != null) {
+            try {
+                const response = await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
+                setFavourite(!favourite);
+
+            } catch (e) {
+                setError(errorHandling(e));
+                openModalErrorFavourites();
+                setTimeout(() => {
+                    closeModalErrorFavourites();
+                }, 2000);
+                console.log(e);
+            }
+        }
+    }
+
+    // ...................MODAL
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            overlay: {zIndex: 1000}
+        },
+    };
+
+    //TODO below seems to be unneccesary?
+    Modal.setAppElement('#root');
+
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpenErrorFavourites, setIsOpenErrorFavourites] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+
+    function openModalErrorFavourites() {
+        setIsOpenErrorFavourites(true);
+    }
+
+    function afterOpenModalErrorFavourites() {
+
+    }
+
+    function closeModalErrorFavourites() {
+        setIsOpenErrorFavourites(false);
+        setError('');
+    }
+
+    async function handleFormSubmit(data) {
+        setError('');
+        try {
+            const {jwt} = await signIn(data.email, data.password);
+            reset();
+            login(jwt);
+            closeModal();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        setFavourite(singleWorkshopData.isFavourite);
+    }, [singleWorkshopData.isFavourite]);
+
+
     return (
 
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
-            <div className={`inner-container ${styles["workshop-page-container"]}`}>
+            <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
+
+                {/*TODO inloggen gebeurt nu via 3 plekken, kan dit slimmer met die modal?*/}
+                <Modal
+                    isOpen={modalIsOpenErrorFavourites}
+                    onAfterOpen={afterOpenModalErrorFavourites}
+                    onRequestClose={closeModalErrorFavourites}
+                    style={customStyles}
+                    contentLabel="Data error"
+                >
+                    {error && <p className="error-message">{error}</p>}
+                </Modal>
+
+                <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+                        customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
+                        register={register} errors={errors} showPassword={showPassword}
+                        setShowPassword={setShowPassword}
+                        error={error}> </SignIn>
+
+
                 <h1>{singleWorkshopData.title}</h1>
 
-                <section className={styles["top-part__workshop-page__overview"]}>
+                <article className={styles["top-part__workshop-page"]}>
 
-
-                    <div className={styles["left-side__top__workshop"]}>
+                    <aside className={styles["left-side__top__workshop"]}>
 
                         <div className={styles["workshop-owner-rating"]}>
-                            <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}></StarRating>
+                            <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
+                                        size={20}></StarRating>
                             <p>
-                                {singleWorkshopData.averageRatingWorkshopOwnerReviews} / 5 (
+                                {singleWorkshopData.averageRatingWorkshopOwnerReviews != null ? singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1) : 0} /
+                                5 (
                                 {singleWorkshopData.numberOfReviews === 1
                                     ? `${singleWorkshopData.numberOfReviews} review`
-                                    : `${singleWorkshopData.numberOfReviews} reviews`}
+                                    : `${singleWorkshopData.numberOfReviews != null ? singleWorkshopData.numberOfReviews : "nog geen"} reviews`
+                                }
+
                                 )
                             </p>
                         </div>
-                        {/*//TODO foto alt aanpassen variabel*/}
-                        <img className={styles["workshop-image"]}
-                             src={singleWorkshopData.workshopPicUrl} alt="Foto van de workshop"/>
-                        {/*<Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>*/}
-                        {/*    <Heart className={styles["favourite-icon"]} size={24}*/}
-                        {/*           color={favourite ? "#fe5c5c" : "282828"}*/}
-                        {/*           weight={favourite ? "fill" : "light"}/></Button>*/}
+                        <div className={styles["image__wrapper"]}>
+                            <img className={styles["workshop-image"]}
+                                 src={singleWorkshopData.workshopPicUrl}
+                                 alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
+                            <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                                <Heart className={styles["favourite-icon"]} size={24}
+                                       color={favourite ? "#fe5c5c" : "282828"}
+                                       weight={favourite ? "fill" : "light"}/></Link>
+                        </div>
 
-                    </div>
+                    </aside>
                     {Object.keys(singleWorkshopData).length > 0 &&
-                        <div className={styles["right-side__top__workshop"]}>
-                            <div className={styles["top__column__workshop-info"]}>
+                        <aside className={styles["right-side__top__workshop"]}>
+                            <section className={styles["top__column__workshop-info"]}>
 
                                 <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
@@ -162,9 +236,9 @@ function WorkshopPage() {
                                 <h5 className={styles["workshop-info"]}> {singleWorkshopData.location} </h5>
                                 <h5 className={styles["workshop-info"]}> {getInOrOutdoors(singleWorkshopData.inOrOutdoors)} </h5>
                                 <h5 className={styles["workshop-info"]}> max. {singleWorkshopData.amountOfParticipants} deelnemers </h5>
-                            </div>
+                            </section>
 
-                            <div className={styles["bottom__column__workshop-info"]}>
+                            <section className={styles["bottom__column__workshop-info"]}>
                                 {/*TODO on submit button boeken*/}
                                 <Button type="text">
                                     Boeken
@@ -177,34 +251,83 @@ function WorkshopPage() {
                                     {singleWorkshopData.workshopCategory2 &&
                                         <p>{singleWorkshopData.workshopCategory2}</p>}
                                 </div>
-                            </div>
-                        </div>
+                            </section>
+                        </aside>
                     }
-                </section>
+                </article>
 
                 {Object.keys(singleWorkshopData).length > 0 &&
-                    <section className={styles["bottom-part__workshop-page__overview"]}>
-                        <div className={styles["left-side__bottom__workshop"]}>
-                            <h4>{singleWorkshopData.title}</h4>
+                    <>
+                        <article className={styles["description__middle-part__workshop"]}>
+                            <h4>Omschrijving van de workshop</h4>
                             <p>{singleWorkshopData.description}</p>
-                        </div>
-
-                        <div className={styles["right-side__bottom__workshop"]}>
-                            <h5>Belangrijk om te weten</h5>
-
-                            {singleWorkshopData.highlightedInfo &&
-                                <ul>{(singleWorkshopData.highlightedInfo.split(".")).map((info) => {
-                                    return (
-                                        <li key={info.slice(0,3)}>{info}</li>
-                                    )
-                                })
-                                }</ul>
-                            }
-
-                        </div>
+                        </article>
 
 
-                    </section>
+                        <section className={styles["bottom-part__workshop"]}>
+
+                            <article className={styles["reviews__bottom__workshop"]}>
+                                <h4>Reviews</h4>
+                                {singleWorkshopData.workshopOwnerReviews.length > 0 ?
+                                    <>
+                                        <div className={styles["workshop-owner-rating"]}>
+                                            <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
+                                                        size={26}></StarRating>
+                                            <p>
+                                                {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} / 5 (
+                                                {singleWorkshopData.numberOfReviews === 1
+                                                    ? `${singleWorkshopData.numberOfReviews} review`
+                                                    : `${singleWorkshopData.numberOfReviews} reviews`}
+                                                )
+                                            </p>
+                                        </div>
+
+                                        <section className={styles["container__reviews"]}>
+
+                                            {singleWorkshopData.workshopOwnerReviews.map((review) => {
+                                                return (
+                                                    <article className={styles["container__individual-review"]}
+                                                             key={review.id}>
+                                                        <div className={styles["top-row__review"]}>
+                                                            <StarRating rating={review.rating} size={14}></StarRating>
+                                                            <p>{review.rating.toFixed(1)} / 5</p>
+                                                            <h5 className={styles["name-reviewer"]}>| {review.firstNameReviewer}</h5>
+                                                        </div>
+                                                        <p className={styles["date-review"]}>Datum
+                                                            workshop: {updateDateFormatShort(review.workshopDate)}</p>
+                                                        <h5>Workshop: {review.workshopTitle}</h5>
+                                                        <p>{review.reviewDescription}</p>
+                                                    </article>
+                                                )
+                                            })
+                                            }
+                                        </section>
+                                    </>
+                                    :
+                                    <>
+                                        <div className={styles["zero-review"]}>
+                                            <p>Er zijn nog geen reviews</p>
+                                            {/*    TODO button toevoegen om review achter te laten? */}
+                                        </div>
+                                    </>
+                                }
+                            </article>
+
+                            <div className={styles["info__bottom__workshop"]}>
+                                <h5>Belangrijk om te weten</h5>
+
+                                {singleWorkshopData.highlightedInfo &&
+                                    <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
+                                        return (
+                                            <li className={styles["list-item"]} key={info.slice(0, 3)}>{info}</li>
+                                        )
+                                    })
+                                    }</ul>
+                                }
+
+                            </div>
+                        </section>
+                    </>
 
                 }
 
