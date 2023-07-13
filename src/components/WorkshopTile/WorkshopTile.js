@@ -2,16 +2,13 @@ import styles from "./WorkshopTile.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
 import {Heart, X} from "@phosphor-icons/react";
-import Button from "../Button/Button";
 import {addOrRemoveWorkshopFavourites, signIn, uploadProfilePic} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import Modal from "react-modal";
 import {Link} from "react-router-dom";
-import InputField from "../InputField/InputField";
 import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
-import {sortArray} from "../../helper/sortArray";
 
 function WorkshopTile({
                           workshoptitle,

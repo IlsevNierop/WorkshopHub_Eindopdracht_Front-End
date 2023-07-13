@@ -77,7 +77,7 @@ function NavBar() {
         <>
             <div className={`outer-container ${styles["nav-outer-top"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-top"]}`}>
-                    <NavLink to="/"><img src={logo} alt="WorkshopHub logo"/>
+                    <NavLink to="/"><img className={styles["image-logo"]} src={logo} alt="WorkshopHub logo"/>
                     </NavLink>
                     <ul className={styles["nav-ul-top"]}>
 
@@ -92,7 +92,7 @@ function NavBar() {
                                      to="/" onClick={() => logout()}>
                                 Uitloggen</NavLink></li>}
 
-                        <li className={styles["nav-li"]}>
+                        <li className={styles["nav-li-top"]}>
                             <NavLink to="/"><Heart size={32} color="black"
                                                    weight="regular"/>
                             </NavLink>

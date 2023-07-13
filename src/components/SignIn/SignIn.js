@@ -7,7 +7,20 @@ import Button from "../Button/Button";
 import React from "react";
 
 
-function SignIn({modalIsOpen, afterOpenModal, closeModal, customStyles, handleSubmit, handleFormSubmit, register, errors, showPassword, setShowPassword, error, onKeyPress}) {
+function SignIn({
+                    modalIsOpen,
+                    afterOpenModal,
+                    closeModal,
+                    customStyles,
+                    handleSubmit,
+                    handleFormSubmit,
+                    register,
+                    errors,
+                    showPassword,
+                    setShowPassword,
+                    error,
+                    onKeyPress
+                }) {
     return (
         <Modal
             isOpen={modalIsOpen}

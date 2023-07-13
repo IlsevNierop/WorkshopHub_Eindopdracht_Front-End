@@ -173,6 +173,7 @@ function WorkshopPage() {
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
 
+                {/*TODO inloggen gebeurt nu via 3 plekken, kan dit slimmer met die modal?*/}
                 <Modal
                     isOpen={modalIsOpenErrorFavourites}
                     onAfterOpen={afterOpenModalErrorFavourites}
@@ -185,7 +186,8 @@ function WorkshopPage() {
 
                 <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
                         customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
-                        register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
+                        register={register} errors={errors} showPassword={showPassword}
+                        setShowPassword={setShowPassword}
                         error={error}> </SignIn>
 
 
@@ -210,12 +212,13 @@ function WorkshopPage() {
                             </p>
                         </div>
                         <div className={styles["image__wrapper"]}>
-                        <img className={styles["workshop-image"]}
-                             src={singleWorkshopData.workshopPicUrl} alt={`Foto van de workshop ${singleWorkshopData.title}`} />
-                        <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
-                            <Heart className={styles["favourite-icon"]} size={24}
-                                   color={favourite ? "#fe5c5c" : "282828"}
-                                   weight={favourite ? "fill" : "light"}/></Link>
+                            <img className={styles["workshop-image"]}
+                                 src={singleWorkshopData.workshopPicUrl}
+                                 alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
+                            <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                                <Heart className={styles["favourite-icon"]} size={24}
+                                       color={favourite ? "#fe5c5c" : "282828"}
+                                       weight={favourite ? "fill" : "light"}/></Link>
                         </div>
 
                     </aside>
@@ -323,14 +326,10 @@ function WorkshopPage() {
                                 }
 
                             </div>
-
-
                         </section>
                     </>
 
                 }
-
-
 
 
             </div>
