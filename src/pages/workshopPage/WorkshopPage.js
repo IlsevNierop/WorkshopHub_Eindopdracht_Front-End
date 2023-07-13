@@ -1,29 +1,38 @@
 import styles from "../workshopPage/WorkshopPage.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
-import {fetchDataWorkshopOwner, fetchSingleWorkshopData, fetchSingleWorkshopDataLoggedIn} from "../../api/api";
+import {
+    addOrRemoveWorkshopFavourites,
+    fetchSingleWorkshopData,
+    fetchSingleWorkshopDataLoggedIn,
+    signIn
+} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import StarRating from "../../components/StarRating/StarRating";
-import {traverseTwoPhase} from "react-dom/test-utils";
 import {updateDateFormatLong} from "../../helper/updateDateFormatLong";
 import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
-import {Heart} from "@phosphor-icons/react";
 import Button from "../../components/Button/Button";
-import {createArrayListFromString} from "../../helper/createArrayListFromString";
-import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
+import Modal from "react-modal";
+import SignIn from "../../components/SignIn/SignIn";
+import {useForm} from "react-hook-form";
+import {Heart} from "@phosphor-icons/react";
 
 function WorkshopPage() {
 
     const {workshopId} = useParams();
     const controller = new AbortController();
-    const {user} = useContext(AuthContext);
+    const {user, login} = useContext(AuthContext);
     const token = localStorage.getItem('token');
 
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const [favourite, setFavourite] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    //TODO not using loading atm
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
 
@@ -36,6 +45,7 @@ function WorkshopPage() {
                     try {
                         const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
                         setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
                         setError('');
 
                     } catch (e) {
@@ -47,6 +57,7 @@ function WorkshopPage() {
                     try {
                         const response = await fetchSingleWorkshopData(workshopId);
                         setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
                         setError('');
 
                     } catch (e) {
@@ -60,6 +71,7 @@ function WorkshopPage() {
             void fetchDataSingleWorkshop();
             console.log(singleWorkshopData);
 
+
             return function cleanup() {
                 controller.abort();
             }
@@ -68,10 +80,115 @@ function WorkshopPage() {
         , []);
 
 
+    async function addOrRemoveFavouriteWorkshop() {
+        setError('');
+        if (user == null) {
+            openModal();
+        }
+        if (user != null) {
+            try {
+                const response = await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
+                setFavourite(!favourite);
+
+            } catch (e) {
+                setError(errorHandling(e));
+                openModalErrorFavourites();
+                setTimeout(() => {
+                    closeModalErrorFavourites();
+                }, 2000);
+                console.log(e);
+            }
+        }
+    }
+
+    // ...................MODAL
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            overlay: {zIndex: 1000}
+        },
+    };
+
+    //TODO below seems to be unneccesary?
+    Modal.setAppElement('#root');
+
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpenErrorFavourites, setIsOpenErrorFavourites] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+
+    function openModalErrorFavourites() {
+        setIsOpenErrorFavourites(true);
+    }
+
+    function afterOpenModalErrorFavourites() {
+
+    }
+
+    function closeModalErrorFavourites() {
+        setIsOpenErrorFavourites(false);
+        setError('');
+    }
+
+    async function handleFormSubmit(data) {
+        setError('');
+        try {
+            const {jwt} = await signIn(data.email, data.password);
+            reset();
+            login(jwt);
+            closeModal();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        setFavourite(singleWorkshopData.isFavourite);
+    }, [singleWorkshopData.isFavourite]);
+
+
     return (
 
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
+
+                <Modal
+                    isOpen={modalIsOpenErrorFavourites}
+                    onAfterOpen={afterOpenModalErrorFavourites}
+                    onRequestClose={closeModalErrorFavourites}
+                    style={customStyles}
+                    contentLabel="Data error"
+                >
+                    {error && <p className="error-message">{error}</p>}
+                </Modal>
+
+                <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+                        customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
+                        register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
+                        error={error}> </SignIn>
+
+
                 <h1>{singleWorkshopData.title}</h1>
 
                 <article className={styles["top-part__workshop-page"]}>
@@ -92,13 +209,14 @@ function WorkshopPage() {
                                 )
                             </p>
                         </div>
-                        {/*//TODO foto alt aanpassen variabel*/}
+                        <div className={styles["image__wrapper"]}>
                         <img className={styles["workshop-image"]}
-                             src={singleWorkshopData.workshopPicUrl} alt="Foto van de workshop"/>
-                        {/*<Button type="text" className="icon-button" onClick={addOrRemoveFavouriteWorkshop}>*/}
-                        {/*    <Heart className={styles["favourite-icon"]} size={24}*/}
-                        {/*           color={favourite ? "#fe5c5c" : "282828"}*/}
-                        {/*           weight={favourite ? "fill" : "light"}/></Button>*/}
+                             src={singleWorkshopData.workshopPicUrl} alt={`Foto van de workshop ${singleWorkshopData.title}`} />
+                        <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                            <Heart className={styles["favourite-icon"]} size={24}
+                                   color={favourite ? "#fe5c5c" : "282828"}
+                                   weight={favourite ? "fill" : "light"}/></Link>
+                        </div>
 
                     </aside>
                     {Object.keys(singleWorkshopData).length > 0 &&
@@ -211,6 +329,8 @@ function WorkshopPage() {
                     </>
 
                 }
+
+
 
 
             </div>
