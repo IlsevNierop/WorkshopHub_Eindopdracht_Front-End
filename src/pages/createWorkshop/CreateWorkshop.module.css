@@ -52,3 +52,25 @@
     text-align: left;
     color: var(--color-warning);
 }
+
+.workshop-picture__preview__label {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.workshop-picture__preview {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.row__pop-up__successful {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.row__pop-up__successful h3 {
+    font-weight: normal;
+}

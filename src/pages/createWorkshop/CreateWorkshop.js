@@ -9,6 +9,9 @@ import {createCustomer, createWorkshop, createWorkshopOwner} from "../../api/api
 import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Select from "react-select";
+import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
+import Modal from "react-modal";
+import {Confetti} from "@phosphor-icons/react";
 
 function CreateWorkshop() {
 
@@ -34,36 +37,24 @@ function CreateWorkshop() {
         return true;
     };
 
+    function handleImageChange(e) {
+        const uploadedFile = e.target.files[0];
+        setPreviewUrl(URL.createObjectURL(uploadedFile));
+        setFile(uploadedFile);
+    }
+
 
     async function handleFormSubmit(data) {
-        console.log(data)
-        // console.log(data.date)
-        // console.log(data.inoroutdoors)
-        //
-        // // console.log(updateDateFormatShort(data.date))
-        // console.log(data.starttime + ":00")
-        // console.log(data.endtime + ":00")
-
-        // console.log(data.workshoppicture[0])
-
-
-        // const formData = new FormData();
-        // if (data.workshoppicture.length === 1) {
-        //     formData.append("file", data.workshoppicture[0]);
-        // }
-        // data = { ...data, picture: data.workshoppicture[0].name };
-        // formData.append("file", JSON.stringify(data));
-
+        setPreviewUrl('');
 
         try {
-            const response = await createWorkshop(id, token, data.title, data.date, (data.starttime + ":00"),(data.endtime + ":00"), data.price, data.location, data.category1, data.category2, data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description,  data.workshoppicture[0]);
+            const response = await createWorkshop(id, token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
             reset();
-            console.log(response);
-            console.log("gelukt!")
-            // openModal();
-            // setTimeout(() => {
-            //     // closeModal();
-            // }, 2000);
+            setFile([]);
+            openModal();
+            setTimeout(() => {
+                closeModal();
+            }, 2000);
 
 
         } catch (e) {
@@ -72,10 +63,54 @@ function CreateWorkshop() {
 
     }
 
+    // ...................MODAL
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
+
+    //TODO setappelement seems to be unneccesary?
+    Modal.setAppElement('#root');
+
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
+
 
     return (
         <main className={`outer-container ${styles["create-workshop__outer-container"]}`}>
             <div className={`inner-container ${styles["create-workshop__inner-container"]}`}>
+
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Create workshop successful"
+                >
+                    <div className={styles["row__pop-up__successful"]}>
+                        <Confetti size={32} color="#c45018" weight="fill"/>
+                        <h3>Dank voor het uploaden van je nieuwe workshop</h3>
+                        <Confetti size={32} color="#c45018" weight="fill"/>
+                    </div>
+                </Modal>
 
                 <h1>Nieuwe workshop aanmaken</h1>
 
@@ -160,7 +195,7 @@ function CreateWorkshop() {
                                 },
                             pattern: {
                                 value: /^\d+(\.\d{1,2})?$/,
-                                message: 'De prijs mag maximaal 2 decimalen hebben (gebruik een .) en moet hoger dan 0 zijn'
+                                message: 'De prijs mag maximaal 2 decimalen hebben (gebruik een punt . en geen komma) en moet hoger dan 0 zijn'
                             }
                         }
                         }
@@ -267,14 +302,16 @@ function CreateWorkshop() {
                         }}
                         render={({field}) => (
                             <div>
-                            <textarea className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
-                                      {...field}
-                                      id="description"
-                                      cols={52}
-                                      rows={20}
-                                      placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 1500 karakters."
+                            <textarea
+                                className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
+                                {...field}
+                                id="description"
+                                cols={52}
+                                rows={20}
+                                placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 1500 karakters."
                             />
-                                {errors.description && <p style={{whiteSpace: 'pre-line'}} className={styles["input-field__error-message"]} >{errors.description.message}</p>}
+                                {errors.description && <p style={{whiteSpace: 'pre-line'}}
+                                                          className={styles["input-field__error-message"]}>{errors.description.message}</p>}
                             </div>
                         )}
                     />
@@ -282,10 +319,18 @@ function CreateWorkshop() {
                         type="file"
                         name="workshoppicture"
                         label="Foto uploaden"
-                        register={register}
-                        errors={errors}
+                        onChangeHandler={handleImageChange}
                     >
                     </InputField>
+
+                    {previewUrl &&
+                        <label className={styles["workshop-picture__preview__label"]}>
+                            Preview:
+                            <img className={styles["workshop-picture__preview"]} src={previewUrl}
+                                 alt="Voorbeeld van de gekozen afbeelding"
+                            />
+                        </label>
+                    }
 
                     <Button
                         type="submit"

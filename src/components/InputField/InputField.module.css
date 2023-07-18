@@ -22,6 +22,12 @@
     min-width: 200px;
 }
 
+.input-field-workshoppicture {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+
 .password-input-field {
     position: relative;
 }

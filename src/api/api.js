@@ -206,32 +206,6 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
 
 export async function createWorkshop(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, file) {
 
-    console.log(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description)
-
-    // const blob = new Blob([JSON.stringify({
-    //     title: title,
-    //     date: date,
-    //     startTime: starttime,
-    //     endTime: endtime,
-    //     price: price,
-    //     location: location,
-    //     workshopCategory1: category1,
-    //     workshopCategory2: category2,
-    //     highlightedInfo: highlightedinfo,
-    //     inOrOutdoors: inoroutdoors,
-    //     amountOfParticipants: amountparticipants,
-    //     description: description
-    // })], {
-    //     type: 'application/json' // Set the content type for the workshopInputDto part
-    // })
-    //
-    // console.log(blob)
-    //
-    // formData.append('workshopInputDto', blob);
-    //
-    //
-    // console.log("form data")
-    // console.log(formData.entries().next().value)
     const formData = new FormData();
 
     const workshopInputDto ={
@@ -256,8 +230,9 @@ export async function createWorkshop(workshopOwnerId, token, title, date, startt
         })
     );
 
-    //TODO if file is empty length != 0?
-    formData.append("file", file);
+    if (file) {
+        formData.append("file", file);
+    }
 
     const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
         formData, {
@@ -269,35 +244,3 @@ export async function createWorkshop(workshopOwnerId, token, title, date, startt
     });
     return response.data;
 }
-//    const workshopInputDto = JSON.stringify({
-//        title: title,
-//        date: date,
-//        startTime: starttime,
-//        endTime: endtime,
-//        price: price,
-//        location: location,
-//        workshopCategory1: category1,
-//        workshopCategory2: category2,
-//        highlightedInfo: highlightedinfo,
-//        inOrOutdoors: inoroutdoors,
-//        amountOfParticipants: amountparticipants,
-//        description: description
-//    });
-//
-//     const fileData = new FormData();
-//
-//     if (file) {
-//         fileData.append('file', file);
-//     }
-//
-//
-//     const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`, {
-//         workshopInputDto, fileData}, {
-//         headers: {
-//             "Content-Type": "multipart/form-data",
-//             Authorization: `Bearer ${token}`,
-//         },
-//         signal: controller.signal,
-//     });
-//     return response.data;
-// }

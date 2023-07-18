@@ -54,11 +54,8 @@ function NavBar() {
         reset();
     }
 
-    async function handleFormSubmit(data, e) {
-        //React hook form should take care of prevent default, but for some reason, the page refreshes on pressing enter.
-        // e.preventDefault();
+    async function handleFormSubmit(data) {
         setError('');
-        console.log(data)
         try {
             const {jwt} = await signIn(data.email, data.password);
             reset();

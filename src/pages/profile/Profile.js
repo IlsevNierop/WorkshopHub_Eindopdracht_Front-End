@@ -203,12 +203,8 @@ function Profile() {
     }
 
     function handleImageChange(e) {
-        // Sla het gekozen bestand op
         const uploadedFile = e.target.files[0];
-        console.log(uploadedFile);
-        // Sla het gekozen bestand op in de state
         setFile(uploadedFile);
-        // Sla de preview URL op zodat we deze kunnen laten zien in een <img>
         setPreviewUrl(URL.createObjectURL(uploadedFile));
     }
 
@@ -227,7 +223,7 @@ function Profile() {
                 ...userData,
                 profilepic: response.data,
             });
-            console.log(userData);
+
             //TODO na wijzigen foto is dit nodig, om de foto direct te tonen. Na 1e keer uploaden niet, kan dit op andere manier?
             window.location.reload();
 
@@ -256,6 +252,7 @@ function Profile() {
                                 <h3>Afbeelding uploaden</h3>
                                 <Link to="#" onClick={closeModal}><X size={18}/></Link>
                             </div>
+                            {/*//TODO make this inputfield */}
                             <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
                                 <label className={styles["label__input-field__profile-picture"]}
                                        htmlFor="profile-picture">

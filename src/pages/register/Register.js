@@ -111,7 +111,7 @@ function Register() {
                         onAfterOpen={afterOpenModal}
                         onRequestClose={closeModal}
                         style={customStyles}
-                        contentLabel="Reset password successful"
+                        contentLabel="Register successful"
                     >
                         <div className={styles["row__pop-up__successful"]}>
                             <Confetti size={32} color="#c45018" weight="fill"/>
