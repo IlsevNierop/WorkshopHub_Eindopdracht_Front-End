@@ -20,7 +20,6 @@ function CreateWorkshop() {
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
 
-    const navigate = useNavigate();
     const controller = new AbortController();
 
 
@@ -116,9 +115,10 @@ function CreateWorkshop() {
 
                 <h1>Nieuwe workshop aanmaken</h1>
 
+                {error && <p className="error-message">{error}</p>}
+
                 <form className={styles["create-workshop__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
 
-                    {/*TODO check validation backend*/}
                     <InputField
                         type="text"
                         name="title"

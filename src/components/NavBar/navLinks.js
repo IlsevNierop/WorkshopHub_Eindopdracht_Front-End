@@ -16,7 +16,7 @@ export function navLinks(authorities) {
                 },
                 {
                     title: "Goedkeuren Workshops",
-                    link: "/test",
+                    link: "/goedkeurenworkshops",
                 },
                 {
                     title: "Nieuwe Workshops",

@@ -166,6 +166,18 @@ export async function fetchWorkshopDataLoggedIn(token, id) {
     return response.data;
 }
 
+export async function fetchWorkshopsToVerifyByAdmin(token) {
+    const response = await axios.get(`${baseUrl}workshops/admin/verify`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
 export async function fetchSingleWorkshopData(workshopId) {
     const response = await axios.get(`${baseUrl}workshops/${workshopId}`,
         {
@@ -189,6 +201,28 @@ export async function fetchSingleWorkshopDataLoggedIn(token, id, workshopId) {
         });
     return response.data;
 }
+export async function fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId) {
+    const response = await axios.get(`${baseUrl}workshops/admin/${workshopId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+             signal: controller.signal,
+        });
+    return response.data;
+}
+export async function fetchSingleWorkshopDataByOwner(token, workshopId) {
+    const response = await axios.get(`${baseUrl}/workshopowner/workshop/${workshopId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+             signal: controller.signal,
+        });
+    return response.data;
+}
 
 
 export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, isFavourite) {
@@ -202,26 +236,25 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
     return response;
 }
 
-//TODO add file to create workshop
 
 export async function createWorkshop(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, file) {
 
     const formData = new FormData();
 
-    const workshopInputDto ={
-       title: title,
-       date: date,
-       startTime: starttime,
-       endTime: endtime,
-       price: price,
-       location: location,
-       workshopCategory1: category1,
-       workshopCategory2: category2,
-       highlightedInfo: highlightedinfo,
-       inOrOutdoors: inoroutdoors,
-       amountOfParticipants: amountparticipants,
-       description: description
-   };
+    const workshopInputDto = {
+        title: title,
+        date: date,
+        startTime: starttime,
+        endTime: endtime,
+        price: price,
+        location: location,
+        workshopCategory1: category1,
+        workshopCategory2: category2,
+        highlightedInfo: highlightedinfo,
+        inOrOutdoors: inoroutdoors,
+        amountOfParticipants: amountparticipants,
+        description: description
+    };
 
     formData.append(
         "workshopInputDto",
@@ -236,11 +269,11 @@ export async function createWorkshop(workshopOwnerId, token, title, date, startt
 
     const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
         formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-        },
-        signal: controller.signal,
-    });
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
     return response.data;
 }

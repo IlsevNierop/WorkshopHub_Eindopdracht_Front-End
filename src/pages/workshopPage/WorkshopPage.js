@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     addOrRemoveWorkshopFavourites,
     fetchSingleWorkshopData,
-    fetchSingleWorkshopDataLoggedIn,
+    fetchSingleWorkshopDataLoggedIn, fetchSingleWorkshopDataToVerifyByAdmin,
     signIn
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
@@ -20,6 +20,7 @@ import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
 import {Heart} from "@phosphor-icons/react";
+import {returnHighestAuthority} from "../../helper/returnHighestAuthority";
 
 function WorkshopPage() {
 
@@ -35,8 +36,6 @@ function WorkshopPage() {
     //TODO not using loading atm
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
-
-
 
 
     useEffect(() => {
@@ -315,19 +314,20 @@ function WorkshopPage() {
                                 }
                             </article>
 
-                            <div className={styles["info__bottom__workshop"]}>
-                                <h5>Belangrijk om te weten</h5>
+                            {singleWorkshopData.highlightedInfo &&
+                                <div className={styles["info__bottom__workshop"]}>
+                                    <h5>Belangrijk om te weten</h5>
 
-                                {singleWorkshopData.highlightedInfo &&
+
                                     <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
                                         return (
                                             <li className={styles["list-item"]} key={info.slice(0, 3)}>{info}</li>
                                         )
                                     })
                                     }</ul>
-                                }
 
-                            </div>
+                                </div>
+                            }
                         </section>
                     </>
 

@@ -12,14 +12,14 @@ import SignIn from "../SignIn/SignIn";
 
 function WorkshopTile({
                           workshoptitle,
-                          workshopId,
                           image,
                           price,
                           location,
                           date,
                           category1,
                           category2,
-                          isFavourite
+                          isFavourite,
+                          link
                       }) {
     const {user, login} = useContext(AuthContext);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
@@ -135,7 +135,7 @@ function WorkshopTile({
                     register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
                     error={error}> </SignIn>
 
-            <Link className={styles["workshop-tile__link"]} to={`/workshop/${workshopId}`}>
+            <Link className={styles["workshop-tile__link"]} to={link}>
                 <article className={styles["workshop-tile"]}>
                     <img className={styles["workshop-image"]} src={image} alt={category1}/>
                     <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>

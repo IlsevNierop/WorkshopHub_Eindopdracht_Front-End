@@ -340,6 +340,7 @@ function Profile() {
                                             register={register}
                                             errors={errors}
                                             value={userData.firstname}
+                                            // TODO onchange doesn't work anymore since removing it from inputfield, because of
                                             onChange={handleChange}
                                         >
                                         </InputField>
