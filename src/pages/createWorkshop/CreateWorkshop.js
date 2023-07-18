@@ -2,13 +2,11 @@ import React, {useContext, useState} from 'react';
 import styles from '../createWorkshop/CreateWorkshop.module.css'
 import {AuthContext} from "../../context/AuthContext";
 import InputField from "../../components/InputField/InputField";
-import {useForm, Controller, useController} from "react-hook-form";
+import {useForm, Controller} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button";
-import {createCustomer, createWorkshop, createWorkshopOwner} from "../../api/api";
+import {createWorkshop} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import Select from "react-select";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
 import Modal from "react-modal";
 import {Confetti} from "@phosphor-icons/react";
@@ -54,7 +52,7 @@ function CreateWorkshop() {
             openModal();
             setTimeout(() => {
                 closeModal();
-            }, 2000);
+            }, 5000);
 
 
         } catch (e) {
@@ -105,11 +103,15 @@ function CreateWorkshop() {
                     style={customStyles}
                     contentLabel="Create workshop successful"
                 >
+                    <section className={styles["column__pop-up__successful"]}>
                     <div className={styles["row__pop-up__successful"]}>
                         <Confetti size={32} color="#c45018" weight="fill"/>
                         <h3>Dank voor het uploaden van je nieuwe workshop</h3>
                         <Confetti size={32} color="#c45018" weight="fill"/>
                     </div>
+                        <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.</p>
+                        <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
+                    </section>
                 </Modal>
 
                 <h1>Nieuwe workshop aanmaken</h1>
@@ -247,7 +249,7 @@ function CreateWorkshop() {
                     <div className={styles["dropdown-inoroutdoors__container"]}>
 
                         <label className={styles["dropdown-inoroutdoors__label"]}
-                               htmlFor="inoroutdoors">Binnen/buiten:</label>
+                               htmlFor="inoroutdoors">Binnen/buiten*</label>
                         <Controller
                             name="inoroutdoors"
                             control={control}
@@ -315,13 +317,18 @@ function CreateWorkshop() {
                             </div>
                         )}
                     />
+                    <label className={styles["label__input-field__workshop-picture"]}
+                           htmlFor="workshop-picture-field">
+                        Kies afbeelding
                     <InputField
                         type="file"
-                        name="workshoppicture"
+                        name="workshop-picture"
                         label="Foto uploaden"
+                        classNameInputField="input-field__workshop-picture"
                         onChangeHandler={handleImageChange}
                     >
                     </InputField>
+                    </label>
 
                     {previewUrl &&
                         <label className={styles["workshop-picture__preview__label"]}>
