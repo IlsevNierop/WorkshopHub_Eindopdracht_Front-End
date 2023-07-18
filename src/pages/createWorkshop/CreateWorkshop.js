@@ -37,16 +37,26 @@ function CreateWorkshop() {
 
     async function handleFormSubmit(data) {
         console.log(data)
-        console.log(data.date)
-        console.log(data.inoroutdoors)
+        // console.log(data.date)
+        // console.log(data.inoroutdoors)
+        //
+        // // console.log(updateDateFormatShort(data.date))
+        // console.log(data.starttime + ":00")
+        // console.log(data.endtime + ":00")
 
-        // console.log(updateDateFormatShort(data.date))
-        console.log(data.starttime + ":00")
-        console.log(data.endtime + ":00")
+        // console.log(data.workshoppicture[0])
+
+
+        // const formData = new FormData();
+        // if (data.workshoppicture.length === 1) {
+        //     formData.append("file", data.workshoppicture[0]);
+        // }
+        // data = { ...data, picture: data.workshoppicture[0].name };
+        // formData.append("file", JSON.stringify(data));
 
 
         try {
-            const response = await createWorkshop(id, token, data.title, data.date, (data.starttime + ":00"),(data.endtime + ":00"), data.price, data.location, data.category1, data.category2, data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description);
+            const response = await createWorkshop(id, token, data.title, data.date, (data.starttime + ":00"),(data.endtime + ":00"), data.price, data.location, data.category1, data.category2, data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description,  data.workshoppicture[0]);
             reset();
             console.log(response);
             console.log("gelukt!")
@@ -268,6 +278,14 @@ function CreateWorkshop() {
                             </div>
                         )}
                     />
+                    <InputField
+                        type="file"
+                        name="workshoppicture"
+                        label="Foto uploaden"
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
 
                     <Button
                         type="submit"

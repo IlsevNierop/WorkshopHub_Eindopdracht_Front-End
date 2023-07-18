@@ -202,30 +202,102 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
     return response;
 }
 
+//TODO add file to create workshop
 
-export async function createWorkshop(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description) {
-    const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`, {
-        title: title,
-        date: date,
-        startTime: starttime,
-        endTime: endtime,
-        price: price,
-        location: location,
-        workshopCategory1: category1,
-        workshopCategory2: category2,
-        highlightedInfo: highlightedinfo,
-        inOrOutdoors: inoroutdoors,
-        amountOfParticipants: amountparticipants,
-        description: description,
-        //   workshopVerified;
-        // feedbackAdmin;
-        //  publishWorkshop;
-    }, {
+export async function createWorkshop(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, file) {
+
+    console.log(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description)
+
+    // const blob = new Blob([JSON.stringify({
+    //     title: title,
+    //     date: date,
+    //     startTime: starttime,
+    //     endTime: endtime,
+    //     price: price,
+    //     location: location,
+    //     workshopCategory1: category1,
+    //     workshopCategory2: category2,
+    //     highlightedInfo: highlightedinfo,
+    //     inOrOutdoors: inoroutdoors,
+    //     amountOfParticipants: amountparticipants,
+    //     description: description
+    // })], {
+    //     type: 'application/json' // Set the content type for the workshopInputDto part
+    // })
+    //
+    // console.log(blob)
+    //
+    // formData.append('workshopInputDto', blob);
+    //
+    //
+    // console.log("form data")
+    // console.log(formData.entries().next().value)
+    const formData = new FormData();
+
+    const workshopInputDto ={
+       title: title,
+       date: date,
+       startTime: starttime,
+       endTime: endtime,
+       price: price,
+       location: location,
+       workshopCategory1: category1,
+       workshopCategory2: category2,
+       highlightedInfo: highlightedinfo,
+       inOrOutdoors: inoroutdoors,
+       amountOfParticipants: amountparticipants,
+       description: description
+   };
+
+    formData.append(
+        "workshopInputDto",
+        new Blob([JSON.stringify(workshopInputDto)], {
+            type: "application/json",
+        })
+    );
+
+    //TODO if file is empty length != 0?
+    formData.append("file", file);
+
+    const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
+        formData, {
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
         signal: controller.signal,
     });
     return response.data;
 }
+//    const workshopInputDto = JSON.stringify({
+//        title: title,
+//        date: date,
+//        startTime: starttime,
+//        endTime: endtime,
+//        price: price,
+//        location: location,
+//        workshopCategory1: category1,
+//        workshopCategory2: category2,
+//        highlightedInfo: highlightedinfo,
+//        inOrOutdoors: inoroutdoors,
+//        amountOfParticipants: amountparticipants,
+//        description: description
+//    });
+//
+//     const fileData = new FormData();
+//
+//     if (file) {
+//         fileData.append('file', file);
+//     }
+//
+//
+//     const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`, {
+//         workshopInputDto, fileData}, {
+//         headers: {
+//             "Content-Type": "multipart/form-data",
+//             Authorization: `Bearer ${token}`,
+//         },
+//         signal: controller.signal,
+//     });
+//     return response.data;
+// }
