@@ -12,7 +12,7 @@
     flex-direction: column;
 }
 
-.input-field {
+.input-field, .input-field__workshop-picture {
     border: solid 1px var(--color-grey-500);
     color: var(--color-black);
     padding: 0.5rem;
@@ -20,6 +20,10 @@
     font-size: 12px;
     border-radius: 5px;
     min-width: 200px;
+}
+
+.input-field__workshop-picture {
+    width: 250px;
 }
 
 .password-input-field {

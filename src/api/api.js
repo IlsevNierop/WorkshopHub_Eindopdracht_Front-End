@@ -12,6 +12,8 @@ const controller = new AbortController();
 
 const baseUrl = "http://localhost:8080/"
 
+// TODO moet gemakkelijker kunnen, niet elke pagina een hele try en catch
+
 /* --------------- 1 User API requests ----------------------- */
 
 export async function signIn(email, password) {
@@ -163,6 +165,7 @@ export async function fetchWorkshopDataLoggedIn(token, id) {
         });
     return response.data;
 }
+
 export async function fetchSingleWorkshopData(workshopId) {
     const response = await axios.get(`${baseUrl}workshops/${workshopId}`,
         {
@@ -170,6 +173,7 @@ export async function fetchSingleWorkshopData(workshopId) {
         });
     return response.data;
 }
+
 export async function fetchSingleWorkshopDataLoggedIn(token, id, workshopId) {
     const response = await axios.get(`${baseUrl}workshops/${workshopId}`,
         {
@@ -196,4 +200,47 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
             }
         });
     return response;
+}
+
+//TODO add file to create workshop
+
+export async function createWorkshop(workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, file) {
+
+    const formData = new FormData();
+
+    const workshopInputDto ={
+       title: title,
+       date: date,
+       startTime: starttime,
+       endTime: endtime,
+       price: price,
+       location: location,
+       workshopCategory1: category1,
+       workshopCategory2: category2,
+       highlightedInfo: highlightedinfo,
+       inOrOutdoors: inoroutdoors,
+       amountOfParticipants: amountparticipants,
+       description: description
+   };
+
+    formData.append(
+        "workshopInputDto",
+        new Blob([JSON.stringify(workshopInputDto)], {
+            type: "application/json",
+        })
+    );
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    const response = await axios.post(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
+        formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
 }

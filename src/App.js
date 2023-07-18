@@ -6,11 +6,11 @@ import Home from "./pages/home/Home";
 import {useContext, useState} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
-import NewWorkshop from "./pages/newWorkshop/NewWorkshop";
 import {returnHighestAuthority} from "./helper/returnHighestAuthority";
 import ResetPassword from "./pages/resetPassword/ResetPassword";
 import Register from "./pages/register/Register";
 import WorkshopPage from "./pages/workshopPage/WorkshopPage";
+import CreateWorkshop from "./pages/createWorkshop/CreateWorkshop";
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
                     <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     <Route path="/registreren" element={<Register/>}/>
                     {/*TODO isAuth ook toevoegen?*/}
-                    <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <NewWorkshop/> : <Home />}/>
+                    <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <CreateWorkshop/> : <Home />}/>
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>
                 <Footer></Footer>

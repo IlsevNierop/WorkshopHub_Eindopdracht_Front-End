@@ -29,7 +29,7 @@ function InputField({
                     <>
                         {label}
                         <input
-                            className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]}`}
+                            className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}
                             value={value}
 
                             type={type}
