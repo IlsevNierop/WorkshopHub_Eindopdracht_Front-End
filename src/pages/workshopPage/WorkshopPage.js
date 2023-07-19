@@ -20,7 +20,6 @@ import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
 import {Heart} from "@phosphor-icons/react";
-import {returnHighestAuthority} from "../../helper/returnHighestAuthority";
 
 function WorkshopPage() {
 

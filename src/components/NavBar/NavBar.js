@@ -174,11 +174,49 @@ function NavBar() {
                         {/* TODO add navbar dropdown for sub menus*/}
 
                         {
-                            navLinks(user.authorities).map((navlink) => {
-                                return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}><NavLink
-                                    className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                                    to={navlink.link}>{navlink.title}</NavLink>
-                                </li>)
+                            navLinks(user.highestAuthority).map((navlink) => {
+                                // return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}><NavLink
+                                //     className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
+                                //     to={navlink.link}>{navlink.title}</NavLink>
+                                // </li>)
+                                //
+                                return (    <li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
+                                        {navlink.submenu ? (
+                                            <div className={styles["nav__dropdown_menu"]}>
+                                                <span className={styles['default-nav-link']}>{navlink.title}</span>
+
+                                                {/*<NavLink*/}
+                                                {/*    className={({ isActive }) =>*/}
+                                                {/*        isActive ? styles['active-nav-link'] : styles['default-nav-link']*/}
+                                                {/*    }*/}
+                                                {/*    to={navlink.link}*/}
+                                                {/*>*/}
+                                                {/*    {navlink.title}*/}
+                                                {/*</NavLink>*/}
+                                                <div className={styles["nav__dropdown_content"]}>
+                                                    {navlink.submenu.map((submenuItem) => (
+                                                        <NavLink
+                                                            key={submenuItem.title}
+                                                            to={submenuItem.link}
+                                                            className={styles['default-nav-link']}
+                                                        >
+                                                            {submenuItem.title}
+                                                        </NavLink>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <NavLink
+                                                className={({ isActive }) =>
+                                                    isActive ? styles['active-nav-link'] : styles['default-nav-link']
+                                                }
+                                                to={navlink.link}
+                                            >
+                                                {navlink.title}
+                                            </NavLink>
+                                        )}
+                                    </li>
+                                );
                             })
                         }
 

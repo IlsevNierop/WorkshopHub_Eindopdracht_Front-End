@@ -2,82 +2,107 @@
 //
 
 
-import {returnHighestAuthority} from "../../helper/returnHighestAuthority";
+export function navLinks(highestAuthority) {
 
-export function navLinks(authorities) {
+    if (highestAuthority === 'admin') {
+        return [
+            {
+                title: "Mijn Profiel",
+                link: "/profiel",
+            },
+            {
+                title: "Workshops",
+                submenu: [
+                    {
+                        title: "Alle Workshops",
+                        link: "/alleworkshops",
+                    },
+                    {
+                        title: "Goedkeuren Workshops",
+                        link: "/goedkeurenworkshops",
+                    },
+                    {
+                        title: "Nieuwe Workshop",
+                        link: "/nieuweworkshop",
+                    },
 
-    const highestAuthority = returnHighestAuthority(authorities);
+                ],
+            }, {
+                title: "Reviews",
+                submenu: [
+                    {
+                        title: "Alle Reviews",
+                        link: "/allereviews",
+                    },
+                    {
+                        title: "Goedkeuren Reviews",
+                        link: "/goedkeurenreviews",
+                    },
+                    {
+                        title: "Nieuwe Workshop",
+                        link: "/nieuweworkshop",
+                    },
 
-        if (highestAuthority === 'admin') {
-            return [
-                {
-                    title: "Mijn Profiel",
-                    link: "/profiel",
-                },
-                {
-                    title: "Goedkeuren Workshops",
-                    link: "/goedkeurenworkshops",
-                },
-                {
-                    title: "Nieuwe Workshops",
-                    link: "/nieuweworkshop",
-                },
-                {
-                    title: "Goedkeuren Reviews",
-                    link: "/test",
-                },
-                {
-                    title: "Workshops",
-                    link: "/test",
-                },
-                {
-                    title: "Reviews",
-                    link: "/test",
-                },
-                {
-                    title: "Boekingen",
-                    link: "/test",
-                },
-                {
-                    title: "Gebruikers",
-                    link: "/test",
-                }];
-        } else if (highestAuthority === 'workshopowner') {
-            return [
-                {
-                    title: "Mijn Profiel",
-                    link: "/profiel",
-                },
-                {
-                    title: "Mijn Workshops",
-                    link: "/test",
-                },
-                {
-                    title: "Reviews",
-                    link: "/test",
-                },
-                {
-                    title: "Boekingen",
-                    link: "/test",
-                },
-                {
-                    title: "Nieuwe Workshop",
-                    link: "/nieuweworkshop",
-                }];
-        } else {
-            return [
-                {
-                    title: "Mijn Profiel",
-                    link: "/profiel",
-                },
-                {
-                    title: "Mijn Boekingen",
-                    link: "/test",
-                },
-                {
-                    title: "Mijn Reviews",
-                    link: "/test",
-                }];
-        }
+                ],
+            },
+            {
+                title: "Boekingen",
+                link: "/test",
+            },
+            {
+                title: "Gebruikers",
+                link: "/test",
+            }];
+    } else if (highestAuthority === 'workshopowner') {
+        return [
+            {
+                title: "Mijn Profiel",
+                link: "/profiel",
+            }, {
+                title: "Workshops",
+                submenu: [
+                    {
+                        //TODO filter toevoegen op deze pagina - welke moeten nog gepubliceerd worden - met icoontjes werken aantonen welke al geverifieerd zijn?
+                        title: "Al mijn Workshops",
+                        link: "/alleworkshops",
+                    },
+                    {
+                        title: "Goedkeuren Workshops",
+                        link: "/goedkeurenworkshops",
+                    },
+                    {
+                        title: "Nieuwe Workshop",
+                        link: "/nieuweworkshop",
+                    },
+
+                ],
+            },
+            {
+                title: "Reviews",
+                link: "/test",
+            },
+            {
+                title: "Boekingen",
+                link: "/test",
+            },
+            {
+                title: "Nieuwe Workshop",
+                link: "/nieuweworkshop",
+            }];
+    } else {
+        return [
+            {
+                title: "Mijn Profiel",
+                link: "/profiel",
+            },
+            {
+                title: "Mijn Boekingen",
+                link: "/test",
+            },
+            {
+                title: "Mijn Reviews",
+                link: "/test",
+            }];
+    }
 
 }

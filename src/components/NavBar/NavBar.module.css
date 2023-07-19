@@ -41,9 +41,38 @@
     height: 45px;
 }
 
+
+.nav__dropdown_menu {
+    position: relative;
+}
+
+.nav__dropdown_menu:hover .nav__dropdown_content {
+    display: block;
+}
+
+.nav__dropdown_content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-grey-200);
+    padding: 10px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+    white-space: nowrap;
+    width: auto;
+}
+
+.nav__dropdown_menu .nav__dropdown_content a {
+    display: block;
+}
+
+
 li {
     list-style: none;
 }
+
 
 .default-nav-link,
 nav a:visited {
