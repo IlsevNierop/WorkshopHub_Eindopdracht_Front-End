@@ -300,7 +300,7 @@ function CreateWorkshop() {
                         rules={{
                             required: 'Omschrijving is verplicht',
                             minLength: {value: 50, message: 'Omschrijving moet uit minstens 50 karakters bestaan'},
-                            maxLength: {value: 1500, message: 'Omschrijving mag uit maximaal 1500 karakters bestaan'}
+                            maxLength: {value: 2000, message: 'Omschrijving mag uit maximaal 2000 karakters bestaan'}
                         }}
                         render={({field}) => (
                             <div>
@@ -310,7 +310,7 @@ function CreateWorkshop() {
                                 id="description"
                                 cols={52}
                                 rows={20}
-                                placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 1500 karakters."
+                                placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 2000 karakters."
                             />
                                 {errors.description && <p style={{whiteSpace: 'pre-line'}}
                                                           className={styles["input-field__error-message"]}>{errors.description.message}</p>}

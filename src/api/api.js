@@ -277,3 +277,49 @@ export async function createWorkshop(workshopOwnerId, token, title, date, startt
         });
     return response.data;
 }
+
+export async function updateAndVerifyWorkshopByAdmin(workshopId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, workshopVerified, feedbackAdmin, file) {
+
+    const formData = new FormData();
+
+    const workshopInputDto = {
+        title: title,
+        date: date,
+        startTime: starttime,
+        endTime: endtime,
+        price: price,
+        location: location,
+        workshopCategory1: category1,
+        workshopCategory2: category2,
+        highlightedInfo: highlightedinfo,
+        inOrOutdoors: inoroutdoors,
+        amountOfParticipants: amountparticipants,
+        description: description,
+        workshopVerified: workshopVerified,
+        feedbackAdmin: feedbackAdmin
+    };
+
+    formData.append(
+        "workshopInputDto",
+        new Blob([JSON.stringify(workshopInputDto)], {
+            type: "application/json",
+        })
+    );
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    const response = await axios.put(`${baseUrl}workshops/admin/${workshopId}`,
+        formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+
+

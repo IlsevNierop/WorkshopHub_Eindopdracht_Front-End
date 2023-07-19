@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import {checkTokenValidity} from "../helper/checkTokenValidity";
+import {returnHighestAuthority} from "../helper/returnHighestAuthority";
 
 export const AuthContext = createContext(null);
 
@@ -42,6 +43,7 @@ function AuthContextProvider({children}) {
                 id: id,
                 authorities: authorities,
                 workshopowner: workshopowner,
+                highestAuthority: returnHighestAuthority(authorities)
             },
             status: "done",
         });

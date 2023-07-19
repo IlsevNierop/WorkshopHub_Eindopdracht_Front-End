@@ -1,8 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styles from './UpdateWorkshopPage.module.css';
 
-import {returnHighestAuthority} from "../../helper/returnHighestAuthority";
-import {createWorkshop, fetchSingleWorkshopDataByOwner, fetchSingleWorkshopDataToVerifyByAdmin} from "../../api/api";
+import {
+    createWorkshop,
+    fetchSingleWorkshopDataByOwner,
+    fetchSingleWorkshopDataToVerifyByAdmin,
+    updateAndVerifyWorkshopByAdmin
+} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import InputField from "../../components/InputField/InputField";
@@ -12,13 +16,14 @@ import {useNavigate, useParams} from "react-router-dom";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
 import Modal from "react-modal";
 import {Confetti} from "@phosphor-icons/react";
+import StarRating from "../../components/StarRating/StarRating";
 
 function UpdateWorkshopPage() {
 
     const {workshopId} = useParams();
     const token = localStorage.getItem('token');
     const controller = new AbortController();
-    const {user} = useContext(AuthContext);
+    const {user: {highestAuthority}} = useContext(AuthContext);
 
 
     const [workshopToVerifyData, setWorkshopToVerifyData] = useState({
@@ -42,7 +47,7 @@ function UpdateWorkshopPage() {
     });
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
-    const {register, handleSubmit, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
+    const {register, handleSubmit, setValue, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
 
@@ -51,7 +56,7 @@ function UpdateWorkshopPage() {
         async function fetchWorkshopData() {
             toggleLoading(true);
             setError('');
-            if (returnHighestAuthority(user.authorities) === 'admin') {
+            if (highestAuthority === 'admin') {
                 try {
                     const {
                         workshopOwnerCompanyName,
@@ -94,12 +99,28 @@ function UpdateWorkshopPage() {
                     });
                     setError('');
 
+                    setValue('description', description);
+                    setValue('title', title);
+                    setValue('date', date);
+                    setValue('startTime', startTime.slice(0,5));
+                    setValue('endTime', endTime.slice(0,5));
+                    setValue('price', price);
+                    setValue('location', location);
+                    setValue('workshopCategory1', workshopCategory1);
+                    setValue('workshopCategory2', workshopCategory2);
+                    setValue('inOrOutdoors', inOrOutdoors);
+                    setValue('amountOfParticipants', amountOfParticipants);
+                    setValue('highlightedInfo', highlightedInfo);
+                    setValue('description', description);
+                    setValue('workshopPicUrl', workshopPicUrl);
+
+
                 } catch (e) {
                     setError(errorHandling(e));
                     console.log(error);
                 }
                 toggleLoading(false);
-            } else if (returnHighestAuthority(user.authorities) === 'workshopowner') {
+            } else if (highestAuthority === 'workshopowner') {
                 try {
                     const response = await fetchSingleWorkshopDataByOwner(token, workshopId);
                     console.log("owner", response)
@@ -123,14 +144,6 @@ function UpdateWorkshopPage() {
 
     }, []);
 
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-        setWorkshopToVerifyData((prevValues) => ({
-            ...prevValues,
-            [name]: value,
-        }));
-    };
-
 
     const validateFutureDate = (value) => {
         const selectedDate = new Date(value);
@@ -152,25 +165,40 @@ function UpdateWorkshopPage() {
 
     async function handleFormSubmit(data) {
         setPreviewUrl('');
+        console.log(data)
 
-        // TODO put voor admin vs owner
-
-        // try {
-        //     const response = await createWorkshop(id, token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
-        //     reset();
-        //     setFile([]);
-        //     openModal();
-        //     setTimeout(() => {
-        //         closeModal();
-        //     }, 5000);
-
+            if (highestAuthority === 'admin') {
+                try {
+                    const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, capitalizeFirstLetter(data.title), data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.workshopCategory1), capitalizeFirstLetter(data.workshopCategory2), data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+                    reset();
+                    setFile([]);
+                    openModal();
+                    setTimeout(() => {
+                        closeModal();
+                    }, 5000);
+                    console.log("gelukt!")
+                }
+                catch (e) {
+                    setError(errorHandling(e));
+                }
+            }
         //
-        // } catch (e) {
-        //     setError(errorHandling(e));
-        // }
-
+        //     else {
+        //         const response = await createWorkshop( token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
+        //         reset();
+        //         setFile([]);
+        //         openModal();
+        //         setTimeout(() => {
+        //             closeModal();
+        //         }, 5000);
+        //
+        //
+        //     } catch (e) {
+        //         setError(errorHandling(e));
+        //     }
+        //     }
+        //
     }
-
 
     // ...................MODAL
     const customStyles = {
@@ -226,271 +254,336 @@ function UpdateWorkshopPage() {
                 </Modal>
 
 
-                <h1>{returnHighestAuthority(user.authorities) === 'admin' ? "Te accorderen workshop" : "Pas hier je workshop aan"}</h1>
+                {highestAuthority === 'admin' ?
+                    <>
+                        <h1>Te accorderen workshop</h1>
+                        <h5>Bedrijf: <span
+                            className={styles["company-name"]}> {workshopToVerifyData.workshopOwnerCompanyName} </span>
+                        </h5>
+                    </>
+                    :
+                    <h1>Pas hier je workshop aan</h1>}
+
                 {loading && <p>Loading...</p>}
                 {error && <p className="error-message">{error}</p>}
 
 
-                    <form className={styles["update-workshop__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
+                <form className={styles["update-workshop__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
 
 
-                        <InputField
-                            type="text"
-                            name="title"
-                            label="Titel* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Titel is verplicht",
-                                    }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.title}
-                            // onChangeHandler={handleChange}
-                        >
-                        </InputField>
-                        <InputField
-                            type="date"
-                            name="date"
-                            label="Datum* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Datum is verplicht",
-                                    },
-                                validate: validateFutureDate
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.date}
-                        >
-                        </InputField>
-                        <InputField
-                            type="time"
-                            name="starttime"
-                            label="Starttijd* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Starttijd is verplicht",
-                                    }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.startTime}
-                        >
-                        </InputField>
-                        <InputField
-                            type="time"
-                            name="endtime"
-                            label="Eindtijd* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Eindtijd is verplicht",
-                                    }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.endTime}
-                        >
-                        </InputField>
-                        <InputField
-                            type="text"
-                            step="any"
-                            name="price"
-                            label="Prijs* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Prijs is verplicht",
-                                    },
-                                pattern: {
-                                    value: /^\d+(\.\d{1,2})?$/,
-                                    message: 'De prijs mag maximaal 2 decimalen hebben (gebruik een punt . en geen komma) en moet hoger dan 0 zijn'
+                    <InputField
+                        type="text"
+                        name="title"
+                        label="Titel* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Titel is verplicht",
                                 }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.price}
-                        >
-                        </InputField>
-                        <InputField
-                            type="text"
-                            name="location"
-                            label="Locatie* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Locatie is verplicht",
-                                    }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.location}
-                        >
-                        </InputField>
-                        <InputField
-                            type="text"
-                            name="category1"
-                            label="Categorie* "
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Categorie is verplicht",
-                                    }
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.workshopCategory1}
-                        >
-                        </InputField>
-                        <InputField
-                            type="text"
-                            name="category2"
-                            label="Extra categorie"
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.workshopCategory2}
-
-                        >
-                        </InputField>
-
-                        <div className={styles["dropdown-inoroutdoors__container"]}>
-
-                            <label className={styles["dropdown-inoroutdoors__label"]}
-                                   htmlFor="inoroutdoors">Binnen/buiten*</label>
-                            <Controller
-                                name="inoroutdoors"
-                                control={control}
-                                defaultValue={workshopToVerifyData.inOrOutdoors}
-
-                                render={({field}) => (
-                                    <select className={styles["dropdown-inoroutdoors__inputfield"]} {...field}
-                                            id="inoroutdoors">
-                                        <option value="INDOORS">Binnen</option>
-                                        <option value="OUTDOORS">Buiten</option>
-                                        <option value="IN_AND_OUTDOORS">Gedeeltelijk binnen en buiten</option>
-                                    </select>
-                                )}
-                            />
-                        </div>
-                        <InputField
-                            type="number"
-                            name="amountparticipants"
-                            label="Max aantal deelnemers*"
-                            validation={{
-                                required:
-                                    {
-                                        value: true,
-                                        message: "Maximaal aantal is verplicht",
-                                    },
-                                min: {
-                                    value: 1,
-                                    message: 'Het aantal deelnemers moet hoger dan 0 zijn',
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="date"
+                        name="date"
+                        label="Datum* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Datum is verplicht",
                                 },
-                            }
-                            }
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.amountOfParticipants}
-
-                        >
-                        </InputField>
-                        <InputField
-                            type="text"
-                            name="highlightedinfo"
-                            label="Belangrijke details"
-                            register={register}
-                            errors={errors}
-                            value={workshopToVerifyData.highlightedInfo}
-
-                        >
-                        </InputField>
-                        <label htmlFor="description">Omschrijving*</label>
-                        <Controller
-                            name="description"
-                            control={control}
-                            defaultValue=''
-
-                            rules={{
-                                required: 'Omschrijving is verplicht',
-                                minLength: {value: 50, message: 'Omschrijving moet uit minstens 50 karakters bestaan'},
-                                maxLength: {
-                                    value: 1500,
-                                    message: 'Omschrijving mag uit maximaal 1500 karakters bestaan'
+                            validate: validateFutureDate
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="time"
+                        name="startTime"
+                        label="Starttijd* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Starttijd is verplicht",
                                 }
-                            }}
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="time"
+                        name="endTime"
+                        label="Eindtijd* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Eindtijd is verplicht",
+                                }
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="text"
+                        step="any"
+                        name="price"
+                        label="Prijs* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Prijs is verplicht",
+                                },
+                            pattern: {
+                                value: /^\d+(\.\d{1,2})?$/,
+                                message: 'De prijs mag maximaal 2 decimalen hebben (gebruik een punt . en geen komma) en moet hoger dan 0 zijn'
+                            }
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+
+                    >
+                    </InputField>
+                    <InputField
+                        type="text"
+                        name="location"
+                        label="Locatie* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Locatie is verplicht",
+                                }
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="text"
+                        name="workshopCategory1"
+                        label="Categorie* "
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Categorie is verplicht",
+                                }
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="text"
+                        name="workshopCategory2"
+                        label="Extra categorie"
+                        register={register}
+                        errors={errors}
+
+                    >
+                    </InputField>
+
+                    <div className={styles["dropdown-inoroutdoors__container"]}>
+
+                        <label className={styles["dropdown-inoroutdoors__label"]}
+                               htmlFor="inoroutdoors">Binnen/buiten*</label>
+                        <Controller
+                            name="inoroutdoors"
+                            control={control}
+                            defaultValue={workshopToVerifyData.inOrOutdoors}
+
                             render={({field}) => (
-                                <div>
+                                <select className={styles["dropdown-inoroutdoors__inputfield"]} {...field}
+                                        id="inoroutdoors">
+                                    <option value="INDOORS">Binnen</option>
+                                    <option value="OUTDOORS">Buiten</option>
+                                    <option value="IN_AND_OUTDOORS">Gedeeltelijk binnen en buiten</option>
+                                </select>
+                            )}
+                        />
+                    </div>
+                    <InputField
+                        type="number"
+                        name="amountOfParticipants"
+                        label="Max aantal deelnemers*"
+                        validation={{
+                            required:
+                                {
+                                    value: true,
+                                    message: "Maximaal aantal is verplicht",
+                                },
+                            min: {
+                                value: 1,
+                                message: 'Het aantal deelnemers moet hoger dan 0 zijn',
+                            },
+                        }
+                        }
+                        register={register}
+                        errors={errors}
+                    >
+                    </InputField>
+                    <InputField
+                        type="text"
+                        name="highlightedInfo"
+                        label="Belangrijke details"
+                        register={register}
+                        errors={errors}
+
+                    >
+                    </InputField>
+                    <label htmlFor="description">Omschrijving*</label>
+                    <Controller
+                        name="description"
+                        control={control}
+                        rules={{
+                            required: 'Omschrijving is verplicht',
+                            minLength: {value: 50, message: 'Omschrijving moet uit minstens 50 karakters bestaan'},
+                            maxLength: {
+                                value: 2000,
+                                message: 'Omschrijving mag uit maximaal 2000 karakters bestaan'
+                            }
+                        }}
+                        render={({field}) => (
+                            <div>
                             <textarea
                                 className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
                                 {...field}
                                 id="description"
+                                name="description"
                                 cols={52}
                                 rows={20}
-                                placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 1500 karakters."
-                                value={workshopToVerifyData.description}
+                                placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 2000 karakters."
                             />
-                                    {errors.description && <p style={{whiteSpace: 'pre-line'}}
-                                                              className={styles["input-field__error-message"]}>{errors.description.message}</p>}
-                                </div>
-                            )}
-                        />
+                                {errors.description && <p style={{whiteSpace: 'pre-line'}}
+                                                          className={styles["input-field__error-message"]}>{errors.description.message}</p>}
+                            </div>
+                        )}
+                    />
 
-                        {workshopToVerifyData.workshopPicUrl &&
-                            <label className={styles["workshop-picture__label"]}>
-                                Originele afbeelding:
-                                <img className={styles["workshop-picture"]} src={workshopToVerifyData.workshopPicUrl}
-                                     alt="Originele afbeelding"
-                                />
-                            </label>
-                        }
-
-                        <label className={styles["label__input-field__workshop-picture"]}
-                               htmlFor="workshop-picture-field">
-                            Kies afbeelding
-                            <InputField
-                                type="file"
-                                name="workshop-picture"
-                                label="Foto uploaden"
-                                classNameInputField="input-field__workshop-picture"
-                                onChangeHandler={handleImageChange}
-                            >
-                            </InputField>
+                    {workshopToVerifyData.workshopPicUrl &&
+                        <label className={styles["workshop-picture__label"]}>
+                            Originele afbeelding
+                            <img className={styles["workshop-picture"]} src={workshopToVerifyData.workshopPicUrl}
+                                 alt="Originele afbeelding"
+                            />
                         </label>
+                    }
+
+                    <label className={styles["label__input-field__workshop-picture"]}
+                           htmlFor="workshop-picture-field">
+                        Nieuwe afbeelding
+                        <InputField
+                            type="file"
+                            name="workshop-picture"
+                            label="Foto uploaden"
+                            classNameInputField="input-field__workshop-picture"
+                            onChangeHandler={handleImageChange}
+                        >
+                        </InputField>
+                    </label>
 
 
-                        {previewUrl &&
-                            <label className={styles["workshop-picture__preview__label"]}>
-                                Preview:
-                                <img className={styles["workshop-picture__preview"]} src={previewUrl}
-                                     alt="Voorbeeld van de gekozen afbeelding"
+                    {previewUrl &&
+                        <label className={styles["workshop-picture__preview__label"]}>
+                            Preview:
+                            <img className={styles["workshop-picture__preview"]} src={previewUrl}
+                                 alt="Voorbeeld van de gekozen afbeelding"
+                            />
+                        </label>
+                    }
+
+                    {highestAuthority === 'admin' &&
+                        <div className={styles["container__admin__input-fields"]}>
+                            <label htmlFor="workshopVerified">Workshop goed- of afkeuren
+                                <div className={styles["workshop-verified-radio-row"]}>
+                                    <InputField
+                                        classNameInputField="radio-checkbox__workshop-verified"
+                                        classNameLabel="label__radio-checkbox__workshop-verified"
+                                        name="workshopVerified"
+                                        type="radio"
+                                        value={true}
+                                        validation={{
+                                            required:
+                                                {
+                                                    value: true,
+                                                    message: "Het is verplicht de workshop goed of af te keuren. ",
+                                                }
+                                        }
+                                        }
+                                        register={register}
+                                        errors={errors}
+                                    >
+                                        Goedgekeurd
+                                    </InputField>
+                                    <InputField
+                                        classNameInputField="radio-checkbox__workshop-verified"
+                                        classNameLabel="label__radio-checkbox__workshop-verified"
+                                        name="workshopVerified"
+                                        type="radio"
+                                        value={false}
+                                        validation={{
+                                            required:
+                                                {
+                                                    value: true,
+                                                    message: "Het is verplicht de workshop goed of af te keuren. ",
+                                                }
+                                        }
+                                        }
+                                        register={register}
+                                        errors={errors}
+                                    >
+                                        Afgekeurd
+                                    </InputField>
+                                </div>
+                            </label>
+
+                            <label htmlFor="feedbackAdmin">Feedback voor de workshop eigenaar:
+                                <Controller
+                                    name="feedbackAdmin"
+                                    control={control}
+                                    render={({field}) => (
+                                        <div>
+                            <textarea
+                                className={`${errors.feedbackAdmin ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
+                                {...field}
+                                id="feedbackAdmin"
+                                name="feedbackAdmin"
+                                cols={49}
+                                rows={6}
+                                placeholder="Vul hier eventuele feedback voor de workshop eigenaar in."
+                            />
+                                            {errors.feedbackAdmin && <p style={{whiteSpace: 'pre-line'}}
+                                                                        className={styles["input-field__error-message"]}>{errors.feedbackAdmin.message}</p>}
+                                        </div>
+                                    )}
                                 />
                             </label>
-                        }
 
-                        <Button
-                            type="submit"
-                        >Workshop updaten</Button>
+                        </div>
+                    }
 
-                    </form>
+                    <Button
+                        type="submit"
+                    >Workshop updaten</Button>
 
+                </form>
 
 
             </div>
