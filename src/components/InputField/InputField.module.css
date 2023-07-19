@@ -12,6 +12,7 @@
     flex-direction: column;
 }
 
+
 .input-field, .input-field__workshop-picture {
     border: solid 1px var(--color-grey-500);
     color: var(--color-black);
@@ -34,6 +35,9 @@
     right: 10px;
     top: 8px;
 }
+
+
+
 
 .input-field__error {
     border: solid 1px var(--color-warning);

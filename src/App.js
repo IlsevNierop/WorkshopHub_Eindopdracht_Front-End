@@ -11,11 +11,12 @@ import ResetPassword from "./pages/resetPassword/ResetPassword";
 import Register from "./pages/register/Register";
 import WorkshopPage from "./pages/workshopPage/WorkshopPage";
 import CreateWorkshop from "./pages/createWorkshop/CreateWorkshop";
+import VerifyWorkshops from "./pages/verifyWorkshops/./VerifyWorkshops";
+import UpdateWorkshopPage from "./pages/updateWorkshopPage/UpdateWorkshopPage";
 
 function App() {
 
     const {isAuth, user} = useContext(AuthContext);
-    console.log(isAuth);
 
     return (
         <>
@@ -28,8 +29,11 @@ function App() {
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     <Route path="/registreren" element={<Register/>}/>
-                    {/*TODO isAuth ook toevoegen?*/}
                     <Route path="/nieuweworkshop" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <CreateWorkshop/> : <Home />}/>
+                    <Route path="/goedkeurenworkshops" element={user != null && returnHighestAuthority(user.authorities) === 'admin'?  <VerifyWorkshops/> : <Home />}/>
+
+                    <Route path="/aanpassenworkshop/:workshopId" element={user != null && returnHighestAuthority(user.authorities) !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
+                    {/*/!*<Route path="/mijnworkshops" element={user != null && returnHighestAuthority(user.authorities) === 'workshopowner'?  <MyWorkshops/> : <Home />}/>*!/ --> publiceren via een link, zoals favourite*/}
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>
                 <Footer></Footer>

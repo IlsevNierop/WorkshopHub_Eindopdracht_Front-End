@@ -146,7 +146,6 @@ function Profile() {
     };
 
     async function handleFormSubmit(data) {
-        data.preventDefault();
         setError('');
         console.log("Form submit");
 
@@ -252,7 +251,6 @@ function Profile() {
                                 <h3>Afbeelding uploaden</h3>
                                 <Link to="#" onClick={closeModal}><X size={18}/></Link>
                             </div>
-                            {/*//TODO make this inputfield */}
                             <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
                                 <label className={styles["label__input-field__profile-picture"]}
                                        htmlFor="profile-picture">
@@ -283,6 +281,7 @@ function Profile() {
                                 <>
                                     <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
                                         className={styles["photo-icon"]} size={32}/>
+                                        {/*//TODO dplicated code - simplify */}
                                         <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
                                 </>
                             }
@@ -340,7 +339,7 @@ function Profile() {
                                             register={register}
                                             errors={errors}
                                             value={userData.firstname}
-                                            onChange={handleChange}
+                                            onChangeHandler={handleChange}
                                         >
                                         </InputField>
 
@@ -361,7 +360,7 @@ function Profile() {
                                             register={register}
                                             errors={errors}
                                             value={userData.lastname}
-                                            onChange={handleChange}
+                                            onChangeHandler={handleChange}
                                         >
                                         </InputField>
 
@@ -384,7 +383,7 @@ function Profile() {
                                             register={register}
                                             errors={errors}
                                             value={userData.email}
-                                            onChange={handleChange}
+                                            onChangeHandler={handleChange}
                                         >
                                         </InputField>
                                         {editProfile &&
@@ -417,7 +416,7 @@ function Profile() {
                                                     register={register}
                                                     errors={errors}
                                                     value={userData.password}
-                                                    onChange={handleChange}
+                                                    onChangeHandler={handleChange}
                                                     setShowPassword={setShowPassword}
                                                     showPassword={showPassword}
                                                 >
@@ -460,7 +459,7 @@ function Profile() {
                                                     register={register}
                                                     errors={errors}
                                                     value={userData.companyname}
-                                                    onChange={handleChange}
+                                                    onChangeHandler={handleChange}
                                                 >
                                                 </InputField>
 
@@ -485,7 +484,7 @@ function Profile() {
                                                     register={register}
                                                     errors={errors}
                                                     value={userData.kvknumber}
-                                                    onChange={handleChange}
+                                                    onChangeHandler={handleChange}
                                                 >
                                                 </InputField>
 
@@ -505,7 +504,7 @@ function Profile() {
                                                     register={register}
                                                     errors={errors}
                                                     value={userData.vatnumber}
-                                                    onChange={handleChange}
+                                                    onChangeHandler={handleChange}
                                                 >
                                                 </InputField>
 

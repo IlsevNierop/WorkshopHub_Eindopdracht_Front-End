@@ -16,7 +16,7 @@ import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjec
 import StarRating from "../../components/StarRating/StarRating";
 import Slider from "../../components/Slider/Slider";
 import InputField from "../../components/InputField/InputField";
-// import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic";
+// TODO import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic";
 import defaultpic from '../../assets/temppicsworkshop/defaultpic'
 
 
@@ -372,6 +372,7 @@ function Home() {
                                     date={updateDateFormatShort(workshop.date)}
                                     category1={workshop.workshopCategory1}
                                     category2={workshop.workshopCategory2}
+                                    link={`/workshop/${workshop.id}`}
                                 ></WorkshopTile>
                             )
                         })
