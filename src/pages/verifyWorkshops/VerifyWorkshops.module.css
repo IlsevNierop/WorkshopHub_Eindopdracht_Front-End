@@ -16,3 +16,7 @@
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+.overview__workshop-tiles h3 {
+    font-weight: normal;
+}

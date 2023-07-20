@@ -122,10 +122,61 @@ function UpdateWorkshopPage() {
                 toggleLoading(false);
             } else if (highestAuthority === 'workshopowner') {
                 try {
-                    const response = await fetchSingleWorkshopDataByOwner(token, workshopId);
-                    console.log("owner", response)
+                    const {
+                        workshopOwnerCompanyName,
+                        title,
+                        date,
+                        startTime,
+                        endTime,
+                        price,
+                        location,
+                        workshopCategory1,
+                        workshopCategory2,
+                        inOrOutdoors,
+                        amountOfParticipants,
+                        highlightedInfo,
+                        description,
+                        workshopPicUrl,
+                        publishWorkshop,
+                        feedbackAdmin,
+                        workshopVerified
+                    } = await fetchSingleWorkshopDataByOwner(token, workshopId);
 
-                    setWorkshopToVerifyData(response);
+                    setWorkshopToVerifyData({
+                        workshopOwnerCompanyName,
+                        title,
+                        date,
+                        startTime,
+                        endTime,
+                        price,
+                        location,
+                        workshopCategory1,
+                        workshopCategory2,
+                        inOrOutdoors,
+                        amountOfParticipants,
+                        highlightedInfo,
+                        description,
+                        workshopPicUrl,
+                        publishWorkshop,
+                        feedbackAdmin,
+                        workshopVerified
+                    });
+
+                    setValue('description', description);
+                    setValue('title', title);
+                    setValue('date', date);
+                    setValue('startTime', startTime.slice(0,5));
+                    setValue('endTime', endTime.slice(0,5));
+                    setValue('price', price);
+                    setValue('location', location);
+                    setValue('workshopCategory1', workshopCategory1);
+                    setValue('workshopCategory2', workshopCategory2);
+                    setValue('inOrOutdoors', inOrOutdoors);
+                    setValue('amountOfParticipants', amountOfParticipants);
+                    setValue('highlightedInfo', highlightedInfo);
+                    setValue('description', description);
+                    setValue('workshopPicUrl', workshopPicUrl);
+
                     setError('');
 
                 } catch (e) {
@@ -182,6 +233,7 @@ function UpdateWorkshopPage() {
                     setError(errorHandling(e));
                 }
             }
+            // TODO FOR OWNER
         //
         //     else {
         //         const response = await createWorkshop( token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
@@ -248,8 +300,14 @@ function UpdateWorkshopPage() {
                             <h3>Dank voor het aanpassen van de workshop</h3>
                             <Confetti size={32} color="#c45018" weight="fill"/>
                         </div>
-                        <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.</p>
-                        <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
+                        {highestAuthority === 'admin' &&
+                            <p>De workshop eigenaar krijgt hiervan bericht</p>
+                        }
+                        {highestAuthority !== 'admin' &&
+                            <>
+                            <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.</p>
+                            <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
+                            </>}
                     </section>
                 </Modal>
 
