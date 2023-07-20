@@ -12,10 +12,10 @@ import {AuthContext} from "../../context/AuthContext";
 import InputField from "../../components/InputField/InputField";
 import {Controller, useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
 import Modal from "react-modal";
-import {Confetti} from "@phosphor-icons/react";
+import {Confetti, X} from "@phosphor-icons/react";
 import StarRating from "../../components/StarRating/StarRating";
 
 function UpdateWorkshopPage() {
@@ -102,8 +102,8 @@ function UpdateWorkshopPage() {
                     setValue('description', description);
                     setValue('title', title);
                     setValue('date', date);
-                    setValue('startTime', startTime.slice(0,5));
-                    setValue('endTime', endTime.slice(0,5));
+                    setValue('startTime', startTime.slice(0, 5));
+                    setValue('endTime', endTime.slice(0, 5));
                     setValue('price', price);
                     setValue('location', location);
                     setValue('workshopCategory1', workshopCategory1);
@@ -165,8 +165,8 @@ function UpdateWorkshopPage() {
                     setValue('description', description);
                     setValue('title', title);
                     setValue('date', date);
-                    setValue('startTime', startTime.slice(0,5));
-                    setValue('endTime', endTime.slice(0,5));
+                    setValue('startTime', startTime.slice(0, 5));
+                    setValue('endTime', endTime.slice(0, 5));
                     setValue('price', price);
                     setValue('location', location);
                     setValue('workshopCategory1', workshopCategory1);
@@ -218,22 +218,21 @@ function UpdateWorkshopPage() {
         setPreviewUrl('');
         console.log(data)
 
-            if (highestAuthority === 'admin') {
-                try {
-                    const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, capitalizeFirstLetter(data.title), data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.workshopCategory1), capitalizeFirstLetter(data.workshopCategory2), data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
-                    reset();
-                    setFile([]);
-                    openModal();
-                    setTimeout(() => {
-                        closeModal();
-                    }, 5000);
-                    console.log("gelukt!")
-                }
-                catch (e) {
-                    setError(errorHandling(e));
-                }
+        if (highestAuthority === 'admin') {
+            try {
+                const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, capitalizeFirstLetter(data.title), data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.workshopCategory1), capitalizeFirstLetter(data.workshopCategory2), data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+                reset();
+                setFile([]);
+                openModal();
+                setTimeout(() => {
+                    closeModal();
+                }, 5000);
+                console.log("gelukt!")
+            } catch (e) {
+                setError(errorHandling(e));
             }
-            // TODO FOR OWNER
+        }
+        // TODO FOR OWNER
         //
         //     else {
         //         const response = await createWorkshop( token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
@@ -268,7 +267,9 @@ function UpdateWorkshopPage() {
     Modal.setAppElement('#root');
 
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
+
 
     function openModal() {
         setIsOpen(true);
@@ -279,6 +280,19 @@ function UpdateWorkshopPage() {
 
     function closeModal() {
         setIsOpen(false);
+    }
+
+    function openModalCheck() {
+        setIsOpenCheck(true);
+    }
+
+    function afterOpenModalCheck() {
+
+    }
+
+    function closeModalCheck() {
+        setIsOpenCheck(false);
+
     }
 
 
@@ -305,9 +319,36 @@ function UpdateWorkshopPage() {
                         }
                         {highestAuthority !== 'admin' &&
                             <>
-                            <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.</p>
-                            <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
+                                <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je
+                                    bericht.</p>
+                                <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
                             </>}
+                    </section>
+                </Modal>
+
+                <Modal
+                    isOpen={modalIsOpenCheck}
+                    onAfterOpen={afterOpenModalCheck}
+                    onRequestClose={closeModalCheck}
+                    style={customStyles}
+                    contentLabel="Check"
+                >
+                    <section className={styles["modal-check"]}>
+                        <div className={styles["top-row__modal-check"]}>
+                            <h3>Weet je zeker dat je deze workshop wilt wijzigen?</h3>
+                            <Link to="#" onClick={closeModalCheck}><X size={18}/></Link>
+                        </div>
+                        <p>Deze workshop is geverifieerd door een administrator.</p>
+                        <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
+                            worden
+                            door een administrator voordat de workshop gepubliceerd kan worden.</p>
+                        <div className={styles["bottom-row__modal-check"]}>
+                            <Button type="submit"
+                            >Workshop
+                                wijzigen</Button>
+                            <Button type="text"
+                                    onClick={closeModalCheck}>Terug</Button>
+                        </div>
                     </section>
                 </Modal>
 
@@ -637,9 +678,17 @@ function UpdateWorkshopPage() {
                         </div>
                     }
 
-                    <Button
-                        type="submit"
-                    >Workshop updaten</Button>
+                    {workshopToVerifyData.workshopVerified === true ?
+                        <Button type="text"
+                                onClick={openModalCheck}
+                        >
+                            Workshop wijzigen
+                        </Button>
+                        :
+                        <Button
+                            type="submit"
+                        >Workshop wijzigen</Button>
+                    }
 
                 </form>
 
