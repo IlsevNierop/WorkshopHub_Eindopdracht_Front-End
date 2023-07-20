@@ -9,8 +9,8 @@ import {AuthContext} from "../../context/AuthContext";
 import {fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import {sortArray} from "../../helper/sortArray";
-import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopArray";
+import {sortArrayHomePage} from "../../helper/sortArrayHomePage";
+import {filterWorkshopArray} from "../../helper/filtersWorkshopsHomePage/filterWorkshopArray";
 import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 import StarRating from "../../components/StarRating/StarRating";
@@ -27,16 +27,18 @@ function Home() {
     const controller = new AbortController();
 
 
+    const [error, setError] = useState('');
+    const [loading, toggleLoading] = useState(false);
+
+    const [workshopData, setWorkshopData] = useState([]);
+    const [originalWorkshopData, setOriginalWorkshopData] = useState([]);
+
     const [category, setCategory] = useState([]);
     const [location, setLocation] = useState([]);
     const [environment, setEnvironment] = useState([]);
-    const [sortValue, setSortValue] = useState([]);
     const [priceSlider, setPriceSlider] = useState(400);
     const [minRating, setMinRating] = useState(0);
-    const [error, setError] = useState('');
-    const [workshopData, setWorkshopData] = useState([]);
-    const [originalWorkshopData, setOriginalWorkshopData] = useState([]);
-    const [loading, toggleLoading] = useState(false);
+    const [sortValue, setSortValue] = useState([]);
     const [optionsCategory, setOptionsCategory] = useState([]);
     const [optionsLocation, setOptionsLocation] = useState([]);
 
@@ -150,7 +152,7 @@ function Home() {
     useEffect(() => {
 
 
-        setWorkshopData(sortArray(workshopData, sortValue.value));
+        setWorkshopData(sortArrayHomePage(workshopData, sortValue.value));
 
     }, [sortValue]);
 

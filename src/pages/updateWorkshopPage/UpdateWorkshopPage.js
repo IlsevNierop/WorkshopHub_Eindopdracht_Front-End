@@ -24,6 +24,7 @@ function UpdateWorkshopPage() {
     const token = localStorage.getItem('token');
     const controller = new AbortController();
     const {user: {highestAuthority}} = useContext(AuthContext);
+    const navigate = useNavigate();
 
 
     const [workshopToVerifyData, setWorkshopToVerifyData] = useState({
@@ -226,6 +227,7 @@ function UpdateWorkshopPage() {
                 openModal();
                 setTimeout(() => {
                     closeModal();
+                    navigate("/goedkeurenworkshops")
                 }, 5000);
                 console.log("gelukt!")
             } catch (e) {
@@ -310,18 +312,21 @@ function UpdateWorkshopPage() {
                     <section className={styles["column__pop-up__successful"]}>
                         <div className={styles["row__pop-up__successful"]}>
                             <Confetti size={32} color="#c45018" weight="fill"/>
-                            {/*//TODO conditioneel voor admin vs owner*/}
                             <h3>Dank voor het aanpassen van de workshop</h3>
                             <Confetti size={32} color="#c45018" weight="fill"/>
                         </div>
                         {highestAuthority === 'admin' &&
+                            <>
                             <p>De workshop eigenaar krijgt hiervan bericht</p>
+                            <p>Je wordt doorgestuurd naar de workshops</p>
+                            </>
                         }
                         {highestAuthority !== 'admin' &&
                             <>
                                 <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je
                                     bericht.</p>
                                 <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
+                                <p>Je wordt doorgestuurd naar het overzicht van je workshops</p>
                             </>}
                     </section>
                 </Modal>
@@ -354,7 +359,7 @@ function UpdateWorkshopPage() {
 
                 {highestAuthority === 'admin' ?
                     <>
-                        <h1>Te accorderen workshop</h1>
+                        <h1>Te accorderen / aan te passen workshop</h1>
                         <h5>Bedrijf: <span
                             className={styles["company-name"]}> {workshopToVerifyData.workshopOwnerCompanyName} </span>
                         </h5>

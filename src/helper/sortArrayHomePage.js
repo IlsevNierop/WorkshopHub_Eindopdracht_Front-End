@@ -1,4 +1,4 @@
-export function sortArray(array, sortValue) {
+export function sortArrayHomePage(array, sortValue) {
     let newArray;
     if (sortValue === 'pricelowtohigh'){
 
