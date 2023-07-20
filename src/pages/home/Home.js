@@ -10,7 +10,7 @@ import {fetchWorkshopData, fetchWorkshopDataLoggedIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {sortArrayHomePage} from "../../helper/sortArrayHomePage";
-import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopArray";
+import {filterWorkshopArray} from "../../helper/filtersWorkshopsHomePage/filterWorkshopArray";
 import Button from "../../components/Button/Button";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 import StarRating from "../../components/StarRating/StarRating";

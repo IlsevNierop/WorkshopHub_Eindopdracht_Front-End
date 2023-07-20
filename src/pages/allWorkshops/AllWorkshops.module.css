@@ -8,8 +8,21 @@
     margin: 2rem;
 }
 
+.sort {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+    width: 100%;
+}
+
 .sort__dropdown {
     width: 12rem;
+}
+
+.sort__dropdown-verified {
+    width: 10rem;
+    background-color: var(--color-light-orange);
 }
 
 .table__workshops {
@@ -17,7 +30,6 @@
     text-align: left;
     border-collapse: collapse;
 }
-
 
 
 .table-header-row__workshops > th{
@@ -60,6 +72,7 @@
 
 .td-not-verified {
     color: var(--color-warning);
+    font-weight: bolder;
 }
 
 .link__workshoppage {

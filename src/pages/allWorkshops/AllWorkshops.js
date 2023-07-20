@@ -6,7 +6,7 @@ import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {Link} from "react-router-dom";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Select from "react-select";
-import {filterWorkshopArray} from "../../helper/filtersWorkshop/filterWorkshopArray";
+import {filterWorkshopArray} from "../../helper/filtersWorkshopsHomePage/filterWorkshopArray";
 import {sortArrayHomePage} from "../../helper/sortArrayHomePage";
 import {sortArrayAllWorkshops} from "../../helper/sortArrayAllWorkshops";
 
@@ -23,11 +23,14 @@ function AllWorkshops() {
 
 
     const optionsSortValue = [
-        {value: "date", label: "Datum"},
-        {value: "companyname", label: "Bedrijf"},
         {value: "workshopId", label: "Workshop ID"},
         {value: "title", label: "Titel"},
+        {value: "date", label: "Datum"},
+        {value: "companyname", label: "Bedrijf"},
+        {value: "verified", label: "Geaccordeerd"},
     ];
+
+    //TODO search quiery and getrequest on backend
 
     useEffect(() => {
             async function getAllWorkshopsAdmin() {
@@ -57,11 +60,9 @@ function AllWorkshops() {
         , [])
 
     useEffect(() => {
-
-
         setWorkshopsData(sortArrayAllWorkshops(workshopsData, sortValue.value));
-
     }, [sortValue]);
+
 
 
     return (
