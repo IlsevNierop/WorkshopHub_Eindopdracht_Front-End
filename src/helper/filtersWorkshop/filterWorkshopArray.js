@@ -1,4 +1,4 @@
-import {sortArray} from "../sortArray";
+import {sortArrayHomePage} from "../sortArrayHomePage";
 import {getWorkshopsFilteredCategories} from "./getWorkshopsFilteredCategories";
 import {getWorkshopsFilteredDate} from "./getWorkshopsFilteredDate";
 import {getWorkshopsFilteredLocation} from "./getWorkshopsFilteredLocation";
@@ -17,7 +17,7 @@ export function filterWorkshopArray(originalWorkshopData, category, location, en
     const filteredWorkshopsByEnvironment = getWorkshopsFilteredEnvironment(filteredWorkshopsByRating, environment);
 
     if (sortValue) {
-        return sortArray(filteredWorkshopsByEnvironment, sortValue);
+        return sortArrayHomePage(filteredWorkshopsByEnvironment, sortValue);
     }
 
 

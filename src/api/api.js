@@ -176,6 +176,18 @@ export async function fetchFavouriteWorkshops(token, userId) {
     return response.data;
 }
 
+export async function fetchAllWorkshopsAdmin(token) {
+    const response = await axios.get(`${baseUrl}workshops/admin/`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
 
 
 export async function fetchSingleWorkshopDataAdmin(token, workshopId) {

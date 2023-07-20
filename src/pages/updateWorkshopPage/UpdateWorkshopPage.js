@@ -354,7 +354,7 @@ function UpdateWorkshopPage() {
 
                 {highestAuthority === 'admin' ?
                     <>
-                        <h1>Te accorderen workshop</h1>
+                        <h1>Te accorderen / aan te passen workshop</h1>
                         <h5>Bedrijf: <span
                             className={styles["company-name"]}> {workshopToVerifyData.workshopOwnerCompanyName} </span>
                         </h5>

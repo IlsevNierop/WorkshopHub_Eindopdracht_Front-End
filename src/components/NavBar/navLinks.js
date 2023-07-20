@@ -15,7 +15,7 @@ export function navLinks(highestAuthority) {
                 submenu: [
                     {
                         title: "Alle Workshops",
-                        link: "/alleworkshops",
+                        link: "/workshops",
                     },
                     {
                         title: "Goedkeuren Workshops",
@@ -64,7 +64,7 @@ export function navLinks(highestAuthority) {
                     {
                         //TODO filter toevoegen op deze pagina - welke moeten nog gepubliceerd worden - met icoontjes werken aantonen welke al geverifieerd zijn?
                         title: "Al Mijn Workshops",
-                        link: "/alleworkshops",
+                        link: "/almijnworkshops",
                     },
                     {
                         //TODO aparte pagina publiceren workshops?
