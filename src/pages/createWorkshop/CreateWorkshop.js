@@ -308,7 +308,7 @@ function CreateWorkshop() {
                                 className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
                                 {...field}
                                 id="description"
-                                cols={52}
+                                cols={50}
                                 rows={20}
                                 placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 2000 karakters."
                             />

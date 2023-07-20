@@ -1,0 +1,23 @@
+.favourite-workshops__outer-container {
+    flex-grow:1;
+    background-color: var(--color-grey-100);
+}
+
+.favourite-workshops__inner-container {
+    align-items: center;
+    margin: 2rem;
+}
+
+/*//TODO check how to divide the workshops evenly*/
+.overview__workshop-tiles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.overview__workshop-tiles h3 {
+    font-weight: normal;
+}
