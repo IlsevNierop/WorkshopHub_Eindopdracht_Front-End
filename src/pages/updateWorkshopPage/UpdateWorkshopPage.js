@@ -340,8 +340,7 @@ function UpdateWorkshopPage() {
                         </div>
                         <p>Deze workshop is geverifieerd door een administrator.</p>
                         <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
-                            worden
-                            door een administrator voordat de workshop gepubliceerd kan worden.</p>
+                            worden door een administrator voordat de workshop gepubliceerd kan worden.</p>
                         <div className={styles["bottom-row__modal-check"]}>
                             <Button type="submit"
                             >Workshop
@@ -566,7 +565,7 @@ function UpdateWorkshopPage() {
                                 {...field}
                                 id="description"
                                 name="description"
-                                cols={52}
+                                cols={50}
                                 rows={20}
                                 placeholder="Vul hier de omschrijving van je workshop in, met minimaal 50 en maximaal 2000 karakters."
                             />

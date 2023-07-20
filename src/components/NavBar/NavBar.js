@@ -89,11 +89,22 @@ function NavBar() {
                                      to="/" onClick={() => logout()}>
                                 Uitloggen</NavLink></li>}
 
-                        <li className={styles["nav-li-top"]}>
-                            <NavLink to="/"><Heart size={32} color="black"
-                                                   weight="regular"/>
-                            </NavLink>
-                        </li>
+                        {isAuth?
+                            <li className={styles["nav-li-top"]}>
+                                <NavLink to="/favorieten"><Heart size={32} color="black"
+                                                                 weight="regular"/>
+                                </NavLink>
+                            </li>
+                            :
+                            // navigate naar favorieten TODO
+                            <li className={styles["nav-li-top"]}>
+                                <NavLink to="#" onClick={openModal}><Heart size={32} color="black"
+                                                                 weight="regular"/>
+                                </NavLink>
+                            </li>
+                        }
+
+
                     </ul>
 
                     <SignIn  modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal} customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}> </SignIn>

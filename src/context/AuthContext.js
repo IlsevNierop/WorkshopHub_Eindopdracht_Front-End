@@ -51,20 +51,17 @@ function AuthContextProvider({children}) {
 
         localStorage.setItem('token', jwt_token);
 
-        console.log("Gebruiker is ingelogd!");
         if (redirect) navigate(redirect);
     }
 
     function logout() {
         localStorage.removeItem('token');
-        console.log("Logout is aangeroepen");
         setAuthData({
             ...authData,
             isAuth: false,
             user: null,
             status: "done",
         })
-        console.log("Gebruiker is uitgelogd!");
         navigate("/");
 
     }

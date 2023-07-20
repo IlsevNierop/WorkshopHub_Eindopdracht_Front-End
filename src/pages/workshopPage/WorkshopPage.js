@@ -57,8 +57,10 @@ function WorkshopPage() {
                     toggleLoading(false);
                 } else if (user && user.highestAuthority === 'workshopowner') {
                     try {
-                        const response = await fetchSingleWorkshopDataByOwner(token, workshopId);
+                        const response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
                         setSingleWorkshopData(response);
+                        console.log("owner response")
+                        console.log(response)
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
 
@@ -70,17 +72,7 @@ function WorkshopPage() {
                     }
                     toggleLoading(false);
                 } else if (user) {
-                    try {
-                        const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
-                        setSingleWorkshopData(response);
-                        setFavourite(singleWorkshopData.isFavourite);
-                        setError('');
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
-                    }
-                    toggleLoading(false);
+                    await getDataSingleWorkshopDataLoggedIn(token, user.id);
                 } else {
                     try {
                         const response = await fetchSingleWorkshopData(workshopId);

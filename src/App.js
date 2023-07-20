@@ -12,6 +12,7 @@ import WorkshopPage from "./pages/workshopPage/WorkshopPage";
 import CreateWorkshop from "./pages/createWorkshop/CreateWorkshop";
 import VerifyWorkshops from "./pages/verifyWorkshops/./VerifyWorkshops";
 import UpdateWorkshopPage from "./pages/updateWorkshopPage/UpdateWorkshopPage";
+import FavouriteWorkshops from "./pages/favouriteWorkshops/FavouriteWorkshops";
 
 function App() {
 
@@ -28,9 +29,10 @@ function App() {
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     <Route path="/registreren" element={<Register/>}/>
+                    <Route path="/favorieten" element={isAuth? <FavouriteWorkshops/> : <Home />}/>
+
                     <Route path="/nieuweworkshop" element={user != null && user.highestAuthority !== 'customer'?  <CreateWorkshop/> : <Home />}/>
                     <Route path="/goedkeurenworkshops" element={user != null && user.highestAuthority === 'admin'?  <VerifyWorkshops/> : <Home />}/>
-
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
                     {/*/!*<Route path="/mijnworkshops" element={user != null && returnHighestAuthority(user.authorities) === 'workshopowner'?  <MyWorkshops/> : <Home />}/>*!/ --> publiceren via een link, zoals favourite*/}
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
