@@ -8,6 +8,26 @@
     margin: 2rem;
 }
 
+.modal-check {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 500px;
+}
+
+.top-row__modal-check {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bottom-row__modal-check {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .company-name {
     font-weight: bolder;
     font-size: 1.5rem;
@@ -99,9 +119,6 @@
 }
 
 .workshop-verified-radio-row {
-    /*display: flex;*/
-    /*flex-direction: row;*/
-    /*justify-content: space-between;*/
     max-width: 100px;
 }
 
