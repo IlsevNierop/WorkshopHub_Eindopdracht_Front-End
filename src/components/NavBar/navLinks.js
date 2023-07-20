@@ -63,10 +63,11 @@ export function navLinks(highestAuthority) {
                 submenu: [
                     {
                         //TODO filter toevoegen op deze pagina - welke moeten nog gepubliceerd worden - met icoontjes werken aantonen welke al geverifieerd zijn?
-                        title: "Al mijn Workshops",
+                        title: "Al Mijn Workshops",
                         link: "/alleworkshops",
                     },
                     {
+                        //TODO aparte pagina publiceren workshops?
                         title: "Goedkeuren Workshops",
                         link: "/goedkeurenworkshops",
                     },

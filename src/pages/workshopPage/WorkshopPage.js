@@ -3,12 +3,12 @@ import styles from "../workshopPage/WorkshopPage.module.css";
 import React, {useContext, useEffect, useState} from 'react';
 import {
     addOrRemoveWorkshopFavourites,
-    fetchSingleWorkshopData,
-    fetchSingleWorkshopDataLoggedIn, fetchSingleWorkshopDataToVerifyByAdmin,
-    signIn
+    fetchSingleWorkshopData, fetchSingleWorkshopDataAdmin, fetchSingleWorkshopDataByOwner,
+    fetchSingleWorkshopDataLoggedIn,
+    signIn, updateAndVerifyWorkshopByAdmin, verifyWorkshopByOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import StarRating from "../../components/StarRating/StarRating";
 import {updateDateFormatLong} from "../../helper/updateDateFormatLong";
@@ -19,29 +19,57 @@ import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
-import {Heart} from "@phosphor-icons/react";
+import {Heart, X} from "@phosphor-icons/react";
 
 function WorkshopPage() {
 
     const {workshopId} = useParams();
-    const controller = new AbortController();
     const {user, login} = useContext(AuthContext);
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
+    const controller = new AbortController();
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [favourite, setFavourite] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
-    //TODO not using loading atm
+    const [updateMessage, setupdateMessage] = useState(false);
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
+    const [workshopOffline, setWorkshopOffline] = useState(false);
 
 
     useEffect(() => {
             async function fetchDataSingleWorkshop() {
                 toggleLoading(true);
                 setError('');
-                if (user != null) {
+                if (user && user.highestAuthority === 'admin') {
+                    try {
+                        const response = await fetchSingleWorkshopDataAdmin(token, workshopId);
+                        setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
+                        setError('');
+
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                    }
+                    toggleLoading(false);
+                } else if (user && user.highestAuthority === 'workshopowner') {
+                    try {
+                        const response = await fetchSingleWorkshopDataByOwner(token, workshopId);
+                        setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
+                        setError('');
+
+                    } catch (e) {
+                        setError(errorHandling(e));
+                        console.log(error);
+                        // this is for when a workshopowner wants to see someone else's workshop
+                        await getDataSingleWorkshopDataLoggedIn(token, user.id);
+                    }
+                    toggleLoading(false);
+                } else if (user) {
                     try {
                         const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
                         setSingleWorkshopData(response);
@@ -79,6 +107,20 @@ function WorkshopPage() {
 
         , []);
 
+    async function getDataSingleWorkshopDataLoggedIn() {
+        try {
+            const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
+            setSingleWorkshopData(response);
+            setFavourite(singleWorkshopData.isFavourite);
+            setError('');
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+        toggleLoading(false);
+    }
+
 
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
@@ -87,19 +129,69 @@ function WorkshopPage() {
         }
         if (user != null) {
             try {
-                const response = await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
+                await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
                 setFavourite(!favourite);
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalErrorFavourites();
+                openModalMessage();
                 setTimeout(() => {
-                    closeModalErrorFavourites();
-                }, 2000);
+                    closeModalMessage();
+                }, 3000);
                 console.log(e);
             }
         }
     }
+
+    async function verifyWorkshop() {
+        setError('');
+        if (user != null && user.highestAuthority === 'admin') {
+            try {
+                await updateAndVerifyWorkshopByAdmin(workshopId, token, singleWorkshopData.title, singleWorkshopData.date, singleWorkshopData.startTime, singleWorkshopData.endTime, singleWorkshopData.price, singleWorkshopData.location, singleWorkshopData.workshopCategory1, singleWorkshopData.workshopCategory2, singleWorkshopData.inOrOutdoors, singleWorkshopData.amountOfParticipants, singleWorkshopData.highlightedInfo, singleWorkshopData.description, true);
+                setupdateMessage(true)
+                openModalMessage();
+                setTimeout(() => {
+                    closeModalMessage();
+                    navigate("/goedkeurenworkshops");
+                }, 3000);
+
+            } catch (e) {
+                setError(errorHandling(e));
+                openModalMessage();
+                setTimeout(() => {
+                    closeModalMessage();
+                }, 3000);
+                console.log(e);
+            }
+        }
+    }
+
+    async function publishWorkshop(publishWorkshop) {
+        setError('');
+        try {
+            await verifyWorkshopByOwner(token, user.id, workshopId, publishWorkshop);
+            setupdateMessage(true);
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+                navigate("/mijnworkshops");
+            }, 3000);
+
+        } catch (e) {
+            setError(errorHandling(e));
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+            }, 3000);
+            console.log(e);
+        }
+    }
+
+    function takeWorkshopOffline() {
+        setWorkshopOffline(true);
+        openModalCheck();
+    }
+
 
     // ...................MODAL
     const customStyles = {
@@ -119,7 +211,8 @@ function WorkshopPage() {
 
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpenErrorFavourites, setIsOpenErrorFavourites] = React.useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = React.useState(false);
+    const [modalIsOpenCheck, setIsOpenCheck] = React.useState(false);
 
     function openModal() {
         setIsOpen(true);
@@ -136,17 +229,32 @@ function WorkshopPage() {
         reset();
     }
 
-    function openModalErrorFavourites() {
-        setIsOpenErrorFavourites(true);
+    function openModalCheck() {
+        setIsOpenCheck(true);
     }
 
-    function afterOpenModalErrorFavourites() {
+    function afterOpenModalCheck() {
 
     }
 
-    function closeModalErrorFavourites() {
-        setIsOpenErrorFavourites(false);
+    function closeModalCheck() {
+        setIsOpenCheck(false);
+        setWorkshopOffline(false);
+
+    }
+
+    function openModalMessage() {
+        setIsOpenMessage(true);
+    }
+
+    function afterOpenModalMessage() {
+
+    }
+
+    function closeModalMessage() {
+        setIsOpenMessage(false);
         setError('');
+        setupdateMessage(false);
     }
 
     async function handleFormSubmit(data) {
@@ -175,13 +283,68 @@ function WorkshopPage() {
 
                 {/*TODO inloggen gebeurt nu via 3 plekken, kan dit slimmer met die modal?*/}
                 <Modal
-                    isOpen={modalIsOpenErrorFavourites}
-                    onAfterOpen={afterOpenModalErrorFavourites}
-                    onRequestClose={closeModalErrorFavourites}
+                    isOpen={modalIsOpenMessage}
+                    onAfterOpen={afterOpenModalMessage}
+                    onRequestClose={closeModalMessage}
                     style={customStyles}
-                    contentLabel="Data error"
+                    contentLabel="Message"
                 >
-                    {error && <p className="error-message">{error}</p>}
+                    {error &&
+                        <>
+                            <p className="error-message">Er gaat iets mis</p>
+                            <p className="error-message">{error}</p>
+                        </>}
+                    {(updateMessage && user != null && user.highestAuthority === 'admin') &&
+                        <div className={styles["modal-update-message"]}>
+                            <h5>De workshop is goedgekeurd</h5>
+                            <p>Je wordt doorgestuurd naar het overzicht van goed te keuren workshops.</p>
+                        </div>
+                    }
+                    {(updateMessage && user != null && user.highestAuthority === 'workshopowner') &&
+                        <div className={styles["modal-update-message"]}>
+                            <h5>De workshop is gepubliceerd</h5>
+                            <p>Je wordt doorgestuurd naar het overzicht van jouw workshops.</p>
+                        </div>
+                    }
+                </Modal>
+                <Modal
+                    isOpen={modalIsOpenCheck}
+                    onAfterOpen={afterOpenModalCheck}
+                    onRequestClose={closeModalCheck}
+                    style={customStyles}
+                    contentLabel="Check"
+                >
+                    <section className={styles["modal-check"]}>
+                        <div className={styles["top-row__modal-check"]}>
+                            <h3>Weet je het zeker?</h3>
+                            <Link to="#" onClick={closeModalCheck}><X size={18}/></Link>
+                        </div>
+                        <p>Deze workshop is gepubliceerd en staat online.</p>
+
+                        {workshopOffline ?
+                            <>
+                                <p>Weet je zeker dat je deze offline wil halen?</p>
+                            </>
+                            :
+                            <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
+                                worden
+                                door een administrator voordat de workshop weer gepubliceerd kan worden.</p>
+                        }
+                        <div className={styles["bottom-row__modal-check"]}>
+                            {workshopOffline ?
+                                <Button type="text"
+                                        onClick={() => publishWorkshop(false)}
+                                >
+                                    Haal offline</Button>
+                                :
+                                <Button type="text"
+                                        onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
+                                    wijzigen</Button>
+                            }
+                            <Button type="text"
+                                    onClick={closeModalCheck}>Terug</Button>
+                        </div>
+                    </section>
                 </Modal>
 
                 <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
@@ -191,6 +354,7 @@ function WorkshopPage() {
                         error={error}> </SignIn>
 
 
+                {loading && <p>Loading...</p>}
                 <h1>{singleWorkshopData.title}</h1>
 
                 <article className={styles["top-part__workshop-page"]}>
@@ -328,10 +492,64 @@ function WorkshopPage() {
                                 </div>
                             }
                         </section>
+
+                        <section className={styles["extra-bottom__workshop__owner__admin"]}>
+
+                            {user != null && user.highestAuthority === 'admin' &&
+                                <>
+                                    {singleWorkshopData.workshopVerified === true ?
+                                        <Button type="text"
+                                                onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
+                                            wijzigen</Button>
+                                        :
+
+                                        <>
+                                            <Button type="text" onClick={verifyWorkshop}>Direct goedkeuren</Button>
+                                            <Button type="text"
+                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Aanpassen
+                                                en goed/afkeuren</Button>
+                                        </>
+                                    }
+
+                                </>
+                            }
+                            {(user != null && user.highestAuthority === 'workshopowner' && user.id === singleWorkshopData.workshopOwnerId) &&
+                                <article className={styles["extra-bottom__workshopowner"]}>
+                                    {(singleWorkshopData.workshopVerified !== null && singleWorkshopData.publishWorkshop !== true && singleWorkshopData.feedbackAdmin) &&
+                                        <div className={styles["bottom__workshopowner__feedback-admin"]}>
+                                            <h5>Feedback administrator</h5>
+                                            <p>{singleWorkshopData.feedbackAdmin}</p>
+                                        </div>
+                                    }
+                                    {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
+                                        <>
+                                            <Button type="text"
+                                                    onClick={() => publishWorkshop(true)}
+                                            >
+                                                Direct publiceren</Button>
+                                        </>
+                                    }
+                                    {singleWorkshopData.publishWorkshop === true ?
+                                        <>
+                                            <Button type="text"
+                                                    onClick={openModalCheck}>Workshop
+                                                wijzigen</Button>
+                                            <Button type="text"
+                                                    onClick={takeWorkshopOffline}>Haal workshop offline</Button>
+                                        </>
+                                        :
+                                        <Button type="text"
+                                                onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
+                                            wijzigen</Button>
+                                    }
+
+
+                                </article>
+                            }
+                        </section>
+
                     </>
-
                 }
-
 
             </div>
         </main>

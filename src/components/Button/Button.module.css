@@ -2,16 +2,16 @@
 .button {
     color: white;
     text-transform: uppercase;
-    background-color: var(--color-light-orange);
     border: solid 2px var(--color-white);
+    background-color: var(--color-terracotta-orange);
     border-radius: 25px;
     padding: 7px 14px;
     width: fit-content;
 }
 
 .button:hover {
-    background-color: var(--color-terracotta-orange);
     cursor: pointer;
+    background-color: var(--color-light-orange);
 }
 
 .button:focus {

@@ -4,6 +4,7 @@ import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {errorHandling} from "../../helper/errorHandling";
 import {fetchWorkshopsToVerifyByAdmin} from "../../api/api";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
+import {Confetti} from "@phosphor-icons/react";
 
 function VerifyWorkshops() {
 
@@ -46,12 +47,19 @@ function VerifyWorkshops() {
         <main className={`outer-container ${styles["verify-workshop__outer-container"]}`}>
             <div className={`inner-container ${styles["verify-workshop__inner-container"]}`}>
 
-                <h1>Te accorderen workshops</h1>
+                <h1>Openstaande workshops</h1>
 
                 {loading && <p>Loading...</p>}
                 {error && <p className="error-message">{error}</p>}
 
                 <section className={styles["overview__workshop-tiles"]}>
+                    {workshopsToVerifyData.length === 0 &&
+                        <>
+                        <Confetti size={32} color="#c45018" weight="fill"/>
+                        <h3>Er zijn momenteel geen openstaande workshops.</h3>
+                        <Confetti size={32} color="#c45018" weight="fill"/>
+                        </>
+                    }
                     {workshopsToVerifyData && workshopsToVerifyData.map((workshop) => {
                         return (
                             //TODO default pic toevoegen?
@@ -66,7 +74,7 @@ function VerifyWorkshops() {
                                 date={updateDateFormatShort(workshop.date)}
                                 category1={workshop.workshopCategory1}
                                 category2={workshop.workshopCategory2}
-                                link={`/aanpassenworkshop/${workshop.id}`}
+                                link={`/workshop/${workshop.id}`}
                             ></WorkshopTile>
                         )
                     })

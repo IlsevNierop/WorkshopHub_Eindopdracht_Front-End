@@ -150,6 +150,8 @@ export async function fetchWorkshopData() {
 }
 
 
+
+
 export async function fetchWorkshopDataLoggedIn(token, id) {
     const response = await axios.get(`${baseUrl}workshops`,
         {
@@ -161,6 +163,18 @@ export async function fetchWorkshopDataLoggedIn(token, id) {
                 userId: id
             },
             // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+export async function fetchSingleWorkshopDataAdmin(token, workshopId) {
+    const response = await axios.get(`${baseUrl}workshops/admin/${workshopId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
             signal: controller.signal,
         });
     return response.data;
@@ -213,7 +227,7 @@ export async function fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId) 
     return response.data;
 }
 export async function fetchSingleWorkshopDataByOwner(token, workshopId) {
-    const response = await axios.get(`${baseUrl}/workshopowner/workshop/${workshopId}`,
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/workshop/${workshopId}`,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -319,6 +333,17 @@ export async function updateAndVerifyWorkshopByAdmin(workshopId, token, title, d
             signal: controller.signal,
         });
     return response.data;
+}
+
+export async function verifyWorkshopByOwner(token, userId, workshopId, publishWorkshop) {
+    const response = await axios.put(`${baseUrl}workshops/workshopowner/verify/${userId}/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+    return response;
 }
 
 
