@@ -37,14 +37,14 @@ function WorkshopTile({
         }
         if (user != null) {
             try {
-                const response = await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
+                await addOrRemoveWorkshopFavourites(token, user.id, workshopId, favourite);
                 setFavourite(!favourite);
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModal2();
+                openModalError();
                 setTimeout(() => {
-                    closeModal2();
+                    closeModalError();
                 }, 2000);
                 console.log(e);
             }
@@ -69,7 +69,7 @@ function WorkshopTile({
 
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpen2, setIsOpen2] = React.useState(false);
+    const [modalIsOpenError, setIsOpenError] = React.useState(false);
 
     function openModal() {
         setIsOpen(true);
@@ -86,22 +86,20 @@ function WorkshopTile({
         reset();
     }
 
-    function openModal2() {
-        setIsOpen2(true);
+    function openModalError() {
+        setIsOpenError(true);
     }
 
-    function afterOpenModal2() {
+    function afterOpenModalError() {
 
     }
 
-    function closeModal2() {
-        setIsOpen2(false);
+    function closeModalError() {
+        setIsOpenError(false);
         setError('');
     }
 
     async function handleFormSubmit(data) {
-        //React hook form should take care of prevent default, but for some reason, the page refreshes on pressing enter.
-        // data.preventDefault();
         setError('');
         try {
             const {jwt} = await signIn(data.email, data.password);
@@ -122,9 +120,9 @@ function WorkshopTile({
     return (
         <>
             <Modal
-                isOpen={modalIsOpen2}
-                onAfterOpen={afterOpenModal2}
-                onRequestClose={closeModal2}
+                isOpen={modalIsOpenError}
+                onAfterOpen={afterOpenModalError}
+                onRequestClose={closeModalError}
                 style={customStyles}
                 contentLabel="Data error"
             >
@@ -136,14 +134,16 @@ function WorkshopTile({
                     register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
                     error={error}> </SignIn>
 
-            <Link className={styles["workshop-tile__link"]} to={link}>
-                <article className={styles["workshop-tile"]}>
+
+            <article className={styles["workshop-tile"]}>
+                <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                    <Heart className={styles["favourite-icon"]} size={24}
+                           color={favourite ? "#fe5c5c" : "282828"}
+                           weight={favourite ? "fill" : "light"}/></Link>
+
+                <Link className={styles["workshop-tile__link"]} to={link}>
                     <img className={styles["workshop-image"]} src={image} alt={category1}/>
-                    {/*TODO deze link mag er niet inzitten - aanpassen */}
-                    <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
-                        <Heart className={styles["favourite-icon"]} size={24}
-                               color={favourite ? "#fe5c5c" : "282828"}
-                               weight={favourite ? "fill" : "light"}/></Link>
+
                     <aside className={styles["information-workshop-column"]}>
                         <section className={styles["top-row-workshop"]}>
                             <h4>{workshoptitle}</h4>
@@ -160,10 +160,11 @@ function WorkshopTile({
                             </div>
                         </section>
                     </aside>
-                </article>
-            </Link>
+                </Link>
+            </article>
         </>
-    );
+    )
+        ;
 }
 
 export default WorkshopTile;
