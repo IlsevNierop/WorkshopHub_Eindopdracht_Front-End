@@ -5,7 +5,7 @@ import {
     createWorkshop,
     fetchSingleWorkshopDataByOwner,
     fetchSingleWorkshopDataToVerifyByAdmin,
-    updateAndVerifyWorkshopByAdmin
+    updateAndVerifyWorkshopByAdmin, updateWorkshopByWorkshopOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
@@ -23,7 +23,7 @@ function UpdateWorkshopPage() {
     const {workshopId} = useParams();
     const token = localStorage.getItem('token');
     const controller = new AbortController();
-    const {user: {highestAuthority}} = useContext(AuthContext);
+    const {user: {highestAuthority, id}} = useContext(AuthContext);
     const navigate = useNavigate();
 
 
@@ -51,6 +51,7 @@ function UpdateWorkshopPage() {
     const {register, handleSubmit, setValue, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
 
 
     useEffect(() => {
@@ -219,9 +220,23 @@ function UpdateWorkshopPage() {
         setPreviewUrl('');
         console.log(data)
 
+        if (data.title) {
+            data.title = capitalizeFirstLetter(data.title);
+        }
+        if (data.location) {
+            data.location = capitalizeFirstLetter(data.location);
+        }
+        if (data.workshopCategory1) {
+            data.workshopCategory1 = capitalizeFirstLetter(data.workshopCategory1);
+        }
+        if (data.workshopCategory2) {
+            data.workshopCategory2 = capitalizeFirstLetter(data.workshopCategory2);
+        }
+
+
         if (highestAuthority === 'admin') {
             try {
-                const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, capitalizeFirstLetter(data.title), data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.workshopCategory1), capitalizeFirstLetter(data.workshopCategory2), data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+                const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
                 reset();
                 setFile([]);
                 openModal();
@@ -233,24 +248,21 @@ function UpdateWorkshopPage() {
             } catch (e) {
                 setError(errorHandling(e));
             }
+        } else {
+            try {
+                const response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
+                reset();
+                setFile([]);
+                openModal();
+                setTimeout(() => {
+                    closeModal();
+                    navigate("/")
+                }, 5000);
+                console.log("gelukt!")
+            } catch (e) {
+                setError(errorHandling(e));
+            }
         }
-        // TODO FOR OWNER
-        //
-        //     else {
-        //         const response = await createWorkshop( token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
-        //         reset();
-        //         setFile([]);
-        //         openModal();
-        //         setTimeout(() => {
-        //             closeModal();
-        //         }, 5000);
-        //
-        //
-        //     } catch (e) {
-        //         setError(errorHandling(e));
-        //     }
-        //     }
-        //
     }
 
     // ...................MODAL
@@ -296,6 +308,11 @@ function UpdateWorkshopPage() {
         setIsOpenCheck(false);
 
     }
+    const handleIsCheckedChange = () => {
+        setIsChecked(prevIsChecked => !prevIsChecked);
+        closeModalCheck();
+    };
+
 
 
     return (
@@ -317,8 +334,8 @@ function UpdateWorkshopPage() {
                         </div>
                         {highestAuthority === 'admin' &&
                             <>
-                            <p>De workshop eigenaar krijgt hiervan bericht</p>
-                            <p>Je wordt doorgestuurd naar de workshops</p>
+                                <p>De workshop eigenaar krijgt hiervan bericht</p>
+                                <p>Je wordt doorgestuurd naar de workshops</p>
                             </>
                         }
                         {highestAuthority !== 'admin' &&
@@ -347,9 +364,9 @@ function UpdateWorkshopPage() {
                         <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
                             worden door een administrator voordat de workshop gepubliceerd kan worden.</p>
                         <div className={styles["bottom-row__modal-check"]}>
-                            <Button type="submit"
-                            >Workshop
-                                wijzigen</Button>
+                            <Button type="text"
+                                    onClick={handleIsCheckedChange}
+                            >Ik weet het zeker</Button>
                             <Button type="text"
                                     onClick={closeModalCheck}>Terug</Button>
                         </div>
@@ -682,16 +699,18 @@ function UpdateWorkshopPage() {
                         </div>
                     }
 
-                    {workshopToVerifyData.workshopVerified === true ?
-                        <Button type="text"
+                    {(workshopToVerifyData.workshopVerified === true && !isChecked) &&
+                        // wanted to make this a button, but when using a button type text, the form was submitted when clicking it.
+                        <Link className={styles["link-update-worskhop"]} to="#"
                                 onClick={openModalCheck}
                         >
                             Workshop wijzigen
-                        </Button>
-                        :
+                        </Link>
+                    }
+                    {(workshopToVerifyData.workshopVerified !== true || isChecked === true) &&
                         <Button
                             type="submit"
-                        >Workshop wijzigen</Button>
+                        >Verzend wijzigingen</Button>
                     }
 
                 </form>
