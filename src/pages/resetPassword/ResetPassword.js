@@ -7,6 +7,7 @@ import {errorHandling} from "../../helper/errorHandling";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
+//TODO modal veranderen of reset modal maken
 import Modal from "react-modal";
 import {Confetti, X} from "@phosphor-icons/react";
 

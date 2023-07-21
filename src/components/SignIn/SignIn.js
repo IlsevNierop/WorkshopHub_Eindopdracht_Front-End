@@ -1,39 +1,36 @@
-import Modal from "react-modal";
+
 import styles from "../SignIn/SignIn.module.css";
 import {Link} from "react-router-dom";
-import {X} from "@phosphor-icons/react";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
 import React from "react";
+import CustomModal from "../CustomModal/CustomModal";
 
 
 function SignIn({
                     modalIsOpen,
                     afterOpenModal,
                     closeModal,
-                    customStyles,
                     handleSubmit,
                     handleFormSubmit,
                     register,
                     errors,
                     showPassword,
                     setShowPassword,
-                    error,
-                    onKeyPress
+                    error
                 }) {
+
+
     return (
-        <Modal
-            isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            style={customStyles}
+        <CustomModal
+            modalIsOpen={modalIsOpen}
+            afterOpenModal={afterOpenModal}
+            closeModal={closeModal}
             contentLabel="Sign in"
+            functionalModalHeader="Inloggen"
         >
 
-            <div className={styles["top-row__signin"]}>
-                <h3>Inloggen</h3>
-                <Link to="#" onClick={closeModal}><X size={18}/></Link>
-            </div>
+
             <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                 <InputField
                     type="text"
@@ -76,7 +73,6 @@ function SignIn({
                 >Inloggen</Button>
             </form>
 
-
             <div className={styles["bottom-links__signin"]}>
                 <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={closeModal}>
                     <p>Wachtwoord vergeten?</p></Link>
@@ -86,7 +82,7 @@ function SignIn({
                     dan eerst.</p>
             </div>
 
-        </Modal>
+        </CustomModal>
 
     );
 }

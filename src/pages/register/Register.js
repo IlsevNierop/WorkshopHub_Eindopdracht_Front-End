@@ -5,18 +5,19 @@ import Select from "react-select";
 import Button from "../../components/Button/Button";
 import {useController, useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
-import {createCustomer, createWorkshopOwner, signIn, updateCustomer, updateWorkshopOwner} from "../../api/api";
+import {createCustomer, createWorkshopOwner} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
-import {Confetti} from "@phosphor-icons/react";
-import Modal from "react-modal";
+import CustomModal from "../../components/CustomModal/CustomModal";
 
 function Register() {
 
     const {login} = useContext(AuthContext);
-    const {register, handleSubmit, formState: {errors}, reset, control} = useForm({mode: 'onTouched'});
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    const {register, handleSubmit, formState: {errors}, reset, control} = useForm({mode: 'onTouched'});
     const {
         field: {
             value: workshopOwner,
@@ -34,8 +35,6 @@ function Register() {
 
     const navigate = useNavigate();
     const controller = new AbortController();
-
-    // TODO modal voor succesvol registreren
 
     async function handleFormSubmit(data) {
 
@@ -72,23 +71,6 @@ function Register() {
         }
     }
 
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    //TODO setappelement seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModal() {
         setIsOpen(true);
@@ -106,20 +88,16 @@ function Register() {
         <>
             <main className={`outer-container ${styles["register__outer-container"]}`}>
                 <div className={`inner-container ${styles["register__inner-container"]}`}>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onAfterOpen={afterOpenModal}
-                        onRequestClose={closeModal}
-                        style={customStyles}
+
+                    <CustomModal
+                        modalIsOpen={modalIsOpen}
+                        afterOpenModal={afterOpenModal}
+                        closeModal={closeModal}
                         contentLabel="Register successful"
+                        updateHeader="Welkom! Bedankt voor het registreren."
+                        updateMessage="Je profiel is succesvol aangemaakt!"
                     >
-                        <div className={styles["row__pop-up__successful"]}>
-                            <Confetti size={32} color="#c45018" weight="fill"/>
-                            <h3>Welkom! Bedankt voor het registreren. </h3>
-                            <h3>Je profiel is succesvol aangemaakt!</h3>
-                            <Confetti size={32} color="#c45018" weight="fill"/>
-                        </div>
-                    </Modal>
+                    </CustomModal>
 
                     <h1>Registreren</h1>
                     <form className={styles["register__form"]} onSubmit={handleSubmit(handleFormSubmit)}>

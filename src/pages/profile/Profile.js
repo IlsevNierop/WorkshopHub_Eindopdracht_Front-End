@@ -16,7 +16,7 @@ import {
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import Select from "react-select";
-import Modal from 'react-modal';
+import CustomModal from "../../components/CustomModal/CustomModal";
 
 function Profile() {
 
@@ -35,6 +35,7 @@ function Profile() {
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [modalIsOpen, setIsOpen] = React.useState(false);
 
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -44,23 +45,8 @@ function Profile() {
         {value: true, label: "Workshop eigenaar"}
     ];
 
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
 
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
 
     function openModal() {
         setIsOpen(true);
@@ -240,17 +226,13 @@ function Profile() {
                 <div className={`inner-container ${styles["profile__inner-container"]}`}>
 
                     <div>
-                        <Modal
-                            isOpen={modalIsOpen}
-                            onAfterOpen={afterOpenModal}
-                            onRequestClose={closeModal}
-                            style={customStyles}
+                        <CustomModal
+                            modalIsOpen={modalIsOpen}
+                            afterOpenModal={afterOpenModal}
+                            closeModal={closeModal}
                             contentLabel="Upload profile picture"
+                            functionalModalHeader="Afbeelding uploaden"
                         >
-                            <div className={styles["top-row__upload-profile-picture"]}>
-                                <h3>Afbeelding uploaden</h3>
-                                <Link to="#" onClick={closeModal}><X size={18}/></Link>
-                            </div>
                             <form className={styles["form__upload-profile-picture"]} onSubmit={sendImage}>
                                 <label className={styles["label__input-field__profile-picture"]}
                                        htmlFor="profile-picture">
@@ -271,7 +253,7 @@ function Profile() {
                                     type="submit"
                                 >Uploaden</Button>
                             </form>
-                        </Modal>
+                        </CustomModal>
                     </div>
 
 

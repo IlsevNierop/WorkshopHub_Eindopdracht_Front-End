@@ -75,17 +75,3 @@
     object-fit: cover;
 }
 
-.column__pop-up__successful {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.row__pop-up__successful {
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-}
-
-.row__pop-up__successful h3 {
-    font-weight: normal;
-}

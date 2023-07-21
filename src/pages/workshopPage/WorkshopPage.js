@@ -20,6 +20,7 @@ import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
 import {Heart, X} from "@phosphor-icons/react";
+import CustomModal from "../../components/CustomModal/CustomModal";
 
 function WorkshopPage() {
 
@@ -184,24 +185,6 @@ function WorkshopPage() {
         openModalCheck();
     }
 
-
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
-        },
-    };
-
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
     const [modalIsOpen, setIsOpen] = React.useState(false);
     const [modalIsOpenMessage, setIsOpenMessage] = React.useState(false);
     const [modalIsOpenCheck, setIsOpenCheck] = React.useState(false);
@@ -268,37 +251,50 @@ function WorkshopPage() {
     }, [singleWorkshopData.isFavourite]);
 
 
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
+
+//TODO setappelement seems to be unneccesary?
+    Modal.setAppElement('#root');
+
     return (
 
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
 
-                {/*TODO inloggen gebeurt nu via 3 plekken, kan dit slimmer met die modal?*/}
-                <Modal
-                    isOpen={modalIsOpenMessage}
-                    onAfterOpen={afterOpenModalMessage}
-                    onRequestClose={closeModalMessage}
-                    style={customStyles}
-                    contentLabel="Message"
-                >
-                    {error &&
-                        <>
-                            <p className="error-message">Er gaat iets mis</p>
-                            <p className="error-message">{error}</p>
-                        </>}
-                    {(updateMessage && user != null && user.highestAuthority === 'admin') &&
-                        <div className={styles["modal-update-message"]}>
-                            <h5>De workshop is goedgekeurd</h5>
-                            <p>Je wordt doorgestuurd naar het overzicht van goed te keuren workshops.</p>
-                        </div>
-                    }
-                    {(updateMessage && user != null && user.highestAuthority === 'workshopowner') &&
-                        <div className={styles["modal-update-message"]}>
-                            <h5>De workshop is gepubliceerd</h5>
-                            <p>Je wordt doorgestuurd naar het overzicht van jouw workshops.</p>
-                        </div>
-                    }
-                </Modal>
+                {(updateMessage && user != null) &&
+                    <CustomModal
+                        modalIsOpen={modalIsOpenMessage}
+                        afterOpenModal={afterOpenModalMessage}
+                        closeModal={closeModalMessage}
+                        contentLabel="Verify workshop sucessful"
+                        updateHeader={`De workshop is ${user.highestAuthority === 'admin' ? "goedgekeurd" : "gepubliceerd"}`}
+                        updateMessage={`Je wordt doorgestuurd naar het overzicht van ${user.highestAuthority === 'admin' ? "goed te keuren" : "jouw"} workshops`}
+                    >
+                    </CustomModal>
+                }
+
+                {error &&
+                    <CustomModal
+                        modalIsOpen={modalIsOpenMessage}
+                        afterOpenModal={afterOpenModalMessage}
+                        closeModal={closeModalMessage}
+                        contentLabel="Error"
+                        errorMessage={error}
+                    >
+                    </CustomModal>
+                }
+
+                {/*//TODO make custom modal*/}
+
                 <Modal
                     isOpen={modalIsOpenCheck}
                     onAfterOpen={afterOpenModalCheck}
@@ -340,7 +336,7 @@ function WorkshopPage() {
                 </Modal>
 
                 <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
-                        customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
+                        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
                         register={register} errors={errors} showPassword={showPassword}
                         setShowPassword={setShowPassword}
                         error={error}> </SignIn>
@@ -423,7 +419,7 @@ function WorkshopPage() {
                         <section className={styles["bottom-part__workshop"]}>
 
                             <article className={styles["reviews__bottom__workshop"]}>
-                                <h4>Reviews</h4>
+                                <h4>Reviews over deze aanbieder</h4>
                                 {singleWorkshopData.workshopOwnerReviews.length > 0 ?
                                     <>
                                         <div className={styles["workshop-owner-rating"]}>
