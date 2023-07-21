@@ -122,6 +122,18 @@
     max-width: 100px;
 }
 
+.link-update-worskhop {
+    color: white;
+    text-transform: uppercase;
+    border: solid 2px var(--color-white);
+    background-color: var(--color-terracotta-orange);
+    border-radius: 25px;
+    padding: 7px 14px;
+    width: fit-content;
+    text-decoration: none;
+}
+
+
 
 .column__pop-up__successful {
     display: flex;

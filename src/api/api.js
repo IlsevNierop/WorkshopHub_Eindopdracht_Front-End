@@ -361,14 +361,48 @@ export async function updateAndVerifyWorkshopByAdmin(workshopId, token, title, d
     return response.data;
 }
 
+export async function updateWorkshopByWorkshopOwner(workshopId, workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, workshopVerified, feedbackAdmin, file) {
+
+    const formData = new FormData();
+
+    const workshopInputDto = {
+        title: title,
+        date: date,
+        startTime: starttime,
+        endTime: endtime,
+        price: price,
+        location: location,
+        workshopCategory1: category1,
+        workshopCategory2: category2,
+        highlightedInfo: highlightedinfo,
+        inOrOutdoors: inoroutdoors,
+        amountOfParticipants: amountparticipants,
+        description: description,
+    };
+
+    formData.append(
+        "workshopInputDto",
+        new Blob([JSON.stringify(workshopInputDto)], {
+            type: "application/json",
+        })
+    );
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    const response = await axios.put(`${baseUrl}workshops/workshopowner/${workshopOwnerId}/${workshopId}`,
+        formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
 export async function verifyWorkshopByOwner(token, userId, workshopId, publishWorkshop) {
-    // const response = await axios.put(`${baseUrl}workshops/workshopowner/verify/${userId}/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
-    //     {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: `Bearer ${token}`,
-    //         }
-    //     });
     return await axios.put(`${baseUrl}workshops/workshopowner/verify/${userId}/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
         {
             headers: {
