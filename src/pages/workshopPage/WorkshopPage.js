@@ -39,6 +39,11 @@ function WorkshopPage() {
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
     const [workshopOffline, setWorkshopOffline] = useState(false);
 
+    const [modalIsOpenSignin, setIsOpenSignin] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
+    const [modalIsOpenError, setIsOpenError] = useState(false);
+    const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
+
 
     useEffect(() => {
             async function fetchDataSingleWorkshop() {
@@ -53,7 +58,12 @@ function WorkshopPage() {
 
                     } catch (e) {
                         setError(errorHandling(e));
-                        console.log(error);
+                        openModalError();
+                        setTimeout(() => {
+                            closeModalError();
+                            navigate("/");
+                        }, 3000);
+                        console.log(e)
                     }
                     toggleLoading(false);
                 } else if (user && user.highestAuthority === 'workshopowner') {
@@ -83,7 +93,12 @@ function WorkshopPage() {
 
                     } catch (e) {
                         setError(errorHandling(e));
-                        console.log(error);
+                        openModalError();
+                        setTimeout(() => {
+                            closeModalError();
+                            navigate("/");
+                        }, 3000);
+                        console.log(e)
                     }
                     toggleLoading(false);
                 }
@@ -100,6 +115,10 @@ function WorkshopPage() {
 
         , []);
 
+    useEffect(() => {
+        setFavourite(singleWorkshopData.isFavourite);
+    }, [singleWorkshopData.isFavourite]);
+
     async function getDataSingleWorkshopDataLoggedIn() {
         try {
             const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
@@ -109,7 +128,12 @@ function WorkshopPage() {
 
         } catch (e) {
             setError(errorHandling(e));
-            console.log(error);
+            openModalError();
+            setTimeout(() => {
+                closeModalError();
+                navigate("/");
+            }, 3000);
+            console.log(e)
         }
         toggleLoading(false);
     }
@@ -118,7 +142,7 @@ function WorkshopPage() {
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModal();
+            openModalSignin();
         }
         if (user != null) {
             try {
@@ -127,9 +151,9 @@ function WorkshopPage() {
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalMessage();
+                openModalError();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalError();
                 }, 3000);
                 console.log(e);
             }
@@ -180,25 +204,37 @@ function WorkshopPage() {
         }
     }
 
+
+    async function handleFormSubmit(data) {
+        setError('');
+        try {
+            const {jwt} = await signIn(data.email, data.password);
+            reset();
+            login(jwt);
+            closeModalSignin();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
     function takeWorkshopOffline() {
         setWorkshopOffline(true);
         openModalCheck();
     }
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpenMessage, setIsOpenMessage] = React.useState(false);
-    const [modalIsOpenCheck, setIsOpenCheck] = React.useState(false);
 
-    function openModal() {
-        setIsOpen(true);
+    function openModalSignin() {
+        setIsOpenSignin(true);
     }
 
-    function afterOpenModal() {
+    function afterOpenModalSignin() {
 
     }
 
-    function closeModal() {
-        setIsOpen(false);
+    function closeModalSignin() {
+        setIsOpenSignin(false);
         setError('');
         setShowPassword(false);
         reset();
@@ -228,42 +264,23 @@ function WorkshopPage() {
 
     function closeModalMessage() {
         setIsOpenMessage(false);
-        setError('');
         setupdateMessage(false);
     }
 
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt);
-            closeModal();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalError() {
+        setIsOpenError(true);
     }
 
-    useEffect(() => {
-        setFavourite(singleWorkshopData.isFavourite);
-    }, [singleWorkshopData.isFavourite]);
+    function afterOpenModalError() {
 
+    }
 
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
+    function closeModalError() {
+        setIsOpenError(false);
+        setError('');
+        ;
+    }
 
-//TODO setappelement seems to be unneccesary?
-    Modal.setAppElement('#root');
 
     return (
 
@@ -284,31 +301,26 @@ function WorkshopPage() {
 
                 {error &&
                     <CustomModal
-                        modalIsOpen={modalIsOpenMessage}
-                        afterOpenModal={afterOpenModalMessage}
-                        closeModal={closeModalMessage}
+                        modalIsOpen={modalIsOpenError}
+                        afterOpenModal={afterOpenModalError}
+                        closeModal={closeModalError}
                         contentLabel="Error"
                         errorMessage={error}
                     >
                     </CustomModal>
                 }
 
-                {/*//TODO make custom modal*/}
-
-                <Modal
-                    isOpen={modalIsOpenCheck}
-                    onAfterOpen={afterOpenModalCheck}
-                    onRequestClose={closeModalCheck}
-                    style={customStyles}
+                <CustomModal
+                    modalIsOpen={modalIsOpenCheck}
+                    afterOpenModal={afterOpenModalCheck}
+                    closeModal={closeModalCheck}
                     contentLabel="Check"
-                >
-                    <section className={styles["modal-check"]}>
-                        <div className={styles["top-row__modal-check"]}>
-                            <h3>Weet je het zeker?</h3>
-                            <Link to="#" onClick={closeModalCheck}><X size={18}/></Link>
-                        </div>
-                        <p>Deze workshop is gepubliceerd en staat online.</p>
+                    functionalModalHeader="Weet je het zeker?"
 
+
+                >
+                    <div className={styles["content__modal-check__workshoppage"]}>
+                        <p>Deze workshop is gepubliceerd en staat online.</p>
                         {workshopOffline ?
                             <>
                                 <p>Weet je zeker dat je deze offline wil halen?</p>
@@ -332,17 +344,21 @@ function WorkshopPage() {
                             <Button type="text"
                                     onClick={closeModalCheck}>Terug</Button>
                         </div>
-                    </section>
-                </Modal>
+                    </div>
+                </CustomModal>
 
-                <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+
+                <SignIn modalIsOpen={modalIsOpenSignin} afterOpenModal={afterOpenModalSignin}
+                        closeModal={closeModalSignin}
                         handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
                         register={register} errors={errors} showPassword={showPassword}
                         setShowPassword={setShowPassword}
                         error={error}> </SignIn>
 
 
-                {loading && <p>Loading...</p>}
+                {
+                    loading && <p>Loading...</p>
+                }
                 <h1>{singleWorkshopData.title}</h1>
 
                 <article className={styles["top-part__workshop-page"]}>
@@ -408,7 +424,8 @@ function WorkshopPage() {
                     }
                 </article>
 
-                {Object.keys(singleWorkshopData).length > 0 &&
+                {
+                    Object.keys(singleWorkshopData).length > 0 &&
                     <>
                         <article className={styles["description__middle-part__workshop"]}>
                             <h4>Omschrijving van de workshop</h4>
@@ -539,6 +556,7 @@ function WorkshopPage() {
                     </>
                 }
 
+                <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
             </div>
         </main>
 

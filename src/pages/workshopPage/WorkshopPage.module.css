@@ -1,5 +1,5 @@
 .workshop-page__outer-container {
-    flex-grow:1;
+    flex-grow: 1;
     background-color: var(--color-grey-100);
 }
 
@@ -8,26 +8,13 @@
     margin: 2rem;
 }
 
-.modal-update-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
 
-.modal-check {
+.content__modal-check__workshoppage {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-
+    margin-top: 0.5rem;
     width: 400px;
-}
-
-.top-row__modal-check {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .bottom-row__modal-check {
@@ -91,12 +78,12 @@
     height: 100%;
 }
 
-.companyname__workshop-info{
-   margin-bottom: 1rem;
+.companyname__workshop-info {
+    margin-bottom: 1rem;
 }
 
 .workshop-info {
-   margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .bottom__column__workshop-info {
@@ -226,6 +213,10 @@
 .bottom__workshopowner__feedback-admin {
     display: flex;
     flex-direction: column;
+}
+
+.link {
+  color: var(--color-earth-blue);
 }
 
 
