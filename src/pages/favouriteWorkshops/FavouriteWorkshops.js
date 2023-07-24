@@ -46,6 +46,8 @@ function FavouriteWorkshops() {
         , [])
 
 
+
+
     return (
         <main className={`outer-container ${styles["favourite-workshops__outer-container"]}`}>
             <div className={`inner-container ${styles["favourite-workshops__inner-container"]}`}>
@@ -58,7 +60,8 @@ function FavouriteWorkshops() {
 
                     {favouriteWorkshops && favouriteWorkshops.map((workshop) => {
                         return (
-                            //TODO default pic toevoegen?
+                            // TODO default pic toevoegen?
+                            //TODO while in overview changes favourite icon - no refresh - add state + dependency for useeffect
                             <WorkshopTile
                                 key={workshop.id}
                                 workshopId={workshop.id}

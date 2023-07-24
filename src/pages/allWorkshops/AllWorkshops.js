@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import styles from "./AllWorkshops.module.css"
-import {fetchAllWorkshopsAdmin} from "../../api/api";
+import {fetchAllWorkshopsAdmin, removeWorkshop} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {Link} from "react-router-dom";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Select from "react-select";
 import {sortArrayAllWorkshops} from "../../helper/sortArrayAllWorkshops";
+import CustomModal from "../../components/CustomModal/CustomModal";
+import Button from "../../components/Button/Button";
 
 function AllWorkshops() {
     const token = localStorage.getItem('token');
@@ -16,8 +18,12 @@ function AllWorkshops() {
     const [loading, toggleLoading] = useState(false);
 
     const [workshopsData, setWorkshopsData] = useState([]);
+    const [needUpdateWorkshopsData, toggleNeedUpdateWorkshopsData] = useState(false);
 
     const [sortValue, setSortValue] = useState([]);
+    const [modalIsOpenDeleteSuccessful, setIsOpenDeleteSuccessful] = useState(false);
+    const [modalIsOpenDeleteCheck, setIsOpenDeleteCheck] = useState(false);
+    const [toDeleteWorkshopId, setToDeleteWorkshopId] = useState(null);
 
 
     const optionsSortValue = [
@@ -55,12 +61,61 @@ function AllWorkshops() {
                 controller.abort();
             }
         }
-        , [])
+        , [needUpdateWorkshopsData])
 
     useEffect(() => {
         setWorkshopsData(sortArrayAllWorkshops(workshopsData, sortValue.value));
     }, [sortValue]);
 
+    function checkDeleteWorkshop(workshopId) {
+        openModalDeleteCheck();
+        setToDeleteWorkshopId(workshopId);
+    }
+
+    async function deleteWorkshop(workshopId) {
+        closeModalDeleteCheck();
+        toggleLoading(true);
+        setError('');
+        try {
+            const response = await removeWorkshop(token, workshopId);
+            console.log(response);
+            setError('');
+            openModalDeleteSuccessful();
+            toggleNeedUpdateWorkshopsData(!needUpdateWorkshopsData);
+            setTimeout(() => {
+                closeModalDeleteSuccessful();
+            }, 3000);
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+        toggleLoading(false);
+        setToDeleteWorkshopId(null);
+    }
+
+    function openModalDeleteSuccessful() {
+        setIsOpenDeleteSuccessful(true);
+    }
+
+    function afterOpenModalDeleteSuccessful() {
+    }
+
+    function closeModalDeleteSuccessful() {
+        setIsOpenDeleteSuccessful(false);
+    }
+
+    function openModalDeleteCheck() {
+        setIsOpenDeleteCheck(true);
+    }
+
+    function afterOpenModalDeleteCheck() {
+    }
+
+    function closeModalDeleteCheck() {
+        setIsOpenDeleteCheck(false);
+        setToDeleteWorkshopId(null);
+    }
 
 
     return (
@@ -68,7 +123,35 @@ function AllWorkshops() {
             <div className={`inner-container ${styles["all-workshops__inner-container"]}`}>
                 <h1>Alle workshops</h1>
                 {loading && <p>Loading...</p>}
+
+                {/*//TODO make modal for error*/}
                 {error && <p className="error-message">{error}</p>}
+
+                <CustomModal
+                    modalIsOpen={modalIsOpenDeleteSuccessful}
+                    afterOpenModal={afterOpenModalDeleteSuccessful}
+                    closeModal={closeModalDeleteSuccessful}
+                    contentLabel="Delete workshop successful"
+                    updateHeader={`De workshop met is succesvol verwijderd`}
+                ></CustomModal>
+
+                <CustomModal
+                    modalIsOpen={modalIsOpenDeleteCheck}
+                    afterOpenModal={afterOpenModalDeleteCheck}
+                    closeModal={closeModalDeleteCheck}
+                    contentLabel="Check deleting workshop"
+                    functionalModalHeader="Weet je zeker dat je deze workshop wilt verwijderen?"
+                >
+
+                    <div className={styles["bottom-row__modal-check"]}>
+                        <Button type="text"
+                                onClick={() => deleteWorkshop(toDeleteWorkshopId)}
+                        >Ja ik weet het zeker</Button>
+                        <Button type="text"
+                                onClick={closeModalDeleteCheck}>Terug</Button>
+                    </div>
+                    ></CustomModal>
+
                 {/*//TODO zoeken op toevoegen en sorteren*/}
 
 
@@ -102,7 +185,8 @@ function AllWorkshops() {
                     <tbody>
                         {workshopsData && workshopsData.map((workshop) => {
                             return (<tr key={workshop.id}>
-                                    <td><Link className={styles["link__workshoppage"]} to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
+                                    <td><Link className={styles["link__workshoppage"]}
+                                              to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                     <td>{workshop.title}</td>
                                     <td>{updateDateFormatShort(workshop.date)}</td>
                                     <td>{workshop.workshopOwnerCompanyName}</td>
@@ -112,9 +196,10 @@ function AllWorkshops() {
                                               to={`/aanpassenworkshop/${workshop.id}`}><NotePencil size={20}
                                                                                                    weight="regular"/></Link>
                                     </td>
-                                    {/*//TODO modal toevoegen en link naar delete*/}
-                                    <td><Link className={styles["link"]} to="#"><TrashSimple size={20}
-                                                                                             weight="regular"/></Link>
+                                    {/*//TODO modal  ter check */}
+                                    <td><Link className={styles["link"]} to="#"
+                                              onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple size={20}
+                                                                                                            weight="regular"/></Link>
                                     </td>
 
                                 </tr>

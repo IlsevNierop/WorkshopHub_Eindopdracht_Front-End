@@ -413,4 +413,17 @@ export async function verifyWorkshopByOwner(token, userId, workshopId, publishWo
 }
 
 
+export async function removeWorkshop(token, workshopId) {
+    return await axios.delete(`${baseUrl}workshops/workshopowner/${workshopId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+}
+
+
+
+
 
