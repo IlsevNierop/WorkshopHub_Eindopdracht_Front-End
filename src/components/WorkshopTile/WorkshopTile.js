@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
 import CustomModal from "../CustomModal/CustomModal";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function WorkshopTile({
                           workshoptitle,
@@ -23,18 +24,22 @@ function WorkshopTile({
                           workshopId
                       }) {
     const {user, login} = useContext(AuthContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const token = localStorage.getItem('token');
 
 
     const [error, setError] = useState('');
     const [favourite, setFavourite] = useState(isFavourite);
+
+    const [modalIsOpenError, setIsOpenError] = useState(false);
+
+
     const [showPassword, setShowPassword] = useState(false);
     const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
     const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
     const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
-    const [modalIsOpenError, setIsOpenError] = useState(false);
-
 
 
     async function addOrRemoveFavouriteWorkshop() {
@@ -58,54 +63,11 @@ function WorkshopTile({
         }
     }
 
-
-    function openModalLogin() {
-        setIsOpenLogin(true);
-    }
-
-    function afterOpenModalLogin() {
-
-    }
-
-    function closeModalLogin() {
-        setIsOpenLogin(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-    function openModalResetPassword() {
-        setIsOpenResetPassword(true);
-    }
-
-    function afterOpenModalResetPassword() {
-
-    }
-
-    function closeModalResetPassword() {
-        setIsOpenResetPassword(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-    function openModalMessage() {
-        setIsOpenMessage(true);
-    }
-
-    function afterOpenModalMessage() {
-
-    }
-
-    function closeModalMessage() {
-        setIsOpenMessage(false);
-        setError('');
-    }
-
     function openModalError() {
         setIsOpenError(true);
     }
 
     function afterOpenModalError() {
-
     }
 
     function closeModalError() {
@@ -113,42 +75,46 @@ function WorkshopTile({
         setError('');
     }
 
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt);
-            closeModalLogin();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalLogin() {
+        setModalIsOpenSignIn(true);
     }
 
-    async function handleFormSubmitResetPassword(data) {
-
-        try {
-            const response = await resetPassword(data.email, data.password);
-            console.log(response);
-            closeModalResetPassword();
-            openModalMessage();
-            setTimeout(() => {
-                closeModalMessage();
-                openModalLogin();
-            }, 2000);
-
-
-        } catch (e) {
-            setError(errorHandling(e));
-            setTimeout(() => {
-                setError('');
-
-            }, 4000);
-            console.log(error);
-        }
-    }
+    // async function handleFormSubmit(data) {
+    //     setError('');
+    //     try {
+    //         const {jwt} = await signIn(data.email, data.password);
+    //         reset();
+    //         login(jwt);
+    //         closeModalLogin();
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         console.log(error);
+    //     }
+    // }
+    //
+    // async function handleFormSubmitResetPassword(data) {
+    //
+    //     try {
+    //         const response = await resetPassword(data.email, data.password);
+    //         console.log(response);
+    //         closeModalResetPassword();
+    //         openModalMessage();
+    //         setTimeout(() => {
+    //             closeModalMessage();
+    //             openModalLogin();
+    //         }, 2000);
+    //
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         setTimeout(() => {
+    //             setError('');
+    //
+    //         }, 4000);
+    //         console.log(error);
+    //     }
+    // }
 
 
 
@@ -170,16 +136,7 @@ function WorkshopTile({
                 </CustomModal>
             }
 
-            <SignIn  modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}
-                     handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}
-                     modalIsOpenResetPassword={modalIsOpenResetPassword} afterOpenModalResetPassword={afterOpenModalResetPassword} closeModalResetPassword={closeModalResetPassword}
-                     handleFormSubmitResetPassword={handleFormSubmitResetPassword}
-                     openModalResetPassword={openModalResetPassword}
-                     modalIsOpenMessage={modalIsOpenMessage}
-                     afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}
-            >
-            </SignIn>
-
+            <SignIn></SignIn>
 
             <article className={styles["workshop-tile"]}>
                 <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>

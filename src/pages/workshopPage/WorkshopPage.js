@@ -20,11 +20,15 @@ import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
 import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function WorkshopPage() {
 
     const {workshopId} = useParams();
+
     const {user, login} = useContext(AuthContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -41,9 +45,9 @@ function WorkshopPage() {
     const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
     const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
-    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
-    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
-    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
+    // const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    // const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    // const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
 
     useEffect(() => {
@@ -205,87 +209,91 @@ function WorkshopPage() {
         }
     }
 
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt);
-            closeModalLogin();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalLogin() {
+        setModalIsOpenSignIn(true);
     }
 
-    async function handleFormSubmitResetPassword(data) {
-
-        try {
-            const response = await resetPassword(data.email, data.password);
-            console.log(response);
-            closeModalResetPassword();
-            openModalMessage();
-            setTimeout(() => {
-                closeModalMessage();
-                openModalLogin();
-            }, 2000);
-
-
-        } catch (e) {
-            setError(errorHandling(e));
-            setTimeout(() => {
-                setError('');
-
-            }, 4000);
-            console.log(error);
-        }
-    }
+    // async function handleFormSubmit(data) {
+    //     setError('');
+    //     try {
+    //         const {jwt} = await signIn(data.email, data.password);
+    //         reset();
+    //         login(jwt);
+    //         closeModalLogin();
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         console.log(error);
+    //     }
+    // }
+    //
+    // async function handleFormSubmitResetPassword(data) {
+    //
+    //     try {
+    //         const response = await resetPassword(data.email, data.password);
+    //         console.log(response);
+    //         closeModalResetPassword();
+    //         openModalMessage();
+    //         setTimeout(() => {
+    //             closeModalMessage();
+    //             openModalLogin();
+    //         }, 2000);
+    //
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         setTimeout(() => {
+    //             setError('');
+    //
+    //         }, 4000);
+    //         console.log(error);
+    //     }
+    // }
 
     function takeWorkshopOffline() {
         setWorkshopOffline(true);
         openModalCheck();
     }
 
-    function openModalLogin() {
-        setIsOpenLogin(true);
-    }
-
-    function afterOpenModalLogin() {
-    }
-
-    function closeModalLogin() {
-        setIsOpenLogin(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-
-    function openModalResetPassword() {
-        setIsOpenResetPassword(true);
-    }
-
-    function afterOpenModalResetPassword() {
-    }
-
-    function closeModalResetPassword() {
-        setIsOpenResetPassword(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-
-    function openModalMessage() {
-        setIsOpenMessage(true);
-    }
-
-    function afterOpenModalMessage() {
-    }
-
-    function closeModalMessage() {
-        setIsOpenMessage(false);
-        setError('');
-    }
+    // function openModalLogin() {
+    //     setIsOpenLogin(true);
+    // }
+    //
+    // function afterOpenModalLogin() {
+    // }
+    //
+    // function closeModalLogin() {
+    //     setIsOpenLogin(false);
+    //     setError('');
+    //     setShowPassword(false);
+    //     reset();
+    // }
+    //
+    // function openModalResetPassword() {
+    //     setIsOpenResetPassword(true);
+    // }
+    //
+    // function afterOpenModalResetPassword() {
+    // }
+    //
+    // function closeModalResetPassword() {
+    //     setIsOpenResetPassword(false);
+    //     setError('');
+    //     setShowPassword(false);
+    //     reset();
+    // }
+    //
+    // function openModalMessage() {
+    //     setIsOpenMessage(true);
+    // }
+    //
+    // function afterOpenModalMessage() {
+    // }
+    //
+    // function closeModalMessage() {
+    //     setIsOpenMessage(false);
+    //     setError('');
+    // }
 
     function openModalCheck() {
         setIsOpenCheck(true);
@@ -390,19 +398,21 @@ function WorkshopPage() {
                     </div>
                 </CustomModal>
 
+                <SignIn></SignIn>
 
-                <SignIn modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}
-                        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register}
-                        errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}
-                        modalIsOpenResetPassword={modalIsOpenResetPassword}
-                        afterOpenModalResetPassword={afterOpenModalResetPassword}
-                        closeModalResetPassword={closeModalResetPassword}
-                        handleFormSubmitResetPassword={handleFormSubmitResetPassword}
-                        openModalResetPassword={openModalResetPassword}
-                        modalIsOpenMessage={modalIsOpenMessage}
-                        afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}
-                >
-                </SignIn>
+
+                {/*<SignIn modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}*/}
+                {/*        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register}*/}
+                {/*        errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}*/}
+                {/*        modalIsOpenResetPassword={modalIsOpenResetPassword}*/}
+                {/*        afterOpenModalResetPassword={afterOpenModalResetPassword}*/}
+                {/*        closeModalResetPassword={closeModalResetPassword}*/}
+                {/*        handleFormSubmitResetPassword={handleFormSubmitResetPassword}*/}
+                {/*        openModalResetPassword={openModalResetPassword}*/}
+                {/*        modalIsOpenMessage={modalIsOpenMessage}*/}
+                {/*        afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}*/}
+                {/*>*/}
+                {/*</SignIn>*/}
 
 
                 {

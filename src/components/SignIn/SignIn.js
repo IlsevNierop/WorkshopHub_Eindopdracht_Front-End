@@ -2,50 +2,144 @@ import styles from "../SignIn/SignIn.module.css";
 import {Link} from "react-router-dom";
 import InputField from "../InputField/InputField";
 import Button from "../Button/Button";
-import React from "react";
+import React, {useContext, useState} from "react";
 import CustomModal from "../CustomModal/CustomModal";
+import {resetPassword, signIn} from "../../api/api";
+import {errorHandling} from "../../helper/errorHandling";
+import {useForm} from "react-hook-form";
+import {AuthContext} from "../../context/AuthContext";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 
 function SignIn({
-                    modalIsOpen,
-                    afterOpenModal,
-                    closeModal,
-                    handleSubmit,
-                    handleFormSubmit,
-                    register,
-                    errors,
-                    showPassword,
-                    setShowPassword,
-                    error,
-                    modalIsOpenResetPassword,
-                    afterOpenModalResetPassword,
-                    closeModalResetPassword,
-                    handleFormSubmitResetPassword,
-                    openModalResetPassword,
-                    modalIsOpenMessage,
-                    closeModalMessage,
-                    afterOpenModalMessage,
+                    // modalIsOpenLogin,
+                    // afterOpenModalLogin,
+                    // closeModalLogin,
+                    // handleSubmit,
+                    // handleFormSubmit,
+                    // register,
+                    // errors,
+                    // showPassword,
+                    // setShowPassword,
+                    // error,
+                    // modalIsOpenResetPassword,
+                    // afterOpenModalResetPassword,
+                    // closeModalResetPassword,
+                    // handleFormSubmitResetPassword,
+                    // openModalResetPassword,
+                    // modalIsOpenMessage,
+                    // closeModalMessage,
+                    // afterOpenModalMessage,
                 }) {
 
+    const {login} = useContext(AuthContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    // const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
+
+
     function onClickResetPassword() {
-        closeModal();
+        closeModalSignIn();
         openModalResetPassword();
     }
 
-    //TODO fix signin with reset password on all pages (navbar - homepage - workshoppage) & styling fixen van reset password
+    function openModalSignIn() {
+        setModalIsOpenSignIn(true);
+    }
+
+    function afterOpenModalSignin() {
+
+    }
+
+    function closeModalSignIn() {
+        setModalIsOpenSignIn(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+    function openModalResetPassword() {
+        setIsOpenResetPassword(true);
+    }
+
+    function afterOpenModalResetPassword() {
+
+    }
+
+    function closeModalResetPassword() {
+        setIsOpenResetPassword(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+    function openModalMessage() {
+        setIsOpenMessage(true);
+    }
+
+    function afterOpenModalMessage() {
+
+    }
+
+    function closeModalMessage() {
+        setIsOpenMessage(false);
+        setError('');
+    }
+
+    async function handleFormSubmit(data) {
+        setError('');
+        try {
+            const {jwt} = await signIn(data.email, data.password);
+            reset();
+            login(jwt);
+            closeModalSignIn();
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
+    async function handleFormSubmitResetPassword(data) {
+
+        try {
+            const response = await resetPassword(data.email, data.password);
+            console.log(response);
+            closeModalResetPassword();
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+                openModalSignIn();
+            }, 2000);
+
+
+        } catch (e) {
+            setError(errorHandling(e));
+            setTimeout(() => {
+                setError('');
+
+            }, 4000);
+            console.log(error);
+        }
+    }
+
+
+
+
 
     return (
         <>
 
             <CustomModal
-                modalIsOpen={modalIsOpen}
-                afterOpenModal={afterOpenModal}
-                closeModal={closeModal}
+                modalIsOpen={modalIsOpenSignIn}
+                afterOpenModal={afterOpenModalSignin}
+                closeModal={closeModalSignIn}
                 contentLabel="Sign in"
                 functionalModalHeader="Inloggen"
             >
-
-
                 <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                     <InputField
                         type="text"
@@ -93,7 +187,7 @@ function SignIn({
                         <p>Wachtwoord vergeten?</p></Link>
 
                     <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
-                                                      onClick={closeModal}>Registreer</Link> je
+                                                      onClick={closeModalSignIn}>Registreer</Link> je
                         dan eerst.</p>
                 </div>
             </CustomModal>
