@@ -5,15 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router} from "react-router-dom";
 import AuthContextProvider from "./context/AuthContext";
+import ModalSignInProvider from "./context/ModalSigninContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
-        <Router>
-            <AuthContextProvider>
+    <Router>
+        <AuthContextProvider>
+            <ModalSignInProvider>
                 <App/>
-            </AuthContextProvider>
-        </Router>
+            </ModalSignInProvider>
+        </AuthContextProvider>
+    </Router>
     // </React.StrictMode>
 );
 

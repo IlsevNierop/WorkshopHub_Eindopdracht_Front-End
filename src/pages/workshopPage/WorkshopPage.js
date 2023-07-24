@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     addOrRemoveWorkshopFavourites,
     fetchSingleWorkshopData, fetchSingleWorkshopDataAdmin, fetchSingleWorkshopDataByOwner,
-    fetchSingleWorkshopDataLoggedIn,
+    fetchSingleWorkshopDataLoggedIn, resetPassword,
     signIn, updateAndVerifyWorkshopByAdmin, verifyWorkshopByOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
@@ -16,15 +16,19 @@ import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
 import Button from "../../components/Button/Button";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
-import {Heart, X} from "@phosphor-icons/react";
+import {Heart} from "@phosphor-icons/react";
+import CustomModal from "../../components/CustomModal/CustomModal";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function WorkshopPage() {
 
     const {workshopId} = useParams();
+
     const {user, login} = useContext(AuthContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -37,6 +41,13 @@ function WorkshopPage() {
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
     const [workshopOffline, setWorkshopOffline] = useState(false);
+
+    const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
+    const [modalIsOpenError, setIsOpenError] = useState(false);
+    const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
+    // const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    // const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    // const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
 
     useEffect(() => {
@@ -52,7 +63,12 @@ function WorkshopPage() {
 
                     } catch (e) {
                         setError(errorHandling(e));
-                        console.log(error);
+                        openModalError();
+                        setTimeout(() => {
+                            closeModalError();
+                            navigate("/");
+                        }, 3000);
+                        console.log(e)
                     }
                     toggleLoading(false);
                 } else if (user && user.highestAuthority === 'workshopowner') {
@@ -82,7 +98,12 @@ function WorkshopPage() {
 
                     } catch (e) {
                         setError(errorHandling(e));
-                        console.log(error);
+                        openModalError();
+                        setTimeout(() => {
+                            closeModalError();
+                            navigate("/");
+                        }, 3000);
+                        console.log(e)
                     }
                     toggleLoading(false);
                 }
@@ -99,6 +120,10 @@ function WorkshopPage() {
 
         , []);
 
+    useEffect(() => {
+        setFavourite(singleWorkshopData.isFavourite);
+    }, [singleWorkshopData.isFavourite]);
+
     async function getDataSingleWorkshopDataLoggedIn() {
         try {
             const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
@@ -108,7 +133,12 @@ function WorkshopPage() {
 
         } catch (e) {
             setError(errorHandling(e));
-            console.log(error);
+            openModalError();
+            setTimeout(() => {
+                closeModalError();
+                navigate("/");
+            }, 3000);
+            console.log(e)
         }
         toggleLoading(false);
     }
@@ -117,7 +147,7 @@ function WorkshopPage() {
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModal();
+            openModalLogin();
         }
         if (user != null) {
             try {
@@ -126,9 +156,9 @@ function WorkshopPage() {
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalMessage();
+                openModalError();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalError();
                 }, 3000);
                 console.log(e);
             }
@@ -141,17 +171,17 @@ function WorkshopPage() {
             try {
                 await updateAndVerifyWorkshopByAdmin(workshopId, token, singleWorkshopData.title, singleWorkshopData.date, singleWorkshopData.startTime, singleWorkshopData.endTime, singleWorkshopData.price, singleWorkshopData.location, singleWorkshopData.workshopCategory1, singleWorkshopData.workshopCategory2, singleWorkshopData.inOrOutdoors, singleWorkshopData.amountOfParticipants, singleWorkshopData.highlightedInfo, singleWorkshopData.description, true);
                 setupdateMessage(true)
-                openModalMessage();
+                openModalUpdateMessage();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalUpdateMessage();
                     navigate("/goedkeurenworkshops");
                 }, 3000);
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalMessage();
+                openModalUpdateMessage();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalUpdateMessage();
                 }, 3000);
                 console.log(e);
             }
@@ -163,70 +193,113 @@ function WorkshopPage() {
         try {
             await verifyWorkshopByOwner(token, user.id, workshopId, publishWorkshop);
             setupdateMessage(true);
-            openModalMessage();
+            openModalUpdateMessage();
             setTimeout(() => {
-                closeModalMessage();
+                closeModalUpdateMessage();
                 navigate("/mijnworkshops");
             }, 3000);
 
         } catch (e) {
             setError(errorHandling(e));
-            openModalMessage();
+            openModalUpdateMessage();
             setTimeout(() => {
-                closeModalMessage();
+                closeModalUpdateMessage();
             }, 3000);
             console.log(e);
         }
     }
+
+    function openModalLogin() {
+        setModalIsOpenSignIn(true);
+    }
+
+    // async function handleFormSubmit(data) {
+    //     setError('');
+    //     try {
+    //         const {jwt} = await signIn(data.email, data.password);
+    //         reset();
+    //         login(jwt);
+    //         closeModalLogin();
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         console.log(error);
+    //     }
+    // }
+    //
+    // async function handleFormSubmitResetPassword(data) {
+    //
+    //     try {
+    //         const response = await resetPassword(data.email, data.password);
+    //         console.log(response);
+    //         closeModalResetPassword();
+    //         openModalMessage();
+    //         setTimeout(() => {
+    //             closeModalMessage();
+    //             openModalLogin();
+    //         }, 2000);
+    //
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         setTimeout(() => {
+    //             setError('');
+    //
+    //         }, 4000);
+    //         console.log(error);
+    //     }
+    // }
 
     function takeWorkshopOffline() {
         setWorkshopOffline(true);
         openModalCheck();
     }
 
-
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
-        },
-    };
-
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpenMessage, setIsOpenMessage] = React.useState(false);
-    const [modalIsOpenCheck, setIsOpenCheck] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function afterOpenModal() {
-
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
+    // function openModalLogin() {
+    //     setIsOpenLogin(true);
+    // }
+    //
+    // function afterOpenModalLogin() {
+    // }
+    //
+    // function closeModalLogin() {
+    //     setIsOpenLogin(false);
+    //     setError('');
+    //     setShowPassword(false);
+    //     reset();
+    // }
+    //
+    // function openModalResetPassword() {
+    //     setIsOpenResetPassword(true);
+    // }
+    //
+    // function afterOpenModalResetPassword() {
+    // }
+    //
+    // function closeModalResetPassword() {
+    //     setIsOpenResetPassword(false);
+    //     setError('');
+    //     setShowPassword(false);
+    //     reset();
+    // }
+    //
+    // function openModalMessage() {
+    //     setIsOpenMessage(true);
+    // }
+    //
+    // function afterOpenModalMessage() {
+    // }
+    //
+    // function closeModalMessage() {
+    //     setIsOpenMessage(false);
+    //     setError('');
+    // }
 
     function openModalCheck() {
         setIsOpenCheck(true);
     }
 
     function afterOpenModalCheck() {
-
     }
 
     function closeModalCheck() {
@@ -235,37 +308,29 @@ function WorkshopPage() {
 
     }
 
-    function openModalMessage() {
-        setIsOpenMessage(true);
+    function openModalUpdateMessage() {
+        setIsOpenUpdateMessage(true);
     }
 
-    function afterOpenModalMessage() {
-
+    function afterOpenModalUpdateMessage() {
     }
 
-    function closeModalMessage() {
-        setIsOpenMessage(false);
-        setError('');
+    function closeModalUpdateMessage() {
+        setIsOpenUpdateMessage(false);
         setupdateMessage(false);
     }
 
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt);
-            closeModal();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalError() {
+        setIsOpenError(true);
     }
 
-    useEffect(() => {
-        setFavourite(singleWorkshopData.isFavourite);
-    }, [singleWorkshopData.isFavourite]);
+    function afterOpenModalError() {
+    }
+
+    function closeModalError() {
+        setIsOpenError(false);
+        setError('');
+    }
 
 
     return (
@@ -273,46 +338,40 @@ function WorkshopPage() {
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["workshop-page__inner-container"]}`}>
 
-                {/*TODO inloggen gebeurt nu via 3 plekken, kan dit slimmer met die modal?*/}
-                <Modal
-                    isOpen={modalIsOpenMessage}
-                    onAfterOpen={afterOpenModalMessage}
-                    onRequestClose={closeModalMessage}
-                    style={customStyles}
-                    contentLabel="Message"
-                >
-                    {error &&
-                        <>
-                            <p className="error-message">Er gaat iets mis</p>
-                            <p className="error-message">{error}</p>
-                        </>}
-                    {(updateMessage && user != null && user.highestAuthority === 'admin') &&
-                        <div className={styles["modal-update-message"]}>
-                            <h5>De workshop is goedgekeurd</h5>
-                            <p>Je wordt doorgestuurd naar het overzicht van goed te keuren workshops.</p>
-                        </div>
-                    }
-                    {(updateMessage && user != null && user.highestAuthority === 'workshopowner') &&
-                        <div className={styles["modal-update-message"]}>
-                            <h5>De workshop is gepubliceerd</h5>
-                            <p>Je wordt doorgestuurd naar het overzicht van jouw workshops.</p>
-                        </div>
-                    }
-                </Modal>
-                <Modal
-                    isOpen={modalIsOpenCheck}
-                    onAfterOpen={afterOpenModalCheck}
-                    onRequestClose={closeModalCheck}
-                    style={customStyles}
-                    contentLabel="Check"
-                >
-                    <section className={styles["modal-check"]}>
-                        <div className={styles["top-row__modal-check"]}>
-                            <h3>Weet je het zeker?</h3>
-                            <Link to="#" onClick={closeModalCheck}><X size={18}/></Link>
-                        </div>
-                        <p>Deze workshop is gepubliceerd en staat online.</p>
+                {(updateMessage && user != null) &&
+                    <CustomModal
+                        modalIsOpen={modalIsOpenUpdateMessage}
+                        afterOpenModal={afterOpenModalUpdateMessage}
+                        closeModal={closeModalUpdateMessage}
+                        contentLabel="Verify workshop sucessful"
+                        updateHeader={`De workshop is ${user.highestAuthority === 'admin' ? "goedgekeurd" : "gepubliceerd"}`}
+                        updateMessage={`Je wordt doorgestuurd naar het overzicht van ${user.highestAuthority === 'admin' ? "goed te keuren" : "jouw"} workshops`}
+                    >
+                    </CustomModal>
+                }
 
+                {error &&
+                    <CustomModal
+                        modalIsOpen={modalIsOpenError}
+                        afterOpenModal={afterOpenModalError}
+                        closeModal={closeModalError}
+                        contentLabel="Error"
+                        errorMessage={error}
+                    >
+                    </CustomModal>
+                }
+
+                <CustomModal
+                    modalIsOpen={modalIsOpenCheck}
+                    afterOpenModal={afterOpenModalCheck}
+                    closeModal={closeModalCheck}
+                    contentLabel="Check"
+                    functionalModalHeader="Weet je het zeker?"
+
+
+                >
+                    <div className={styles["content__modal-check__workshoppage"]}>
+                        <p>Deze workshop is gepubliceerd en staat online.</p>
                         {workshopOffline ?
                             <>
                                 <p>Weet je zeker dat je deze offline wil halen?</p>
@@ -336,17 +395,29 @@ function WorkshopPage() {
                             <Button type="text"
                                     onClick={closeModalCheck}>Terug</Button>
                         </div>
-                    </section>
-                </Modal>
+                    </div>
+                </CustomModal>
 
-                <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
-                        customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
-                        register={register} errors={errors} showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                        error={error}> </SignIn>
+                <SignIn></SignIn>
 
 
-                {loading && <p>Loading...</p>}
+                {/*<SignIn modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}*/}
+                {/*        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register}*/}
+                {/*        errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}*/}
+                {/*        modalIsOpenResetPassword={modalIsOpenResetPassword}*/}
+                {/*        afterOpenModalResetPassword={afterOpenModalResetPassword}*/}
+                {/*        closeModalResetPassword={closeModalResetPassword}*/}
+                {/*        handleFormSubmitResetPassword={handleFormSubmitResetPassword}*/}
+                {/*        openModalResetPassword={openModalResetPassword}*/}
+                {/*        modalIsOpenMessage={modalIsOpenMessage}*/}
+                {/*        afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}*/}
+                {/*>*/}
+                {/*</SignIn>*/}
+
+
+                {
+                    loading && <p>Loading...</p>
+                }
                 <h1>{singleWorkshopData.title}</h1>
 
                 <article className={styles["top-part__workshop-page"]}>
@@ -412,7 +483,8 @@ function WorkshopPage() {
                     }
                 </article>
 
-                {Object.keys(singleWorkshopData).length > 0 &&
+                {
+                    Object.keys(singleWorkshopData).length > 0 &&
                     <>
                         <article className={styles["description__middle-part__workshop"]}>
                             <h4>Omschrijving van de workshop</h4>
@@ -423,7 +495,7 @@ function WorkshopPage() {
                         <section className={styles["bottom-part__workshop"]}>
 
                             <article className={styles["reviews__bottom__workshop"]}>
-                                <h4>Reviews</h4>
+                                <h4>Reviews over deze aanbieder</h4>
                                 {singleWorkshopData.workshopOwnerReviews.length > 0 ?
                                     <>
                                         <div className={styles["workshop-owner-rating"]}>
@@ -543,6 +615,7 @@ function WorkshopPage() {
                     </>
                 }
 
+                <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
             </div>
         </main>
 

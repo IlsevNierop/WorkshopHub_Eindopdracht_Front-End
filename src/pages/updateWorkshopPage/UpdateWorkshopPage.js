@@ -16,7 +16,8 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
 import Modal from "react-modal";
 import {Confetti, X} from "@phosphor-icons/react";
-import StarRating from "../../components/StarRating/StarRating";
+import CustomModal from "../../components/CustomModal/CustomModal";
+
 
 function UpdateWorkshopPage() {
 
@@ -244,7 +245,6 @@ function UpdateWorkshopPage() {
                     closeModal();
                     navigate("/goedkeurenworkshops")
                 }, 5000);
-                console.log("gelukt!")
             } catch (e) {
                 setError(errorHandling(e));
             }
@@ -256,9 +256,9 @@ function UpdateWorkshopPage() {
                 openModal();
                 setTimeout(() => {
                     closeModal();
+                    //TODO maak 'mijn workshops'
                     navigate("/")
-                }, 5000);
-                console.log("gelukt!")
+                }, 6000);
             } catch (e) {
                 setError(errorHandling(e));
             }
@@ -266,21 +266,6 @@ function UpdateWorkshopPage() {
     }
 
     // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    //TODO setappelement seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
 
@@ -319,59 +304,50 @@ function UpdateWorkshopPage() {
         <main className={`outer-container ${styles["update-workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["update-workshop-page__inner-container"]}`}>
 
-                <Modal
-                    isOpen={modalIsOpen}
-                    onAfterOpen={afterOpenModal}
-                    onRequestClose={closeModal}
-                    style={customStyles}
-                    contentLabel="Update workshop successful"
-                >
-                    <section className={styles["column__pop-up__successful"]}>
-                        <div className={styles["row__pop-up__successful"]}>
-                            <Confetti size={32} color="#c45018" weight="fill"/>
-                            <h3>Dank voor het aanpassen van de workshop</h3>
-                            <Confetti size={32} color="#c45018" weight="fill"/>
-                        </div>
-                        {highestAuthority === 'admin' &&
-                            <>
-                                <p>De workshop eigenaar krijgt hiervan bericht</p>
-                                <p>Je wordt doorgestuurd naar de workshops</p>
-                            </>
-                        }
-                        {highestAuthority !== 'admin' &&
-                            <>
-                                <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je
-                                    bericht.</p>
-                                <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
-                                <p>Je wordt doorgestuurd naar het overzicht van je workshops</p>
-                            </>}
-                    </section>
-                </Modal>
+                {highestAuthority === 'admin' &&
+                <CustomModal
+                    modalIsOpen={modalIsOpen}
+                    afterOpenModal={afterOpenModal}
+                    closeModal={closeModal}
+                    contentLabel="Update workshops successful"
+                    updateHeader="Dank voor het aanpassen van de workshop"
+                    updateMessage="De workshop eigenaar krijgt hiervan bericht. - Je wordt doorgestuurd naar het overzicht van de openstaande workshops."
+                ></CustomModal>
+                }
+                {highestAuthority !== 'admin' &&
+                <CustomModal
+                    modalIsOpen={modalIsOpen}
+                    afterOpenModal={afterOpenModal}
+                    closeModal={closeModal}
+                    contentLabel="Update workshops successful"
+                    updateHeader="Dank voor het aanpassen van de workshop"
+                    updateMessage="Je workshop zal geverifieerd worden door de administrator, hiervan krijg je
+                                    bericht. - Zodra deze geverifieerd is, kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
+                ></CustomModal>
+                }
 
-                <Modal
-                    isOpen={modalIsOpenCheck}
-                    onAfterOpen={afterOpenModalCheck}
-                    onRequestClose={closeModalCheck}
-                    style={customStyles}
-                    contentLabel="Check"
+                <CustomModal
+                    modalIsOpen={modalIsOpenCheck}
+                    afterOpenModal={afterOpenModalCheck}
+                    closeModal={closeModalCheck}
+                    contentLabel="Check update verified workshop"
+                    functionalModalHeader="Weet je zeker dat je deze workshop wilt wijzigen?"
                 >
-                    <section className={styles["modal-check"]}>
-                        <div className={styles["top-row__modal-check"]}>
-                            <h3>Weet je zeker dat je deze workshop wilt wijzigen?</h3>
-                            <Link to="#" onClick={closeModalCheck}><X size={18}/></Link>
-                        </div>
-                        <p>Deze workshop is geverifieerd door een administrator.</p>
-                        <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
-                            worden door een administrator voordat de workshop gepubliceerd kan worden.</p>
-                        <div className={styles["bottom-row__modal-check"]}>
-                            <Button type="text"
-                                    onClick={handleIsCheckedChange}
-                            >Ik weet het zeker</Button>
-                            <Button type="text"
-                                    onClick={closeModalCheck}>Terug</Button>
-                        </div>
-                    </section>
-                </Modal>
+                    <div className={styles["content__modal-check"]}>
+
+                    <p>Deze workshop is geverifieerd door een administrator.</p>
+                    <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
+                        worden door een administrator voordat de workshop gepubliceerd kan worden.</p>
+                    <div className={styles["bottom-row__modal-check"]}>
+                        <Button type="text"
+                                onClick={handleIsCheckedChange}
+                        >Ik weet het zeker</Button>
+                        <Button type="text"
+                                onClick={closeModalCheck}>Terug</Button>
+                    </div>
+                    </div>
+                </CustomModal>
+
 
 
                 {highestAuthority === 'admin' ?

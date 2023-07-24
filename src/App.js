@@ -6,7 +6,6 @@ import Home from "./pages/home/Home";
 import {useContext, useState} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
-import ResetPassword from "./pages/resetPassword/ResetPassword";
 import Register from "./pages/register/Register";
 import WorkshopPage from "./pages/workshopPage/WorkshopPage";
 import CreateWorkshop from "./pages/createWorkshop/CreateWorkshop";
@@ -28,7 +27,6 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/workshop/:workshopId" element={<WorkshopPage/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
-                    <Route path="/wachtwoordvergeten" element={<ResetPassword/>}/>
                     <Route path="/registreren" element={<Register/>}/>
                     <Route path="/favorieten" element={isAuth? <FavouriteWorkshops/> : <Home />}/>
 

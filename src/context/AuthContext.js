@@ -1,7 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
 import {checkTokenValidity} from "../helper/checkTokenValidity";
 import {returnHighestAuthority} from "../helper/returnHighestAuthority";
 

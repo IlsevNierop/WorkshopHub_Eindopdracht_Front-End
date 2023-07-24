@@ -3,7 +3,7 @@
 }
 .nav-outer-bottom {
     background-color: var(--color-grey-200);
-}
+  }
 
 .nav-inner-top {
     display: flex;

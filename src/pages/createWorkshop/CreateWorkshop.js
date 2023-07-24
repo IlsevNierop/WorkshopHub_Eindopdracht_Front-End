@@ -3,13 +3,11 @@ import styles from '../createWorkshop/CreateWorkshop.module.css'
 import {AuthContext} from "../../context/AuthContext";
 import InputField from "../../components/InputField/InputField";
 import {useForm, Controller} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
 import Button from "../../components/Button/Button";
 import {createWorkshop} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
-import Modal from "react-modal";
-import {Confetti} from "@phosphor-icons/react";
+import CustomModal from "../../components/CustomModal/CustomModal";
 
 function CreateWorkshop() {
 
@@ -19,6 +17,7 @@ function CreateWorkshop() {
     const [error, setError] = useState('');
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
+    const [modalIsOpen, setIsOpen] = useState(false);
 
     const controller = new AbortController();
 
@@ -60,24 +59,6 @@ function CreateWorkshop() {
 
     }
 
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    //TODO setappelement seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
     function openModal() {
         setIsOpen(true);
     }
@@ -89,29 +70,18 @@ function CreateWorkshop() {
         setIsOpen(false);
     }
 
-
-
     return (
         <main className={`outer-container ${styles["create-workshop__outer-container"]}`}>
             <div className={`inner-container ${styles["create-workshop__inner-container"]}`}>
-
-                <Modal
-                    isOpen={modalIsOpen}
-                    onAfterOpen={afterOpenModal}
-                    onRequestClose={closeModal}
-                    style={customStyles}
-                    contentLabel="Create workshop successful"
-                >
-                    <section className={styles["column__pop-up__successful"]}>
-                    <div className={styles["row__pop-up__successful"]}>
-                        <Confetti size={32} color="#c45018" weight="fill"/>
-                        <h3>Dank voor het uploaden van je nieuwe workshop</h3>
-                        <Confetti size={32} color="#c45018" weight="fill"/>
-                    </div>
-                        <p>Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.</p>
-                        <p>Zodra deze geverifieerd is, kun je de workshop publiceren.</p>
-                    </section>
-                </Modal>
+                <CustomModal
+                    modalIsOpen={modalIsOpen}
+                    afterOpenModal={afterOpenModal}
+                    closeModal={closeModal}
+                    contentLabel="Create workshops successful"
+                    updateHeader="Dank voor het uploaden van je nieuwe workshop"
+                    updateMessage="Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.-
+           Zodra deze geverifieerd is, kun je de workshop publiceren."
+                ></CustomModal>
 
                 <h1>Nieuwe workshop aanmaken</h1>
 

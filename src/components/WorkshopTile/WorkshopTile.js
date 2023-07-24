@@ -1,14 +1,15 @@
 import styles from "./WorkshopTile.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
-import {Heart, X} from "@phosphor-icons/react";
-import {addOrRemoveWorkshopFavourites, signIn, uploadProfilePic} from "../../api/api";
+import {Heart} from "@phosphor-icons/react";
+import {addOrRemoveWorkshopFavourites, resetPassword, signIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
-import Modal from "react-modal";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
+import CustomModal from "../CustomModal/CustomModal";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function WorkshopTile({
                           workshoptitle,
@@ -23,17 +24,28 @@ function WorkshopTile({
                           workshopId
                       }) {
     const {user, login} = useContext(AuthContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const token = localStorage.getItem('token');
+
+
     const [error, setError] = useState('');
     const [favourite, setFavourite] = useState(isFavourite);
+
+    const [modalIsOpenError, setIsOpenError] = useState(false);
+
+
     const [showPassword, setShowPassword] = useState(false);
+    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
 
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModal();
+            openModalLogin();
         }
         if (user != null) {
             try {
@@ -51,47 +63,11 @@ function WorkshopTile({
         }
     }
 
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
-        },
-    };
-
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpenError, setIsOpenError] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function afterOpenModal() {
-
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-
     function openModalError() {
         setIsOpenError(true);
     }
 
     function afterOpenModalError() {
-
     }
 
     function closeModalError() {
@@ -99,19 +75,48 @@ function WorkshopTile({
         setError('');
     }
 
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt, "/");
-            closeModal();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalLogin() {
+        setModalIsOpenSignIn(true);
     }
+
+    // async function handleFormSubmit(data) {
+    //     setError('');
+    //     try {
+    //         const {jwt} = await signIn(data.email, data.password);
+    //         reset();
+    //         login(jwt);
+    //         closeModalLogin();
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         console.log(error);
+    //     }
+    // }
+    //
+    // async function handleFormSubmitResetPassword(data) {
+    //
+    //     try {
+    //         const response = await resetPassword(data.email, data.password);
+    //         console.log(response);
+    //         closeModalResetPassword();
+    //         openModalMessage();
+    //         setTimeout(() => {
+    //             closeModalMessage();
+    //             openModalLogin();
+    //         }, 2000);
+    //
+    //
+    //     } catch (e) {
+    //         setError(errorHandling(e));
+    //         setTimeout(() => {
+    //             setError('');
+    //
+    //         }, 4000);
+    //         console.log(error);
+    //     }
+    // }
+
+
 
     useEffect(() => {
         setFavourite(isFavourite);
@@ -119,21 +124,19 @@ function WorkshopTile({
 
     return (
         <>
-            <Modal
-                isOpen={modalIsOpenError}
-                onAfterOpen={afterOpenModalError}
-                onRequestClose={closeModalError}
-                style={customStyles}
-                contentLabel="Data error"
-            >
-                {error && <p className="error-message">{error}</p>}
-            </Modal>
 
-            <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
-                    customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
-                    register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
-                    error={error}> </SignIn>
+            {error &&
+                <CustomModal
+                    modalIsOpen={modalIsOpenError}
+                    afterOpenModal={afterOpenModalError}
+                    closeModal={closeModalError}
+                    contentLabel="Error"
+                    errorMessage={error}
+                >
+                </CustomModal>
+            }
 
+            <SignIn></SignIn>
 
             <article className={styles["workshop-tile"]}>
                 <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>

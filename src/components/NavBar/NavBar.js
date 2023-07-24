@@ -2,70 +2,23 @@ import React, {useContext, useState} from 'react';
 import {NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
-import {Heart, X} from "@phosphor-icons/react";
+import {Heart} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
-import Modal from "react-modal";
 import {useForm} from "react-hook-form";
-import {signIn} from "../../api/api";
+import {resetPassword, signIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import SignIn from "../SignIn/SignIn";
+import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function NavBar() {
 
 
-    const {isAuth, user, logout, login} = useContext(AuthContext);
-    const {register, handleSubmit, formState: {errors}, reset, onErrors} = useForm({mode: 'onTouched'});
-    const [error, setError] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const {isAuth, user, logout} = useContext(AuthContext);
+    const {setModalIsOpenSignIn} = useContext(ModalSignInContext);
 
-
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
-        },
-    };
-
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
-
-    function afterOpenModal() {
-
-    }
-
-    function closeModal() {
-        setIsOpen(false);
-        setError('');
-        setShowPassword(false);
-        reset();
-    }
-
-    async function handleFormSubmit(data) {
-        setError('');
-        try {
-            const {jwt} = await signIn(data.email, data.password);
-            reset();
-            login(jwt, "/profiel");
-            closeModal();
-
-        } catch (e) {
-            setError(errorHandling(e));
-            console.log(error);
-        }
+    function openModalLogin() {
+        setModalIsOpenSignIn(true);
     }
 
 
@@ -81,7 +34,7 @@ function NavBar() {
                         {!isAuth && <li className={styles["nav-li-top"]}>
                             <NavLink
                                 className={styles['default-nav-link']}
-                                to="#" onClick={openModal}>Inloggen</NavLink>
+                                to="#" onClick={openModalLogin}>Inloggen</NavLink>
                         </li>}
 
                         {isAuth && <li className={styles["nav-li-top"]}>
@@ -96,9 +49,8 @@ function NavBar() {
                                 </NavLink>
                             </li>
                             :
-                            // navigate naar favorieten TODO
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="#" onClick={openModal}><Heart size={32} color="black"
+                                <NavLink to="#" onClick={openModalLogin}><Heart size={32} color="black"
                                                                  weight="regular"/>
                                 </NavLink>
                             </li>
@@ -107,73 +59,8 @@ function NavBar() {
 
                     </ul>
 
-                    <SignIn  modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal} customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}> </SignIn>
-
-                    {/*<Modal*/}
-                    {/*    isOpen={modalIsOpen}*/}
-                    {/*    onAfterOpen={afterOpenModal}*/}
-                    {/*    onRequestClose={closeModal}*/}
-                    {/*    style={customStyles}*/}
-                    {/*    contentLabel="Sign in"*/}
-                    {/*>*/}
-
-                    {/*    <div className={styles["top-row__signin"]}>*/}
-                    {/*        <h3>Inloggen</h3>*/}
-                    {/*        <Link to="#" onClick={closeModal}><X size={18}/></Link>*/}
-                    {/*    </div>*/}
-                    {/*    <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>*/}
-                    {/*        <InputField*/}
-                    {/*            type="text"*/}
-                    {/*            name="email"*/}
-                    {/*            label="Email: "*/}
-                    {/*            validation={{*/}
-                    {/*                required:*/}
-                    {/*                    {*/}
-                    {/*                        value: true,*/}
-                    {/*                        message: "E-mail is verplicht",*/}
-                    {/*                    }, pattern: {*/}
-                    {/*                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,*/}
-                    {/*                    message: "Vul een geldig e-mailadres in"*/}
-                    {/*                }*/}
-                    {/*            }}*/}
-                    {/*            register={register}*/}
-                    {/*            errors={errors}*/}
-                    {/*        >*/}
-                    {/*        </InputField>*/}
-                    {/*        <InputField classNameLabel="password-input-field"*/}
-                    {/*                    type={showPassword ? "text" : "password"}*/}
-                    {/*                    name="password"*/}
-                    {/*                    label="Wachtwoord: "*/}
-                    {/*                    validation={{*/}
-                    {/*                        required:*/}
-                    {/*                            {*/}
-                    {/*                                value: true,*/}
-                    {/*                                message: "Wachtwoord is verplicht",*/}
-                    {/*                            }*/}
-                    {/*                    }}*/}
-                    {/*                    register={register}*/}
-                    {/*                    errors={errors}*/}
-                    {/*                    setShowPassword={setShowPassword}*/}
-                    {/*                    showPassword={showPassword}*/}
-                    {/*        >*/}
-                    {/*        </InputField>*/}
-                    {/*        {error && <p className="error-message">{error}</p>}*/}
-                    {/*        <Button*/}
-                    {/*            type="submit"*/}
-                    {/*        >Inloggen</Button>*/}
-                    {/*    </form>*/}
-
-
-                    {/*    <div className={styles["bottom-links__signin"]}>*/}
-                    {/*        <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={closeModal}>*/}
-                    {/*            <p>Wachtwoord vergeten?</p></Link>*/}
-
-                    {/*        <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"*/}
-                    {/*                                          onClick={closeModal}>Registreer</Link> je*/}
-                    {/*            dan eerst.</p>*/}
-                    {/*    </div>*/}
-
-                    {/*</Modal>*/}
+                    <SignIn>
+                    </SignIn>
 
                 </nav>
             </div>
@@ -181,29 +68,14 @@ function NavBar() {
             {isAuth && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
-
-                        {/* TODO add navbar dropdown for sub menus*/}
-
                         {
                             navLinks(user.highestAuthority).map((navlink) => {
-                                // return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}><NavLink
-                                //     className={({isActive}) => isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                                //     to={navlink.link}>{navlink.title}</NavLink>
-                                // </li>)
-                                //
+
                                 return (    <li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
                                         {navlink.submenu ? (
                                             <div className={styles["nav__dropdown_menu"]}>
                                                 <span className={styles['default-nav-link']}>{navlink.title}</span>
 
-                                                {/*<NavLink*/}
-                                                {/*    className={({ isActive }) =>*/}
-                                                {/*        isActive ? styles['active-nav-link'] : styles['default-nav-link']*/}
-                                                {/*    }*/}
-                                                {/*    to={navlink.link}*/}
-                                                {/*>*/}
-                                                {/*    {navlink.title}*/}
-                                                {/*</NavLink>*/}
                                                 <div className={styles["nav__dropdown_content"]}>
                                                     {navlink.submenu.map((submenuItem) => (
                                                         <NavLink

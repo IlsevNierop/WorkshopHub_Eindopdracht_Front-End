@@ -6,8 +6,6 @@ import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {Link} from "react-router-dom";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Select from "react-select";
-import {filterWorkshopArray} from "../../helper/filtersWorkshopsHomePage/filterWorkshopArray";
-import {sortArrayHomePage} from "../../helper/sortArrayHomePage";
 import {sortArrayAllWorkshops} from "../../helper/sortArrayAllWorkshops";
 
 function AllWorkshops() {

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styles from "./FavouriteWorkshops.module.css";
-import {Confetti} from "@phosphor-icons/react";
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {errorHandling} from "../../helper/errorHandling";
