@@ -1,14 +1,14 @@
 import styles from "./WorkshopTile.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
-import {Heart, X} from "@phosphor-icons/react";
-import {addOrRemoveWorkshopFavourites, signIn, uploadProfilePic} from "../../api/api";
+import {Heart} from "@phosphor-icons/react";
+import {addOrRemoveWorkshopFavourites, resetPassword, signIn} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
-import Modal from "react-modal";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
+import CustomModal from "../CustomModal/CustomModal";
 
 function WorkshopTile({
                           workshoptitle,
@@ -25,15 +25,22 @@ function WorkshopTile({
     const {user, login} = useContext(AuthContext);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const token = localStorage.getItem('token');
+
+
     const [error, setError] = useState('');
     const [favourite, setFavourite] = useState(isFavourite);
     const [showPassword, setShowPassword] = useState(false);
+    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
+    const [modalIsOpenError, setIsOpenError] = useState(false);
+
 
 
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModal();
+            openModalLogin();
         }
         if (user != null) {
             try {
@@ -51,39 +58,46 @@ function WorkshopTile({
         }
     }
 
-    // ...................MODAL
-    const customStyles = {
-        content: {
-            top: '50%',
-            left: '50%',
-            right: 'auto',
-            bottom: 'auto',
-            marginRight: '-50%',
-            transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
-        },
-    };
 
-    //TODO below seems to be unneccesary?
-    Modal.setAppElement('#root');
-
-
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-    const [modalIsOpenError, setIsOpenError] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
+    function openModalLogin() {
+        setIsOpenLogin(true);
     }
 
-    function afterOpenModal() {
+    function afterOpenModalLogin() {
 
     }
 
-    function closeModal() {
-        setIsOpen(false);
+    function closeModalLogin() {
+        setIsOpenLogin(false);
         setError('');
         setShowPassword(false);
         reset();
+    }
+    function openModalResetPassword() {
+        setIsOpenResetPassword(true);
+    }
+
+    function afterOpenModalResetPassword() {
+
+    }
+
+    function closeModalResetPassword() {
+        setIsOpenResetPassword(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+    function openModalMessage() {
+        setIsOpenMessage(true);
+    }
+
+    function afterOpenModalMessage() {
+
+    }
+
+    function closeModalMessage() {
+        setIsOpenMessage(false);
+        setError('');
     }
 
     function openModalError() {
@@ -104,8 +118,8 @@ function WorkshopTile({
         try {
             const {jwt} = await signIn(data.email, data.password);
             reset();
-            login(jwt, "/");
-            closeModal();
+            login(jwt);
+            closeModalLogin();
 
         } catch (e) {
             setError(errorHandling(e));
@@ -113,26 +127,58 @@ function WorkshopTile({
         }
     }
 
+    async function handleFormSubmitResetPassword(data) {
+
+        try {
+            const response = await resetPassword(data.email, data.password);
+            console.log(response);
+            closeModalResetPassword();
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+                openModalLogin();
+            }, 2000);
+
+
+        } catch (e) {
+            setError(errorHandling(e));
+            setTimeout(() => {
+                setError('');
+
+            }, 4000);
+            console.log(error);
+        }
+    }
+
+
+
     useEffect(() => {
         setFavourite(isFavourite);
     }, [isFavourite]);
 
     return (
         <>
-            <Modal
-                isOpen={modalIsOpenError}
-                onAfterOpen={afterOpenModalError}
-                onRequestClose={closeModalError}
-                style={customStyles}
-                contentLabel="Data error"
-            >
-                {error && <p className="error-message">{error}</p>}
-            </Modal>
 
-            <SignIn modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
-                    customStyles={customStyles} handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
-                    register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword}
-                    error={error}> </SignIn>
+            {error &&
+                <CustomModal
+                    modalIsOpen={modalIsOpenError}
+                    afterOpenModal={afterOpenModalError}
+                    closeModal={closeModalError}
+                    contentLabel="Error"
+                    errorMessage={error}
+                >
+                </CustomModal>
+            }
+
+            <SignIn  modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}
+                     handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}
+                     modalIsOpenResetPassword={modalIsOpenResetPassword} afterOpenModalResetPassword={afterOpenModalResetPassword} closeModalResetPassword={closeModalResetPassword}
+                     handleFormSubmitResetPassword={handleFormSubmitResetPassword}
+                     openModalResetPassword={openModalResetPassword}
+                     modalIsOpenMessage={modalIsOpenMessage}
+                     afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}
+            >
+            </SignIn>
 
 
             <article className={styles["workshop-tile"]}>

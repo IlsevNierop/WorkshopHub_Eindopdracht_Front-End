@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
 import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
-import {Heart, X} from "@phosphor-icons/react";
+import {Heart} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";
 import {useForm} from "react-hook-form";
@@ -17,21 +17,20 @@ function NavBar() {
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
     const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
-    const navigate = useNavigate();
-
-    function openModal() {
-        setIsOpen(true);
+    function openModalLogin() {
+        setIsOpenLogin(true);
     }
 
-    function afterOpenModal() {
+    function afterOpenModalLogin() {
 
     }
 
-    function closeModal() {
-        setIsOpen(false);
+    function closeModalLogin() {
+        setIsOpenLogin(false);
         setError('');
         setShowPassword(false);
         reset();
@@ -50,6 +49,18 @@ function NavBar() {
         setShowPassword(false);
         reset();
     }
+    function openModalMessage() {
+        setIsOpenMessage(true);
+    }
+
+    function afterOpenModalMessage() {
+
+    }
+
+    function closeModalMessage() {
+        setIsOpenMessage(false);
+        setError('');
+    }
 
     async function handleFormSubmit(data) {
         setError('');
@@ -57,7 +68,7 @@ function NavBar() {
             const {jwt} = await signIn(data.email, data.password);
             reset();
             login(jwt);
-            closeModal();
+            closeModalLogin();
 
         } catch (e) {
             setError(errorHandling(e));
@@ -70,13 +81,12 @@ function NavBar() {
         try {
             const response = await resetPassword(data.email, data.password);
             console.log(response);
-            reset();
-            // openModal();
-            // setTimeout(() => {
-            //     closeModal();
-            //     navigate("/")
-            //
-            // }, 2000);
+            closeModalResetPassword();
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+                openModalLogin();
+            }, 2000);
 
 
         } catch (e) {
@@ -102,7 +112,7 @@ function NavBar() {
                         {!isAuth && <li className={styles["nav-li-top"]}>
                             <NavLink
                                 className={styles['default-nav-link']}
-                                to="#" onClick={openModal}>Inloggen</NavLink>
+                                to="#" onClick={openModalLogin}>Inloggen</NavLink>
                         </li>}
 
                         {isAuth && <li className={styles["nav-li-top"]}>
@@ -118,7 +128,7 @@ function NavBar() {
                             </li>
                             :
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="#" onClick={openModal}><Heart size={32} color="black"
+                                <NavLink to="#" onClick={openModalLogin}><Heart size={32} color="black"
                                                                  weight="regular"/>
                                 </NavLink>
                             </li>
@@ -127,11 +137,13 @@ function NavBar() {
 
                     </ul>
 
-                    <SignIn  modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+                    <SignIn  modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}
                              handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register} errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}
                         modalIsOpenResetPassword={modalIsOpenResetPassword} afterOpenModalResetPassword={afterOpenModalResetPassword} closeModalResetPassword={closeModalResetPassword}
                              handleFormSubmitResetPassword={handleFormSubmitResetPassword}
                              openModalResetPassword={openModalResetPassword}
+                             modalIsOpenMessage={modalIsOpenMessage}
+                             afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}
                         >
                     </SignIn>
 

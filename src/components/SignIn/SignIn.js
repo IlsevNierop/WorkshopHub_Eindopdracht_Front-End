@@ -21,7 +21,10 @@ function SignIn({
                     afterOpenModalResetPassword,
                     closeModalResetPassword,
                     handleFormSubmitResetPassword,
-                    openModalResetPassword
+                    openModalResetPassword,
+                    modalIsOpenMessage,
+                    closeModalMessage,
+                    afterOpenModalMessage,
                 }) {
 
     function onClickResetPassword() {
@@ -86,7 +89,7 @@ function SignIn({
                 </form>
 
                 <div className={styles["bottom-links__signin"]}>
-                    <Link className={styles["bottom-link"]} to="/wachtwoordvergeten" onClick={onClickResetPassword}>
+                    <Link className={styles["bottom-link"]} to="#" onClick={onClickResetPassword}>
                         <p>Wachtwoord vergeten?</p></Link>
 
                     <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
@@ -102,9 +105,9 @@ function SignIn({
                 contentLabel="Reset Password"
                 functionalModalHeader="Wachtwoord wijzigen"
             >
-                {/*Dit is niet de juiste manier, maar omdat ik niet met emails werk, kan ik niet de echte situatie (met validatielink in email) nabootsen*/}
-                <h4>Weet je het wachtwoord niet meer? </h4>
-                <h4>Vul hieronder je e-mailadres in en kies een nieuw wachtwoord.</h4>
+                {/*Dit is niet de juiste manier om je wachtwoord te resetten, want ik verifieer de gebruiker niet. Maar omdat ik niet met emails werk, kan ik niet de echte situatie (met validatielink in email) nabootsen. Omdat ik toch een wachtwoor reset optie wil, heb ik het zo opgelost dat je het gewoon kunt resetten door je mailadres en een nieuw wachtwoord in te vullen.*/}
+                <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
+                <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en kies een nieuw wachtwoord.</h4>
                 <form className={styles["reset-password__form"]} onSubmit={handleSubmit(handleFormSubmitResetPassword)}>
                     <InputField
                         type="text"
@@ -161,6 +164,19 @@ function SignIn({
                 </form>
 
             </CustomModal>
+
+
+            <CustomModal
+                modalIsOpen={modalIsOpenMessage}
+                afterOpenModal={afterOpenModalMessage}
+                closeModal={closeModalMessage}
+                contentLabel="Reset Password Successful"
+                updateHeader="Je wachtwoord is succesvol gewijzigd"
+                updateMessage="Je kunt nu inloggen met je nieuwe wachtwoord"
+            >
+
+            </CustomModal>
+
         </>
 
 

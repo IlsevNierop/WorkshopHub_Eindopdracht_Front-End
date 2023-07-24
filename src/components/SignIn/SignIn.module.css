@@ -11,6 +11,18 @@
     gap: 1rem;
 }
 
+.content__modal__reset-password {
+    font-weight: normal;
+}
+
+.reset-password__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+
 .label__input-field {
     display: flex;
     flex-direction: column;
@@ -34,25 +46,3 @@
     text-decoration: underline;
 }
 
-/*.ReactModal__Overlay--after-open {*/
-/*    position: fixed;*/
-/*    inset: 0;*/
-/*    background-color: rgba(255, 255, 255, 0.75);*/
-/*}*/
-
-
-/*.ReactModal__Content--after-open {*/
-/*    position: absolute;*/
-/*    inset: 50% auto auto 50%;*/
-/*    border: 1px solid rgb(204, 204, 204);*/
-/*    background: rgb(255, 255, 255);*/
-/*    overflow: auto;*/
-/*    border-radius: 4px;*/
-/*    outline: none;*/
-/*    padding: 20px;*/
-/*    margin-right: -50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    width: auto;*/
-/*    height: auto;*/
-
-/*}*/

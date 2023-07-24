@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     addOrRemoveWorkshopFavourites,
     fetchSingleWorkshopData, fetchSingleWorkshopDataAdmin, fetchSingleWorkshopDataByOwner,
-    fetchSingleWorkshopDataLoggedIn,
+    fetchSingleWorkshopDataLoggedIn, resetPassword,
     signIn, updateAndVerifyWorkshopByAdmin, verifyWorkshopByOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
@@ -16,10 +16,9 @@ import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
 import Button from "../../components/Button/Button";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import Modal from "react-modal";
 import SignIn from "../../components/SignIn/SignIn";
 import {useForm} from "react-hook-form";
-import {Heart, X} from "@phosphor-icons/react";
+import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 
 function WorkshopPage() {
@@ -39,10 +38,12 @@ function WorkshopPage() {
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
     const [workshopOffline, setWorkshopOffline] = useState(false);
 
-    const [modalIsOpenSignin, setIsOpenSignin] = useState(false);
-    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
+    const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
     const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
+    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
+    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
+    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
 
     useEffect(() => {
@@ -142,7 +143,7 @@ function WorkshopPage() {
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModalSignin();
+            openModalLogin();
         }
         if (user != null) {
             try {
@@ -166,17 +167,17 @@ function WorkshopPage() {
             try {
                 await updateAndVerifyWorkshopByAdmin(workshopId, token, singleWorkshopData.title, singleWorkshopData.date, singleWorkshopData.startTime, singleWorkshopData.endTime, singleWorkshopData.price, singleWorkshopData.location, singleWorkshopData.workshopCategory1, singleWorkshopData.workshopCategory2, singleWorkshopData.inOrOutdoors, singleWorkshopData.amountOfParticipants, singleWorkshopData.highlightedInfo, singleWorkshopData.description, true);
                 setupdateMessage(true)
-                openModalMessage();
+                openModalUpdateMessage();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalUpdateMessage();
                     navigate("/goedkeurenworkshops");
                 }, 3000);
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalMessage();
+                openModalUpdateMessage();
                 setTimeout(() => {
-                    closeModalMessage();
+                    closeModalUpdateMessage();
                 }, 3000);
                 console.log(e);
             }
@@ -188,22 +189,21 @@ function WorkshopPage() {
         try {
             await verifyWorkshopByOwner(token, user.id, workshopId, publishWorkshop);
             setupdateMessage(true);
-            openModalMessage();
+            openModalUpdateMessage();
             setTimeout(() => {
-                closeModalMessage();
+                closeModalUpdateMessage();
                 navigate("/mijnworkshops");
             }, 3000);
 
         } catch (e) {
             setError(errorHandling(e));
-            openModalMessage();
+            openModalUpdateMessage();
             setTimeout(() => {
-                closeModalMessage();
+                closeModalUpdateMessage();
             }, 3000);
             console.log(e);
         }
     }
-
 
     async function handleFormSubmit(data) {
         setError('');
@@ -211,10 +211,33 @@ function WorkshopPage() {
             const {jwt} = await signIn(data.email, data.password);
             reset();
             login(jwt);
-            closeModalSignin();
+            closeModalLogin();
 
         } catch (e) {
             setError(errorHandling(e));
+            console.log(error);
+        }
+    }
+
+    async function handleFormSubmitResetPassword(data) {
+
+        try {
+            const response = await resetPassword(data.email, data.password);
+            console.log(response);
+            closeModalResetPassword();
+            openModalMessage();
+            setTimeout(() => {
+                closeModalMessage();
+                openModalLogin();
+            }, 2000);
+
+
+        } catch (e) {
+            setError(errorHandling(e));
+            setTimeout(() => {
+                setError('');
+
+            }, 4000);
             console.log(error);
         }
     }
@@ -224,20 +247,44 @@ function WorkshopPage() {
         openModalCheck();
     }
 
-
-    function openModalSignin() {
-        setIsOpenSignin(true);
+    function openModalLogin() {
+        setIsOpenLogin(true);
     }
 
-    function afterOpenModalSignin() {
-
+    function afterOpenModalLogin() {
     }
 
-    function closeModalSignin() {
-        setIsOpenSignin(false);
+    function closeModalLogin() {
+        setIsOpenLogin(false);
         setError('');
         setShowPassword(false);
         reset();
+    }
+
+    function openModalResetPassword() {
+        setIsOpenResetPassword(true);
+    }
+
+    function afterOpenModalResetPassword() {
+    }
+
+    function closeModalResetPassword() {
+        setIsOpenResetPassword(false);
+        setError('');
+        setShowPassword(false);
+        reset();
+    }
+
+    function openModalMessage() {
+        setIsOpenMessage(true);
+    }
+
+    function afterOpenModalMessage() {
+    }
+
+    function closeModalMessage() {
+        setIsOpenMessage(false);
+        setError('');
     }
 
     function openModalCheck() {
@@ -245,7 +292,6 @@ function WorkshopPage() {
     }
 
     function afterOpenModalCheck() {
-
     }
 
     function closeModalCheck() {
@@ -254,16 +300,15 @@ function WorkshopPage() {
 
     }
 
-    function openModalMessage() {
-        setIsOpenMessage(true);
+    function openModalUpdateMessage() {
+        setIsOpenUpdateMessage(true);
     }
 
-    function afterOpenModalMessage() {
-
+    function afterOpenModalUpdateMessage() {
     }
 
-    function closeModalMessage() {
-        setIsOpenMessage(false);
+    function closeModalUpdateMessage() {
+        setIsOpenUpdateMessage(false);
         setupdateMessage(false);
     }
 
@@ -272,13 +317,11 @@ function WorkshopPage() {
     }
 
     function afterOpenModalError() {
-
     }
 
     function closeModalError() {
         setIsOpenError(false);
         setError('');
-        ;
     }
 
 
@@ -289,9 +332,9 @@ function WorkshopPage() {
 
                 {(updateMessage && user != null) &&
                     <CustomModal
-                        modalIsOpen={modalIsOpenMessage}
-                        afterOpenModal={afterOpenModalMessage}
-                        closeModal={closeModalMessage}
+                        modalIsOpen={modalIsOpenUpdateMessage}
+                        afterOpenModal={afterOpenModalUpdateMessage}
+                        closeModal={closeModalUpdateMessage}
                         contentLabel="Verify workshop sucessful"
                         updateHeader={`De workshop is ${user.highestAuthority === 'admin' ? "goedgekeurd" : "gepubliceerd"}`}
                         updateMessage={`Je wordt doorgestuurd naar het overzicht van ${user.highestAuthority === 'admin' ? "goed te keuren" : "jouw"} workshops`}
@@ -348,12 +391,18 @@ function WorkshopPage() {
                 </CustomModal>
 
 
-                <SignIn modalIsOpen={modalIsOpenSignin} afterOpenModal={afterOpenModalSignin}
-                        closeModal={closeModalSignin}
-                        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit}
-                        register={register} errors={errors} showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                        error={error}> </SignIn>
+                <SignIn modalIsOpen={modalIsOpenLogin} afterOpenModal={afterOpenModalLogin} closeModal={closeModalLogin}
+                        handleSubmit={handleSubmit} handleFormSubmit={handleFormSubmit} register={register}
+                        errors={errors} showPassword={showPassword} setShowPassword={setShowPassword} error={error}
+                        modalIsOpenResetPassword={modalIsOpenResetPassword}
+                        afterOpenModalResetPassword={afterOpenModalResetPassword}
+                        closeModalResetPassword={closeModalResetPassword}
+                        handleFormSubmitResetPassword={handleFormSubmitResetPassword}
+                        openModalResetPassword={openModalResetPassword}
+                        modalIsOpenMessage={modalIsOpenMessage}
+                        afterOpenModalMessage={afterOpenModalMessage} closeModalMessage={closeModalMessage}
+                >
+                </SignIn>
 
 
                 {

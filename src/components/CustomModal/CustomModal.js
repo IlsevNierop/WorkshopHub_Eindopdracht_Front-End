@@ -2,8 +2,6 @@ import React from 'react';
 import styles from "./CustomModal.module.css";
 import {Link} from "react-router-dom";
 import {Confetti, X} from "@phosphor-icons/react";
-import InputField from "../InputField/InputField";
-import Button from "../Button/Button";
 import Modal from "react-modal";
 
 function CustomModal({
@@ -15,7 +13,6 @@ function CustomModal({
                          updateHeader,
                          updateMessage,
                          errorMessage,
-                         functionalModal,
                          functionalModalHeader
                      }) {
 
