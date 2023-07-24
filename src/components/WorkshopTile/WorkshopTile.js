@@ -2,14 +2,15 @@ import styles from "./WorkshopTile.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
 import {Heart} from "@phosphor-icons/react";
-import {addOrRemoveWorkshopFavourites, resetPassword, signIn} from "../../api/api";
+import {addOrRemoveWorkshopFavourites} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
-import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
 import CustomModal from "../CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
+import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+
 
 function WorkshopTile({
                           workshoptitle,
@@ -100,7 +101,7 @@ function WorkshopTile({
                            weight={favourite ? "fill" : "light"}/></Link>
 
                 <Link className={styles["workshop-tile__link"]} to={link}>
-                    <img className={styles["workshop-image"]} src={image} alt={category1}/>
+                    <img className={styles["workshop-image"]} src={image? image : defaultpic} alt={`Foto van de workshop ${workshoptitle}`}/>
 
                     <aside className={styles["information-workshop-column"]}>
                         <section className={styles["top-row-workshop"]}>

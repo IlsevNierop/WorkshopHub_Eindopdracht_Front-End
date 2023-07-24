@@ -19,6 +19,8 @@ import SignIn from "../../components/SignIn/SignIn";
 import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
+import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+
 
 function WorkshopPage() {
 
@@ -341,7 +343,7 @@ function WorkshopPage() {
                         </div>
                         <div className={styles["image__wrapper"]}>
                             <img className={styles["workshop-image"]}
-                                 src={singleWorkshopData.workshopPicUrl}
+                                 src={singleWorkshopData.workshopPicUrl? singleWorkshopData.workshopPicUrl : defaultpic}
                                  alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
                             <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
                                 <Heart className={styles["favourite-icon"]} size={24}
