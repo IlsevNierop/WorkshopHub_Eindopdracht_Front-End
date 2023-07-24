@@ -5,7 +5,7 @@ import InputField from "../../components/InputField/InputField";
 import {useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate} from "react-router-dom";
-import {Camera, Check, Eye, EyeClosed, Image, X} from "@phosphor-icons/react";
+import {Camera, Check} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
     fetchDataWorkshopOwner,

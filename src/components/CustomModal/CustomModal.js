@@ -33,7 +33,7 @@ function CustomModal({
 
     return (
         <>
-            {updateMessage &&
+            {updateHeader &&
                 (<Modal
                     isOpen={modalIsOpen}
                     onAfterOpen={afterOpenModal}
@@ -47,7 +47,7 @@ function CustomModal({
                             <h3>{updateHeader}</h3>
                             <Confetti size={32} color="#c45018" weight="fill"/>
                         </div>
-                        {(updateMessage.split("-")).filter(sentence => sentence.trim() !== "").map((sentence) => {
+                        {updateMessage && (updateMessage.split("-")).filter(sentence => sentence.trim() !== "").map((sentence) => {
                             return (
                                 <p className={styles["sentence-modal"]} key={sentence.slice(0, 3)}>{sentence}</p>
                             )

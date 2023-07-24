@@ -8,7 +8,7 @@ export function errorHandling(e) {
     } else if (e.response.status === 400 && e.response.data.includes("not yet approved")) {
         return "Deze workshop kan pas gepubliceerd worden nadat een administrator goedkeuring heeft gegeven";
     } else if (e.response.status === 400 && e.response.data.includes("relation")) {
-        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere workshops/boekingen/reviews of accounts. Je dient eerst de andere items te verwijderen voordat je dit itemt kunt verwijderen. ";
+        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere workshops/boekingen/reviews of accounts. Je dient eerst de andere items te verwijderen voordat je dit itemt kunt verwijderen. Als een workshop boekingen of reviews heeft, kan je de workshop niet direct verwijderen.";
     } else if (e.response.status === 400 && e.response.data.includes("verified the workshop for publishing")) {
         return "Deze workshop kan niet verwijderd worden, omdat de workshop eigenaar de workshop gepubliceerd heeft";
     } else if (e.response.status === 400 && e.response.data.includes("already exists with the email")) {

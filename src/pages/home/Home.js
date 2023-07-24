@@ -16,8 +16,6 @@ import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjec
 import StarRating from "../../components/StarRating/StarRating";
 import Slider from "../../components/Slider/Slider";
 import InputField from "../../components/InputField/InputField";
-// TODO import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic";
-import defaultpic from '../../assets/temppicsworkshop/defaultpic'
 
 
 function Home() {
@@ -88,8 +86,6 @@ function Home() {
         setMinRating(0);
         setWorkshopData(originalWorkshopData);
     }
-
-    //TODO volgende pagina / laad volgende x workshops
 
     useEffect(() => {
             async function fetchDataWorkshops() {
@@ -364,9 +360,7 @@ function Home() {
                                 <WorkshopTile
                                     key={workshop.id}
                                     workshopId={workshop.id}
-                                    // TODO default pic werkt niet - kan ook aan achterkant oplossen
                                     image={workshop.workshopPicUrl}
-                                    // image={workshop.workshopPicUrl!= null ? workshop.workshopPicUrl : defaultpic}
                                     isFavourite={workshop.isFavourite}
                                     workshoptitle={workshop.title}
                                     price={workshop.price}

@@ -2,14 +2,15 @@ import styles from "./WorkshopTile.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
 import {Heart} from "@phosphor-icons/react";
-import {addOrRemoveWorkshopFavourites, resetPassword, signIn} from "../../api/api";
+import {addOrRemoveWorkshopFavourites} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
-import {useForm} from "react-hook-form";
 import SignIn from "../SignIn/SignIn";
 import CustomModal from "../CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
+import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+
 
 function WorkshopTile({
                           workshoptitle,
@@ -23,10 +24,9 @@ function WorkshopTile({
                           link,
                           workshopId
                       }) {
-    const {user, login} = useContext(AuthContext);
-    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const {user} = useContext(AuthContext);
+    const { setModalIsOpenSignIn} = useContext(ModalSignInContext);
 
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const token = localStorage.getItem('token');
 
 
@@ -34,12 +34,6 @@ function WorkshopTile({
     const [favourite, setFavourite] = useState(isFavourite);
 
     const [modalIsOpenError, setIsOpenError] = useState(false);
-
-
-    const [showPassword, setShowPassword] = useState(false);
-    const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
-    const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
-    const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
 
     async function addOrRemoveFavouriteWorkshop() {
@@ -79,44 +73,6 @@ function WorkshopTile({
         setModalIsOpenSignIn(true);
     }
 
-    // async function handleFormSubmit(data) {
-    //     setError('');
-    //     try {
-    //         const {jwt} = await signIn(data.email, data.password);
-    //         reset();
-    //         login(jwt);
-    //         closeModalLogin();
-    //
-    //     } catch (e) {
-    //         setError(errorHandling(e));
-    //         console.log(error);
-    //     }
-    // }
-    //
-    // async function handleFormSubmitResetPassword(data) {
-    //
-    //     try {
-    //         const response = await resetPassword(data.email, data.password);
-    //         console.log(response);
-    //         closeModalResetPassword();
-    //         openModalMessage();
-    //         setTimeout(() => {
-    //             closeModalMessage();
-    //             openModalLogin();
-    //         }, 2000);
-    //
-    //
-    //     } catch (e) {
-    //         setError(errorHandling(e));
-    //         setTimeout(() => {
-    //             setError('');
-    //
-    //         }, 4000);
-    //         console.log(error);
-    //     }
-    // }
-
-
 
     useEffect(() => {
         setFavourite(isFavourite);
@@ -145,7 +101,7 @@ function WorkshopTile({
                            weight={favourite ? "fill" : "light"}/></Link>
 
                 <Link className={styles["workshop-tile__link"]} to={link}>
-                    <img className={styles["workshop-image"]} src={image} alt={category1}/>
+                    <img className={styles["workshop-image"]} src={image? image : defaultpic} alt={`Foto van de workshop ${workshoptitle}`}/>
 
                     <aside className={styles["information-workshop-column"]}>
                         <section className={styles["top-row-workshop"]}>
