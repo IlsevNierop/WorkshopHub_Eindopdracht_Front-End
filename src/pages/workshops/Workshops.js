@@ -239,8 +239,6 @@ function Workshops() {
                     </CustomModal>
                 }
 
-                {/*{error && <p className="error-message">{error}</p>}*/}
-
                 <CustomModal
                     modalIsOpen={modalIsOpenDeleteSuccessful}
                     afterOpenModal={afterOpenModalDeleteSuccessful}

@@ -191,7 +191,7 @@ function WorkshopPage() {
             openModalUpdateMessage();
             setTimeout(() => {
                 closeModalUpdateMessage();
-                navigate("/mijnworkshops");
+                navigate("/workshops");
             }, 3000);
 
         } catch (e) {
@@ -263,7 +263,13 @@ function WorkshopPage() {
                         afterOpenModal={afterOpenModalUpdateMessage}
                         closeModal={closeModalUpdateMessage}
                         contentLabel="Verify workshop sucessful"
-                        updateHeader={`De workshop is ${user.highestAuthority === 'admin' ? "goedgekeurd" : "gepubliceerd"}`}
+                        updateHeader={`De workshop is ${
+                            workshopOffline
+                                ? 'offline gehaald'
+                                : user.highestAuthority === 'admin'
+                                    ? 'goedgekeurd'
+                                    : 'gepubliceerd'
+                        }`}
                         updateMessage={`Je wordt doorgestuurd naar het overzicht van ${user.highestAuthority === 'admin' ? "goed te keuren" : "jouw"} workshops`}
                     >
                     </CustomModal>
@@ -280,41 +286,24 @@ function WorkshopPage() {
                     </CustomModal>
                 }
 
+
                 <CustomModal
                     modalIsOpen={modalIsOpenCheck}
                     afterOpenModal={afterOpenModalCheck}
                     closeModal={closeModalCheck}
-                    contentLabel="Check"
-                    functionalModalHeader="Weet je het zeker?"
-
-
+                    contentLabel="Check edit verified workshop"
+                    checkModalHeader="Weet je het zeker?"
+                    buttonHeaderCheckModalYes={workshopOffline ? "Haal offline" : "Workshop wijzigen"}
+                    onclickHandlerCheckModalYes={workshopOffline ?
+                        () => publishWorkshop(false) :
+                        () => navigate(`/aanpassenworkshop/${workshopId}`)}
+                    onclickHandlerCheckModalBack={closeModalCheck}
+                    checkMessage={`Deze workshop is gepubliceerd en staat online. ${
+                        workshopOffline
+                            ? "Weet je zeker dat je deze offline wil halen?"
+                            : "Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop weer gepubliceerd kan worden."}`}
+          
                 >
-                    <div className={styles["content__modal-check__workshoppage"]}>
-                        <p>Deze workshop is gepubliceerd en staat online.</p>
-                        {workshopOffline ?
-                            <>
-                                <p>Weet je zeker dat je deze offline wil halen?</p>
-                            </>
-                            :
-                            <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
-                                worden
-                                door een administrator voordat de workshop weer gepubliceerd kan worden.</p>
-                        }
-                        <div className={styles["bottom-row__modal-check"]}>
-                            {workshopOffline ?
-                                <Button type="text"
-                                        onClick={() => publishWorkshop(false)}
-                                >
-                                    Haal offline</Button>
-                                :
-                                <Button type="text"
-                                        onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
-                                    wijzigen</Button>
-                            }
-                            <Button type="text"
-                                    onClick={closeModalCheck}>Terug</Button>
-                        </div>
-                    </div>
                 </CustomModal>
 
                 <SignIn></SignIn>
