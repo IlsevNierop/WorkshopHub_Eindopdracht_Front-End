@@ -36,9 +36,6 @@
     top: 8px;
 }
 
-
-
-
 .input-field__error {
     border: solid 1px var(--color-warning);
 }

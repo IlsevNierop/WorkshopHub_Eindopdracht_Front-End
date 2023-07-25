@@ -52,6 +52,7 @@ function WorkshopPage() {
                 if (user && user.highestAuthority === 'admin') {
                     try {
                         const response = await fetchSingleWorkshopDataAdmin(token, workshopId);
+                        console.log(response)
                         setSingleWorkshopData(response);
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
@@ -69,6 +70,7 @@ function WorkshopPage() {
                 } else if (user && user.highestAuthority === 'workshopowner') {
                     try {
                         const response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
+                        console.log(response)
                         setSingleWorkshopData(response);
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
@@ -85,6 +87,7 @@ function WorkshopPage() {
                 } else {
                     try {
                         const response = await fetchSingleWorkshopData(workshopId);
+                        console.log(response)
                         setSingleWorkshopData(response);
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
@@ -103,7 +106,6 @@ function WorkshopPage() {
             }
 
             void fetchDataSingleWorkshop();
-            console.log(singleWorkshopData);
 
 
             return function cleanup() {
@@ -300,7 +302,7 @@ function WorkshopPage() {
                         workshopOffline
                             ? "Weet je zeker dat je deze offline wil halen?"
                             : "Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop weer gepubliceerd kan worden."}`}
-          
+
                 >
                 </CustomModal>
 
@@ -330,7 +332,7 @@ function WorkshopPage() {
                         </div>
                         <div className={styles["image__wrapper"]}>
                             <img className={styles["workshop-image"]}
-                                 src={singleWorkshopData.workshopPicUrl? singleWorkshopData.workshopPicUrl : defaultpic}
+                                 src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultpic}
                                  alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
                             <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
                                 <Heart className={styles["favourite-icon"]} size={24}
@@ -343,7 +345,9 @@ function WorkshopPage() {
                         <aside className={styles["right-side__top__workshop"]}>
                             <section className={styles["top__column__workshop-info"]}>
 
-                                <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
+                                <Link className={styles["link__companyname__workshop-info"]} to={`/allworkshopsowner/${singleWorkshopData.workshopOwnerId}`}>
+                                    <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
+                                </Link>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
                                 </h5>
                                 <h5 className={styles["workshop-info"]}> {updateDateFormatLong(singleWorkshopData.date)} </h5>
@@ -475,27 +479,27 @@ function WorkshopPage() {
                                         </div>
                                     }
                                     <div className={styles["row__buttons__bottom"]}>
-                                    {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
-                                        <>
+                                        {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
+                                            <>
+                                                <Button type="text"
+                                                        onClick={() => publishWorkshop(true)}
+                                                >
+                                                    Direct publiceren</Button>
+                                            </>
+                                        }
+                                        {singleWorkshopData.publishWorkshop === true ?
+                                            <>
+                                                <Button type="text"
+                                                        onClick={openModalCheck}>Workshop
+                                                    wijzigen</Button>
+                                                <Button type="text"
+                                                        onClick={takeWorkshopOffline}>Haal workshop offline</Button>
+                                            </>
+                                            :
                                             <Button type="text"
-                                                    onClick={() => publishWorkshop(true)}
-                                            >
-                                                Direct publiceren</Button>
-                                        </>
-                                    }
-                                    {singleWorkshopData.publishWorkshop === true ?
-                                        <>
-                                            <Button type="text"
-                                                    onClick={openModalCheck}>Workshop
+                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
                                                 wijzigen</Button>
-                                            <Button type="text"
-                                                    onClick={takeWorkshopOffline}>Haal workshop offline</Button>
-                                        </>
-                                        :
-                                        <Button type="text"
-                                                onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
-                                            wijzigen</Button>
-                                    }
+                                        }
                                     </div>
 
                                 </article>
