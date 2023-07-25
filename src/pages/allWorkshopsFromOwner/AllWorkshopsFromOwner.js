@@ -45,7 +45,7 @@ function AllWorkshopsFromOwner() {
                     toggleLoading(false);
                 } else {
                     try {
-                        const response = await fetchWorkshopsFromOwner(token, workshopOwnerId);
+                        const response = await fetchWorkshopsFromOwner(workshopOwnerId);
                         setWorkshopsFromOwner(response);
                         setworkshopOwnerName(response[0].workshopOwnerCompanyName);
 
