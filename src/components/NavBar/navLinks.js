@@ -67,8 +67,7 @@ export function navLinks(highestAuthority) {
                         link: "/workshops",
                     },
                     {
-                        //TODO aparte pagina publiceren workshops?
-                        title: "Goedkeuren Workshops",
+                        title: "Publiceren Workshops",
                         link: "/goedkeurenworkshops",
                     },
                     {

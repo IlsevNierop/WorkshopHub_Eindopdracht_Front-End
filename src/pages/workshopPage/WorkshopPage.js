@@ -70,8 +70,6 @@ function WorkshopPage() {
                     try {
                         const response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
                         setSingleWorkshopData(response);
-                        console.log("owner response")
-                        console.log(response)
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
 
@@ -476,6 +474,7 @@ function WorkshopPage() {
                                             <p>{singleWorkshopData.feedbackAdmin}</p>
                                         </div>
                                     }
+                                    <div className={styles["row__buttons__bottom"]}>
                                     {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
                                         <>
                                             <Button type="text"
@@ -497,7 +496,7 @@ function WorkshopPage() {
                                                 onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
                                             wijzigen</Button>
                                     }
-
+                                    </div>
 
                                 </article>
                             }

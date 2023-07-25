@@ -3,7 +3,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -31,7 +31,7 @@ function App() {
                     <Route path="/favorieten" element={isAuth? <FavouriteWorkshops/> : <Home />}/>
 
                     <Route path="/nieuweworkshop" element={user != null && user.highestAuthority !== 'customer'?  <CreateWorkshop/> : <Home />}/>
-                    <Route path="/goedkeurenworkshops" element={user != null && user.highestAuthority === 'admin'?  <VerifyWorkshops/> : <Home />}/>
+                    <Route path="/goedkeurenworkshops" element={user != null && user.highestAuthority !== 'customer'?  <VerifyWorkshops/> : <Home />}/>
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
                     <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <Workshops/> : <Home />}/>
                     {/*/!*<Route path="/mijnworkshops" element={user != null && returnHighestAuthority(user.authorities) === 'workshopowner'?  <MyWorkshops/> : <Home />}/>*!/ --> publiceren via een link, zoals favourite*/}
