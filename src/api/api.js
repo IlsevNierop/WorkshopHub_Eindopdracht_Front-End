@@ -2,7 +2,7 @@
     Table of Contents
     1. User API requests
     2. Workshop API requests
-    3.
+    3. Booking API requests
     4.
     */
 
@@ -471,7 +471,21 @@ export async function removeWorkshop(token, workshopId) {
         });
 }
 
+/* --------------- 3 Booking API requests ----------------------- */
 
+export async function createBooking(token, amount, comments, customerId, workshopId) {
+    const response = await axios.post(`${baseUrl}bookings/${customerId}/${workshopId}`, {
+            amount: amount,
+            commentsCustomer: comments,
+        }, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
 
 
 

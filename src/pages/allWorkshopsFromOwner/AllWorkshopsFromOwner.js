@@ -9,7 +9,7 @@ import {
     fetchWorkshopsFromOwnerLoggedIn,
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 function AllWorkshopsFromOwner() {
     const token = localStorage.getItem('token');
@@ -105,6 +105,8 @@ function AllWorkshopsFromOwner() {
                     })
                     }
                 </section>
+
+                <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
 
             </div>
         </main>

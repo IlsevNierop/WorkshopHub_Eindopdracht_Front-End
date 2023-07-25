@@ -2,7 +2,7 @@ import styles from "../workshopPage/WorkshopPage.module.css";
 
 import React, {useContext, useEffect, useState} from 'react';
 import {
-    addOrRemoveWorkshopFavourites,
+    addOrRemoveWorkshopFavourites, createBooking,
     fetchSingleWorkshopData, fetchSingleWorkshopDataAdmin, fetchSingleWorkshopDataByOwner,
     fetchSingleWorkshopDataLoggedIn, updateAndVerifyWorkshopByAdmin, verifyWorkshopByOwner
 } from "../../api/api";
@@ -20,6 +20,8 @@ import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
 import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+import InputField from "../../components/InputField/InputField";
+import {useForm} from "react-hook-form";
 
 
 function WorkshopPage() {
@@ -28,6 +30,8 @@ function WorkshopPage() {
 
     const {user} = useContext(AuthContext);
     const {setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
+
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
@@ -39,10 +43,13 @@ function WorkshopPage() {
     const [loading, toggleLoading] = useState(false);
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
     const [workshopOffline, setWorkshopOffline] = useState(false);
+    const [totalPriceBooking, setTotalPriceBooking] = useState(false);
 
     const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
     const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
+    const [modalIsOpenBooking, setIsOpenBooking] = useState(false);
+    const [modalIsOpenBookingSuccessful, setIsOpenBookingSuccessful] = useState(false);
 
 
     useEffect(() => {
@@ -174,9 +181,9 @@ function WorkshopPage() {
 
             } catch (e) {
                 setError(errorHandling(e));
-                openModalUpdateMessage();
+                openModalError();
                 setTimeout(() => {
-                    closeModalUpdateMessage();
+                    closeModalError();
                 }, 3000);
                 console.log(e);
             }
@@ -196,11 +203,51 @@ function WorkshopPage() {
 
         } catch (e) {
             setError(errorHandling(e));
-            openModalUpdateMessage();
+            openModalError();
             setTimeout(() => {
-                closeModalUpdateMessage();
+                closeModalError();
             }, 3000);
             console.log(e);
+        }
+    }
+
+    const validateSpotsAvailable = (value) => {
+        if (singleWorkshopData.spotsAvailable < value) {
+            return `Er zijn maar ${singleWorkshopData.spotsAvailable} plekken beschikbaar, en je probeert ${value} plekken te boeken`;
+        }
+        return true;
+    };
+
+    async function handleFormSubmit(data) {
+        console.log(data)
+        console.log(user.id);
+        console.log(workshopId);
+        try {
+            const response = await createBooking (token, data.amount, data.comments, user.id, workshopId);
+            console.log(response);
+            setTotalPriceBooking(response.totalPrice);
+
+            openModalBookingSuccessful();
+            setTimeout(() => {
+                closeModalBookingSuccessful();
+            }, 4000);
+
+
+        } catch (e) {
+            setError(errorHandling(e));
+            openModalError();
+            setTimeout(() => {
+                closeModalError();
+            }, 3000);
+        }
+    }
+
+    function onClikHandlerBooking(){
+        if (user == null) {
+            openModalLogin();
+        }
+        if (user != null) {
+            openModalBooking();
         }
     }
 
@@ -239,6 +286,17 @@ function WorkshopPage() {
         setupdateMessage(false);
     }
 
+    function openModalBookingSuccessful() {
+        setIsOpenBookingSuccessful(true);
+    }
+
+    function afterOpenModalBookingSuccessful(){
+    }
+
+    function closeModalBookingSuccessful() {
+        setIsOpenBookingSuccessful(false);
+    }
+
     function openModalError() {
         setIsOpenError(true);
     }
@@ -249,6 +307,18 @@ function WorkshopPage() {
     function closeModalError() {
         setIsOpenError(false);
         setError('');
+    }
+
+    function openModalBooking() {
+        setIsOpenBooking(true);
+    }
+
+    function afterOpenModalBooking() {
+    }
+
+    function closeModalBooking() {
+        setIsOpenBooking(false);
+        reset();
     }
 
 
@@ -305,6 +375,61 @@ function WorkshopPage() {
 
                 >
                 </CustomModal>
+                <CustomModal
+                    modalIsOpen={modalIsOpenBooking}
+                    afterOpenModal={afterOpenModalBooking}
+                    closeModal={closeModalBooking}
+                    contentLabel="Booking workshop"
+                    functionalModalHeader={`Boek de workshop: ${singleWorkshopData.title}`}
+                >
+                    <div className={styles["booking__modal"]}>
+                        <h4>Op {updateDateFormatLong(singleWorkshopData.date)}</h4>
+                        <form className={styles["create-booking__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
+
+                            <InputField
+                                type="number"
+                                name="amount"
+                                label="Aantal plekken* "
+                                validation={{
+                                    required:
+                                        {
+                                            value: true,
+                                            message: "Aantal plekken is verplicht",
+                                        },
+                                    validate: validateSpotsAvailable
+                                }
+                                }
+                                register={register}
+                                errors={errors}
+                            >
+                            </InputField>
+                            <InputField
+                                type="text"
+                                name="comments"
+                                label="Opmerkingen"
+                                register={register}
+                                errors={errors}
+                            >
+                            </InputField>
+
+                            <Button
+                                type="submit"
+                            >Boeking plaatsen</Button>
+
+                        </form>
+                    </div>
+                </CustomModal>
+                <CustomModal
+                    modalIsOpen={modalIsOpenBookingSuccessful}
+                    afterOpenModal={afterOpenModalBookingSuccessful}
+                    closeModal={closeModalBookingSuccessful}
+                    contentLabel="Booking workshop sucessful"
+                    updateHeader="De workshop is geboekt"
+                    updateMessage={`De totale prijs is ${totalPriceBooking} euro`}
+                >
+                </CustomModal>
+
+
 
                 <SignIn></SignIn>
 
@@ -345,7 +470,8 @@ function WorkshopPage() {
                         <aside className={styles["right-side__top__workshop"]}>
                             <section className={styles["top__column__workshop-info"]}>
 
-                                <Link className={styles["link__companyname__workshop-info"]} to={`/allworkshopsowner/${singleWorkshopData.workshopOwnerId}`}>
+                                <Link className={styles["link__companyname__workshop-info"]}
+                                      to={`/allwworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
                                     <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 </Link>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
@@ -360,8 +486,7 @@ function WorkshopPage() {
                             </section>
 
                             <section className={styles["bottom__column__workshop-info"]}>
-                                {/*TODO on submit button boeken*/}
-                                <Button type="text">
+                                <Button type="text" onClick={onClikHandlerBooking}>
                                     Boeken
                                 </Button>
                                 <p>{singleWorkshopData.spotsAvailable} plekken beschikbaar</p>

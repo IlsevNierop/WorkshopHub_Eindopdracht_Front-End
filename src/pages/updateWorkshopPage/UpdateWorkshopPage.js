@@ -677,7 +677,7 @@ function UpdateWorkshopPage() {
                     }
 
                 </form>
-
+                <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
 
             </div>
         </main>
