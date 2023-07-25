@@ -13,7 +13,6 @@ function VerifyWorkshops() {
     const controller = new AbortController();
     const {user: {highestAuthority, id}} = useContext(AuthContext);
 
-
     const [workshopsToVerifyData, setWorkshopsToVerifyData] = useState([]);
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);

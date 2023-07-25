@@ -201,6 +201,29 @@ export async function fetchAllWorkshopsOwnerByOwner(token, workshopOwnerId) {
     return response.data;
 }
 
+export async function fetchWorkshopsFromOwner(workshopOwnerId) {
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
+        {
+            signal: controller.signal,
+        });
+    return response.data;
+}
+export async function fetchWorkshopsFromOwnerLoggedIn(token, workshopOwnerId, id) {
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                userId: id
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+
 
 
 export async function fetchSingleWorkshopDataAdmin(token, workshopId) {

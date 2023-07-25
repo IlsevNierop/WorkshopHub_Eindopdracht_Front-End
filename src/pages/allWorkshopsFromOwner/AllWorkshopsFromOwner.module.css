@@ -1,0 +1,22 @@
+.all-workshops-owner__outer-container {
+    flex-grow:1;
+    background-color: var(--color-grey-100);
+}
+
+.all-workshops-owner__inner-container {
+    align-items: center;
+    margin: 2rem;
+}
+
+.overview__workshop-tiles {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.overview__workshop-tiles h3 {
+    font-weight: normal;
+}

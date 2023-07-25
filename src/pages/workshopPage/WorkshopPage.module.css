@@ -82,6 +82,10 @@
     margin-bottom: 1rem;
 }
 
+.link__companyname__workshop-info {
+   color: var(--color-black);
+}
+
 .workshop-info {
     margin-bottom: 0.5rem;
 }
