@@ -64,7 +64,7 @@ export function navLinks(highestAuthority) {
                     {
                         //TODO filter toevoegen op deze pagina - welke moeten nog gepubliceerd worden - met icoontjes werken aantonen welke al geverifieerd zijn?
                         title: "Al Mijn Workshops",
-                        link: "/almijnworkshops",
+                        link: "/workshops",
                     },
                     {
                         //TODO aparte pagina publiceren workshops?

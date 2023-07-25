@@ -139,6 +139,7 @@ export async function resetPassword(email, password) {
 }
 
 
+// TODO match order with backend
 /* --------------- 2 Workshop API requests ----------------------- */
 
 export async function fetchWorkshopData() {
@@ -178,6 +179,18 @@ export async function fetchFavouriteWorkshops(token, userId) {
 
 export async function fetchAllWorkshopsAdmin(token) {
     const response = await axios.get(`${baseUrl}workshops/admin/`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
+export async function fetchAllWorkshopsOwnerByOwner(token, workshopOwnerId) {
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/all/${workshopOwnerId}`,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -402,8 +415,8 @@ export async function updateWorkshopByWorkshopOwner(workshopId, workshopOwnerId,
     return response.data;
 }
 
-export async function verifyWorkshopByOwner(token, userId, workshopId, publishWorkshop) {
-    return await axios.put(`${baseUrl}workshops/workshopowner/verify/${userId}/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
+export async function verifyWorkshopByOwner(token, workshopId, publishWorkshop) {
+    return await axios.put(`${baseUrl}workshops/workshopowner/verify/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
         {
             headers: {
                 "Content-Type": "application/json",
