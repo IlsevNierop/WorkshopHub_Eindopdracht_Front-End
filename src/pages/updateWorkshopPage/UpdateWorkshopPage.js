@@ -26,6 +26,7 @@ function UpdateWorkshopPage() {
     const controller = new AbortController();
     const {user: {highestAuthority, id}} = useContext(AuthContext);
     const navigate = useNavigate();
+    const {register, handleSubmit, setValue, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
 
 
     const [workshopToVerifyData, setWorkshopToVerifyData] = useState({
@@ -49,10 +50,11 @@ function UpdateWorkshopPage() {
     });
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
-    const {register, handleSubmit, setValue, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
     const [file, setFile] = useState([]);
     const [previewUrl, setPreviewUrl] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
 
 
     useEffect(() => {
@@ -265,11 +267,6 @@ function UpdateWorkshopPage() {
         }
     }
 
-    // ...................MODAL
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [modalIsOpenCheck, setIsOpenCheck] = useState(false);
-
-
     function openModal() {
         setIsOpen(true);
     }
@@ -326,28 +323,18 @@ function UpdateWorkshopPage() {
                 ></CustomModal>
                 }
 
+
                 <CustomModal
                     modalIsOpen={modalIsOpenCheck}
                     afterOpenModal={afterOpenModalCheck}
                     closeModal={closeModalCheck}
-                    contentLabel="Check update verified workshop"
-                    functionalModalHeader="Weet je zeker dat je deze workshop wilt wijzigen?"
-                >
-                    <div className={styles["content__modal-check"]}>
-
-                    <p>Deze workshop is geverifieerd door een administrator.</p>
-                    <p>Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
-                        worden door een administrator voordat de workshop gepubliceerd kan worden.</p>
-                    <div className={styles["bottom-row__modal-check"]}>
-                        <Button type="text"
-                                onClick={handleIsCheckedChange}
-                        >Ik weet het zeker</Button>
-                        <Button type="text"
-                                onClick={closeModalCheck}>Terug</Button>
-                    </div>
-                    </div>
-                </CustomModal>
-
+                    contentLabel="Check edit verified workshop"
+                    checkModalHeader="Weet je het zeker?"
+                    buttonHeaderCheckModalYes="Ik weet het zeker"
+                    onclickHandlerCheckModalYes={handleIsCheckedChange}
+                    onclickHandlerCheckModalBack={closeModalCheck}
+                    checkMessage="Deze workshop is geverifieerd door een administrator.-Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop gepubliceerd kan worden."
+                ></CustomModal>
 
 
                 {highestAuthority === 'admin' ?

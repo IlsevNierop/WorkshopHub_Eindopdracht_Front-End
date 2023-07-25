@@ -265,7 +265,6 @@ function Register() {
                                 </InputField>
                             </div>
                         }
-                        {/*//TODO check button disablen als niet alle required velden zijn ingevuld*/}
                         <Button
                             type="submit"
                             disabled= {error? "disabled" : null}
