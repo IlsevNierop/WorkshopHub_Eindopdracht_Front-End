@@ -12,7 +12,7 @@ import CreateWorkshop from "./pages/createWorkshop/CreateWorkshop";
 import VerifyWorkshops from "./pages/verifyWorkshops/./VerifyWorkshops";
 import UpdateWorkshopPage from "./pages/updateWorkshopPage/UpdateWorkshopPage";
 import FavouriteWorkshops from "./pages/favouriteWorkshops/FavouriteWorkshops";
-import AllWorkshops from "./pages/allWorkshops/AllWorkshops";
+import Workshops from "./pages/workshops/Workshops";
 
 function App() {
 
@@ -33,7 +33,7 @@ function App() {
                     <Route path="/nieuweworkshop" element={user != null && user.highestAuthority !== 'customer'?  <CreateWorkshop/> : <Home />}/>
                     <Route path="/goedkeurenworkshops" element={user != null && user.highestAuthority === 'admin'?  <VerifyWorkshops/> : <Home />}/>
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
-                    <Route path="/workshops" element={user != null && user.highestAuthority === 'admin'?  <AllWorkshops/> : <Home />}/>
+                    <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <Workshops/> : <Home />}/>
                     {/*/!*<Route path="/mijnworkshops" element={user != null && returnHighestAuthority(user.authorities) === 'workshopowner'?  <MyWorkshops/> : <Home />}/>*!/ --> publiceren via een link, zoals favourite*/}
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>

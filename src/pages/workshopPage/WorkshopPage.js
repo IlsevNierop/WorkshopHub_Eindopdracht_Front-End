@@ -186,7 +186,7 @@ function WorkshopPage() {
     async function publishWorkshop(publishWorkshop) {
         setError('');
         try {
-            await verifyWorkshopByOwner(token, user.id, workshopId, publishWorkshop);
+            await verifyWorkshopByOwner(token, workshopId, publishWorkshop);
             setupdateMessage(true);
             openModalUpdateMessage();
             setTimeout(() => {
