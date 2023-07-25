@@ -10,6 +10,7 @@
 .input-field__column {
     display: flex;
     flex-direction: column;
+    width: 382px;
 }
 
 

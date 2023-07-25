@@ -27,7 +27,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/workshop/:workshopId" element={<WorkshopPage/>}/>
-                    <Route path="/allworkshopsowner/:workshopOwnerId" element={<AllWorkshopsFromOwner/>}/>
+                    <Route path="/allwworkshopseigenaar/:workshopOwnerId" element={<AllWorkshopsFromOwner/>}/>
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/registreren" element={<Register/>}/>
                     <Route path="/favorieten" element={isAuth? <FavouriteWorkshops/> : <Home />}/>

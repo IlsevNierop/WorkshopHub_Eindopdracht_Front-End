@@ -5,6 +5,7 @@ import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import {fetchFavouriteWorkshops} from "../../api/api";
+import {Link} from "react-router-dom";
 
 function FavouriteWorkshops() {
 
@@ -79,6 +80,8 @@ function FavouriteWorkshops() {
                     })
                     }
                 </section>
+
+                <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
 
             </div>
         </main>
