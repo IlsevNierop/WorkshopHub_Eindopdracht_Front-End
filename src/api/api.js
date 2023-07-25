@@ -251,6 +251,18 @@ export async function fetchWorkshopsToVerifyByAdmin(token) {
     return response.data;
 }
 
+export async function fetchWorkshopsToVerifyByOwner(token, workshopOwnerId) {
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/verify/${workshopOwnerId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response.data;
+}
+
 export async function fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId) {
     const response = await axios.get(`${baseUrl}workshops/admin/${workshopId}`,
         {
