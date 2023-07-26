@@ -257,14 +257,13 @@ function Profile() {
                         </CustomModal>
                     </div>
 
-
                     <div className={styles["profile"]}>
                         <section className={styles["left-side__profile"]}>
                             {userData && userData.profilepic == null &&
                                 <>
                                     <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
                                         className={styles["photo-icon"]} size={32}/>
-                                        {/*//TODO dplicated code - simplify */}
+                                        {/*//TODO duplicated code - simplify */}
                                         <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
                                 </>
                             }

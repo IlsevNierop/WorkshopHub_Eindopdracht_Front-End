@@ -52,12 +52,9 @@ function NavBar() {
                                 </NavLink>
                             </li>
                         }
-
-
                     </ul>
 
-                    <SignIn>
-                    </SignIn>
+                    <SignIn></SignIn>
 
                 </nav>
             </div>

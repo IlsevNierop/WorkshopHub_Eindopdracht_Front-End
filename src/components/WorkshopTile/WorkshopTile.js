@@ -92,8 +92,6 @@ function WorkshopTile({
                 </CustomModal>
             }
 
-            <SignIn></SignIn>
-
             <article className={styles["workshop-tile"]}>
                 <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
                     <Heart className={styles["favourite-icon"]} size={24}

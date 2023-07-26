@@ -432,10 +432,6 @@ function WorkshopPage() {
                 </CustomModal>
 
 
-
-                <SignIn></SignIn>
-
-
                 {loading && <p>Loading...</p>}
                 <h1>{singleWorkshopData.title}</h1>
 
