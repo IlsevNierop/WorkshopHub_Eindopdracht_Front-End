@@ -18,6 +18,7 @@ import Slider from "../../components/Slider/Slider";
 import InputField from "../../components/InputField/InputField";
 
 
+
 function Home() {
 
     const {user} = useContext(AuthContext);

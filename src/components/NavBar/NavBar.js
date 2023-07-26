@@ -12,12 +12,12 @@ function NavBar() {
 
 
     const {isAuth, user, logout} = useContext(AuthContext);
-    const {setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const {setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
 
-    function openModalLogin() {
+    function signInWithSubHeader(subheader) {
         setModalIsOpenSignIn(true);
+        setSignInSubHeader(subheader);
     }
-
 
 
     return (
@@ -31,7 +31,7 @@ function NavBar() {
                         {!isAuth && <li className={styles["nav-li-top"]}>
                             <NavLink
                                 className={styles['default-nav-link']}
-                                to="#" onClick={openModalLogin}>Inloggen</NavLink>
+                                to="#" onClick={() => signInWithSubHeader('')}>Inloggen</NavLink>
                         </li>}
 
                         {isAuth && <li className={styles["nav-li-top"]}>
@@ -47,7 +47,7 @@ function NavBar() {
                             </li>
                             :
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="#" onClick={openModalLogin}><Heart size={32} color="black"
+                                <NavLink to="#" onClick={() => signInWithSubHeader("Om je favoriete workshops te zien, dien je eerst in te loggen")}><Heart size={32} color="black"
                                                                  weight="regular"/>
                                 </NavLink>
                             </li>

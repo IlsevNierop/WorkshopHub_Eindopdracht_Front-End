@@ -17,9 +17,15 @@
 .button:focus {
     background-color: var(--color-terracotta);
     border: solid 2px var(--color-light-orange);
-
 }
 
-.icon-button {
-    all: unset;
+
+.button:disabled {
+    background-color: var(--color-grey-500);
 }
+
+.button:disabled:hover {
+    cursor: auto;
+    background-color: var(--color-grey-500);
+}
+

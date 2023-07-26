@@ -111,9 +111,12 @@
     gap: 0.25rem;
 }
 
-.bottom__column__workshop-info > p {
+.bottom__column__workshop-info__sentence {
     color: var(--color-grey-700);
-    font-size: 0.625rem;
+}
+
+.sold-out__sentence {
+    color: var(--color-warning);
 }
 
 .category-workshop-row {
@@ -130,7 +133,7 @@
     border-radius: 15px;
     text-transform: lowercase;
     margin-right: 0.5rem;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .middle-part__workshop-page {
@@ -164,6 +167,10 @@
     min-width: 300px;
     border-top: solid 2px var(--color-grey-500);
     padding: 0.5rem;
+}
+
+.rating__numbers__workshopowner {
+    font-size: 14px;
 }
 
 .container__reviews {
@@ -209,7 +216,6 @@
 
 
 .list-item {
-    font-size: 0.75rem;
     display: list-item;
     list-style-type: disc;
 }

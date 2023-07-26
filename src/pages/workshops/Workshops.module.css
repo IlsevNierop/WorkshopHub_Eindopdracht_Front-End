@@ -68,8 +68,6 @@
     background: rgba(255, 255, 255, 0.7);
 }
 
-
-
 .td-not-verified {
     color: var(--color-warning);
     font-weight: bolder;
@@ -82,4 +80,8 @@
 .link {
     text-decoration: none;
     color: var(--color-black)
+}
+
+.link-publish {
+    color: var(--color-black);
 }

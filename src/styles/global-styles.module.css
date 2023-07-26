@@ -33,6 +33,17 @@ body {
     color: #333;
 }
 
+/*:global .ReactModal__Body--open{*/
+/*    background-color: red !important;*/
+/*}*/
+
+/*:global .ReactModal__Overlay {*/
+/*    opacity: 0.5;*/
+/*}*/
+
+/*:global .ReactModalPortal{*/
+/*   opacity: 0.5;*/
+/*}*/
 
 :global .app-container {
     min-height: 100vh;

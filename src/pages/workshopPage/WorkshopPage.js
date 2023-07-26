@@ -29,7 +29,7 @@ function WorkshopPage() {
     const {workshopId} = useParams();
 
     const {user} = useContext(AuthContext);
-    const {setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const {setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
 
 
@@ -149,7 +149,7 @@ function WorkshopPage() {
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModalLogin();
+            signInWithSubHeader("Om deze workshop aan je favorieten toe te voegen, dien je eerst in te loggen");
         }
         if (user != null) {
             try {
@@ -244,17 +244,19 @@ function WorkshopPage() {
 
     function onClikHandlerBooking(){
         if (user == null) {
-            openModalLogin();
+            signInWithSubHeader("Om deze workshop te boeken, dien je eerst in te loggen");
         }
         if (user != null) {
             openModalBooking();
         }
     }
 
-    function openModalLogin() {
-        setModalIsOpenSignIn(true);
-    }
+    //TODO when no spots available: disable button and say 'sold out'
 
+    function signInWithSubHeader(subheader) {
+        setModalIsOpenSignIn(true);
+        setSignInSubHeader(subheader);
+    }
 
     function takeWorkshopOffline() {
         setWorkshopOffline(true);
@@ -486,10 +488,14 @@ function WorkshopPage() {
                             </section>
 
                             <section className={styles["bottom__column__workshop-info"]}>
-                                <Button type="text" onClick={onClikHandlerBooking}>
+                                <Button type="text" onClick={onClikHandlerBooking} disabled={(singleWorkshopData.spotsAvailable === 0) && true}>
                                     Boeken
                                 </Button>
-                                <p>{singleWorkshopData.spotsAvailable} plekken beschikbaar</p>
+                                {(singleWorkshopData.spotsAvailable === 0) ?
+                                    <p className={styles["sold-out__sentence"]}>Uitverkocht</p>
+                                    :
+                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable} plekken beschikbaar</p>
+                                }
 
                                 <div className={styles["category-workshop-row"]}>
                                     <p>{singleWorkshopData.workshopCategory1}</p>
@@ -519,7 +525,7 @@ function WorkshopPage() {
                                         <div className={styles["workshop-owner-rating"]}>
                                             <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
                                                         size={26}></StarRating>
-                                            <p>
+                                            <p className={styles["rating__numbers__workshopowner"]}>
                                                 {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} / 5 (
                                                 {singleWorkshopData.numberOfReviews === 1
                                                     ? `${singleWorkshopData.numberOfReviews} review`
@@ -561,7 +567,7 @@ function WorkshopPage() {
 
                             {singleWorkshopData.highlightedInfo &&
                                 <div className={styles["info__bottom__workshop"]}>
-                                    <h5>Belangrijk om te weten</h5>
+                                    <h4>Belangrijk om te weten</h4>
 
 
                                     <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {

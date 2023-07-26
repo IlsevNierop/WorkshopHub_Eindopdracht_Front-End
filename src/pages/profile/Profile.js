@@ -58,6 +58,7 @@ function Profile() {
 
     function closeModal() {
         setIsOpen(false);
+        setPreviewUrl('');
         reset();
     }
 

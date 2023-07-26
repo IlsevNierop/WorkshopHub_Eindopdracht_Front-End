@@ -11,34 +11,14 @@ import {AuthContext} from "../../context/AuthContext";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 
-function SignIn({
-                    // modalIsOpenLogin,
-                    // afterOpenModalLogin,
-                    // closeModalLogin,
-                    // handleSubmit,
-                    // handleFormSubmit,
-                    // register,
-                    // errors,
-                    // showPassword,
-                    // setShowPassword,
-                    // error,
-                    // modalIsOpenResetPassword,
-                    // afterOpenModalResetPassword,
-                    // closeModalResetPassword,
-                    // handleFormSubmitResetPassword,
-                    // openModalResetPassword,
-                    // modalIsOpenMessage,
-                    // closeModalMessage,
-                    // afterOpenModalMessage,
-                }) {
+function SignIn() {
 
     const {login} = useContext(AuthContext);
-    const {modalIsOpenSignIn, setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn, signInSubHeader, setSignInSubHeader} = useContext(ModalSignInContext);
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    // const [modalIsOpenLogin, setIsOpenLogin] = useState(false);
     const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
     const [modalIsOpenMessage, setIsOpenMessage] = useState(false);
 
@@ -48,9 +28,9 @@ function SignIn({
         openModalResetPassword();
     }
 
-    function openModalSignIn() {
-        setModalIsOpenSignIn(true);
-    }
+    // function openModalSignIn() {
+    //     setModalIsOpenSignIn(true);
+    // }
 
     function afterOpenModalSignin() {
 
@@ -112,7 +92,7 @@ function SignIn({
             openModalMessage();
             setTimeout(() => {
                 closeModalMessage();
-                openModalSignIn();
+                setModalIsOpenSignIn(true);
             }, 2000);
 
 
@@ -140,6 +120,7 @@ function SignIn({
                 contentLabel="Sign in"
                 functionalModalHeader="Inloggen"
             >
+                <h4 className={styles["content__modal__signin"]}>{signInSubHeader}</h4>
                 <form className={styles["signin__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
                     <InputField
                         type="text"

@@ -1,9 +1,9 @@
 
-p span {
+.footer-text span {
     color: var(--color-terracotta)
 }
 
-p {
+.footer-text {
     font-size: 0.75rem;
 }
 
