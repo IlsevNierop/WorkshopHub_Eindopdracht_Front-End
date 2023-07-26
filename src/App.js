@@ -3,7 +3,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -18,6 +18,9 @@ import AllWorkshopsFromOwner from "./pages/allWorkshopsFromOwner/AllWorkshopsFro
 function App() {
 
     const {isAuth, user} = useContext(AuthContext);
+
+    const [modalIsOpenSignIn, setModalIsOpenSignIn] = useState(false);
+    const [signInSubHeader, setSignInSubHeader] = useState('');
 
     return (
         <>

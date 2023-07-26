@@ -50,6 +50,7 @@
     width: 200px;
     text-align: left;
     color: var(--color-warning);
+    font-size: 14px;
 }
 
 .rating-row {

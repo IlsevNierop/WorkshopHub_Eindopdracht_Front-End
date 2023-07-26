@@ -22,10 +22,10 @@ function WorkshopTile({
                           category2,
                           isFavourite,
                           link,
-                          workshopId
+                          workshopId,
                       }) {
     const {user} = useContext(AuthContext);
-    const { setModalIsOpenSignIn} = useContext(ModalSignInContext);
+    const { setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
 
     const token = localStorage.getItem('token');
 
@@ -39,7 +39,7 @@ function WorkshopTile({
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
         if (user == null) {
-            openModalLogin();
+            signInWithSubHeader("Om deze workshop aan je favorieten toe te voegen, dien je eerst in te loggen");
         }
         if (user != null) {
             try {
@@ -69,14 +69,14 @@ function WorkshopTile({
         setError('');
     }
 
-    function openModalLogin() {
-        setModalIsOpenSignIn(true);
-    }
-
-
     useEffect(() => {
         setFavourite(isFavourite);
     }, [isFavourite]);
+
+    function signInWithSubHeader(subheader) {
+        setModalIsOpenSignIn(true);
+        setSignInSubHeader(subheader);
+    }
 
     return (
         <>
@@ -91,8 +91,6 @@ function WorkshopTile({
                 >
                 </CustomModal>
             }
-
-            <SignIn></SignIn>
 
             <article className={styles["workshop-tile"]}>
                 <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>

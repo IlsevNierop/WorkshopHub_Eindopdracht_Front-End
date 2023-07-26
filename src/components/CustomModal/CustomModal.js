@@ -30,7 +30,7 @@ function CustomModal({
             bottom: 'auto',
             marginRight: '-50%',
             transform: 'translate(-50%, -50%)',
-            overlay: {zIndex: 1000}
+            overlay: {zIndex: 3000},
         },
     };
 
