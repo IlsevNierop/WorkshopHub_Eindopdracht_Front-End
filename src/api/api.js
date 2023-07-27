@@ -3,7 +3,7 @@
     1. User API requests
     2. Workshop API requests
     3. Booking API requests
-    4.
+    4. Review API requests
     */
 
 import axios from "axios";
@@ -581,4 +581,84 @@ export async function getCsvFileWorkshop(token, workshopId) {
 }
 
 
+/* --------------- 4 Review API requests ----------------------- */
 
+export async function fetchAllReviewsAdmin(token) {
+    const response = await axios.get(`${baseUrl}reviews/admin/`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+export async function fetchAllReviewsCustomer(token, customerId) {
+    const response = await axios.get(`${baseUrl}reviews/customer/${customerId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+export async function verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
+    const response = await axios.put(`${baseUrl}reviews/admin/verify/${reviewId}`, {
+            rating: rating,
+            reviewDescription: reviewDescription,
+            reviewVerified: reviewVerified,
+            feedbackAdmin: feedbackAdmin,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response;
+}
+
+export async function updateReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
+    const response = await axios.put(`${baseUrl}reviews/admin/verify/${reviewId}`, {
+            rating: rating,
+            reviewDescription: reviewDescription,
+            reviewVerified: reviewVerified,
+            feedbackAdmin: feedbackAdmin,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response;
+}
+export async function updateReviewByCustomer(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin, customerId) {
+    const response = await axios.put(`${baseUrl}reviews/${customerId}/${reviewId}`, {
+            rating: rating,
+            reviewDescription: reviewDescription,
+            reviewVerified: reviewVerified,
+            feedbackAdmin: feedbackAdmin,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response;
+}
+
+export async function removeReview(token, reviewId) {
+    return await axios.delete(`${baseUrl}reviews/${reviewId}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+}

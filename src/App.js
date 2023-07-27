@@ -15,6 +15,7 @@ import FavouriteWorkshops from "./pages/favouriteWorkshops/FavouriteWorkshops";
 import Workshops from "./pages/workshops/Workshops";
 import AllWorkshopsFromOwner from "./pages/allWorkshopsFromOwner/AllWorkshopsFromOwner";
 import AllBookings from "./pages/allBookings/AllBookings";
+import AllReviews from "./pages/allReviews/AllReviews";
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
                     <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <Workshops/> : <Home />}/>
                     <Route path="/boekingen" element={isAuth?  <AllBookings/> : <Home />}/>
+                    <Route path="/reviews" element={user != null && user.highestAuthority !== 'workshopowner' ?  <AllReviews/> : <Home />}/>
 
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>
