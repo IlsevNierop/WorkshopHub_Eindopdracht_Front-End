@@ -14,13 +14,12 @@ import UpdateWorkshopPage from "./pages/updateWorkshopPage/UpdateWorkshopPage";
 import FavouriteWorkshops from "./pages/favouriteWorkshops/FavouriteWorkshops";
 import Workshops from "./pages/workshops/Workshops";
 import AllWorkshopsFromOwner from "./pages/allWorkshopsFromOwner/AllWorkshopsFromOwner";
+import AllBookings from "./pages/allBookings/AllBookings";
 
 function App() {
 
     const {isAuth, user} = useContext(AuthContext);
 
-    const [modalIsOpenSignIn, setModalIsOpenSignIn] = useState(false);
-    const [signInSubHeader, setSignInSubHeader] = useState('');
 
     return (
         <>
@@ -34,11 +33,12 @@ function App() {
                     <Route path="/profiel" element={isAuth? <Profile/> : <Home />}/>
                     <Route path="/registreren" element={<Register/>}/>
                     <Route path="/favorieten" element={isAuth? <FavouriteWorkshops/> : <Home />}/>
-
                     <Route path="/nieuweworkshop" element={user != null && user.highestAuthority !== 'customer'?  <CreateWorkshop/> : <Home />}/>
                     <Route path="/goedkeurenworkshops" element={user != null && user.highestAuthority !== 'customer'?  <VerifyWorkshops/> : <Home />}/>
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
                     <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <Workshops/> : <Home />}/>
+                    <Route path="/boekingen" element={isAuth?  <AllBookings/> : <Home />}/>
+
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>
                 <Footer></Footer>

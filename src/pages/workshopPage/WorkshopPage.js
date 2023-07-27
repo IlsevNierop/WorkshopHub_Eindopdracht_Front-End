@@ -15,7 +15,6 @@ import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
 import Button from "../../components/Button/Button";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import SignIn from "../../components/SignIn/SignIn";
 import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
