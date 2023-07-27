@@ -208,6 +208,7 @@ export async function fetchWorkshopsFromOwner(workshopOwnerId) {
         });
     return response.data;
 }
+
 export async function fetchWorkshopsFromOwnerLoggedIn(token, workshopOwnerId, id) {
     const response = await axios.get(`${baseUrl}workshops/workshopowner/${workshopOwnerId}`,
         {
@@ -222,8 +223,6 @@ export async function fetchWorkshopsFromOwnerLoggedIn(token, workshopOwnerId, id
         });
     return response.data;
 }
-
-
 
 
 export async function fetchSingleWorkshopDataAdmin(token, workshopId) {
@@ -293,10 +292,11 @@ export async function fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId) 
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-             signal: controller.signal,
+            signal: controller.signal,
         });
     return response.data;
 }
+
 export async function fetchSingleWorkshopDataByOwner(token, workshopId, userId) {
     const response = await axios.get(`${baseUrl}workshops/workshopowner/workshop/${workshopId}`,
         {
@@ -483,6 +483,7 @@ export async function fetchAllBookingsAdmin(token) {
     });
     return response.data;
 }
+
 export async function fetchAllBookingsCustomer(token, userId) {
     const response = await axios.get(`${baseUrl}bookings/user/${userId}`, {
         headers: {
@@ -493,7 +494,8 @@ export async function fetchAllBookingsCustomer(token, userId) {
     });
     return response.data;
 }
-    export async function fetchAllBookingsWorkshopOwner(token, workshopOwnerId) {
+
+export async function fetchAllBookingsWorkshopOwner(token, workshopOwnerId) {
     const response = await axios.get(`${baseUrl}bookings/workshopowner/${workshopOwnerId}`, {
         headers: {
             "Content-Type": "application/json",
@@ -503,11 +505,12 @@ export async function fetchAllBookingsCustomer(token, userId) {
     });
     return response.data;
 }
+
 export async function createBooking(token, amount, comments, customerId, workshopId) {
     const response = await axios.post(`${baseUrl}bookings/${customerId}/${workshopId}`, {
-            amount: amount,
-            commentsCustomer: comments,
-        }, {
+        amount: amount,
+        commentsCustomer: comments,
+    }, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -515,6 +518,23 @@ export async function createBooking(token, amount, comments, customerId, worksho
         signal: controller.signal,
     });
     return response.data;
+}
+
+
+export async function updateBooking(token, amount, commentsCustomer, workshopId, bookingId) {
+    const response = await axios.put(`${baseUrl}bookings/${bookingId}`, {
+            amount: amount,
+            commentsCustomer: commentsCustomer,
+            workshopId: workshopId,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
+    return response;
 }
 
 export async function removeBooking(token, bookingId) {
@@ -525,6 +545,39 @@ export async function removeBooking(token, bookingId) {
                 Authorization: `Bearer ${token}`,
             }
         });
+}
+
+export async function getCsvFileAdmin(token) {
+    const response = await axios.get(`${baseUrl}bookings/admin/generateanddownloadcsv`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+
+export async function getCsvFileWorkshopOwner(token, workshopOwnerId) {
+    const response = await axios.get(`${baseUrl}bookings/workshopowner/generateanddownloadcsv/${workshopOwnerId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+
+export async function getCsvFileWorkshop(token, workshopId) {
+    const response = await axios.get(`${baseUrl}bookings/workshopowner/generateanddownloadcsv/workshop/${workshopId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
 }
 
 

@@ -13,6 +13,7 @@ function InputField({
                         children,
                         value,
                         placeholder,
+                        readOnly,
                         classNameLabel,
                         setShowPassword,
                         showPassword,
@@ -34,7 +35,6 @@ function InputField({
                                 <input
                                     className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}
                                     value={value}
-
                                     type={type}
                                     id={`${name}-field`}
                                     {...register(name, validation)}
@@ -55,6 +55,7 @@ function InputField({
                                 type={type}
                                 id={`${name}-field`}
                                 {...register(name, validation)}
+                                readOnly={readOnly}
                                 placeholder={placeholder}
 
                             />

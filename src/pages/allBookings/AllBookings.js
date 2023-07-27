@@ -4,19 +4,18 @@ import {Link} from "react-router-dom";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {
-    createBooking,
     fetchAllBookingsAdmin, fetchAllBookingsCustomer, fetchAllBookingsWorkshopOwner,
-    fetchAllWorkshopsAdmin,
-    fetchAllWorkshopsOwnerByOwner, removeBooking,
-    removeWorkshop
+    getCsvFile, getCsvFileAdmin, getCsvFileWorkshop, getCsvFileWorkshopOwner, removeBooking, updateBooking
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import CustomModal from "../../components/CustomModal/CustomModal";
-import {updateDateFormatLong} from "../../helper/updateDateFormatLong";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {useForm} from "react-hook-form";
+import Select from "react-select";
+import {sortArrayBookings} from "../../helper/sortArrayBookings";
+import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
 
 function AllBookings() {
     const token = localStorage.getItem('token');
@@ -29,78 +28,60 @@ function AllBookings() {
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
     const [bookingsData, setBookingsData] = useState([]);
+    const [originalBookingsData, setOriginalBookingsData] = useState([]);
     const [needUpdateBookingData, toggleNeedUpdateBookingData] = useState(false);
+    const [sortValue, setSortValue] = useState([]);
+    const [optionsWorkshopId, setOptionsWorkshopId] = useState([]);
+    const [workshopId, setWorkshopId] = useState({});
 
 
     const [modalIsOpenError, setIsOpenError] = useState(false);
-    const [modalIsOpenUpdateBooking, setIsOpenUpdateBooking] = useState(false);
     const [modalIsOpenDeleteCheck, setIsOpenDeleteCheck] = useState(false);
     const [modalIsOpenDeleteSuccessful, setIsOpenDeleteSuccessful] = useState(false);
     const [toDeleteBookingId, setToDeleteBookingId] = useState(null);
-    const [toUpdateBookingData, setToUpdateBookingData] = useState({booking: {
-            bookingId: '',
-            amount: '',
-            commentsCustomer: '',
-            customerId: '',
-            workshopId: '',
+
+    const [modalIsOpenUpdateBooking, setIsOpenUpdateBooking] = useState(false);
+    const [modalIsOpenUpdateBookingSuccessful, setIsOpenUpdateBookingSuccessful] = useState(false);
+
+    const [toUpdateBookingData, setToUpdateBookingData] = useState({
+        booking: {
             sppotsAvailableWorkshop: '',
-        }});
+            amount: '',
+        }
+    });
+
+    const optionsSortValue =
+        [{value: 'bookingId', label: 'Boeking ID'},
+            {value: 'workshopId', label: 'Workshop ID'},
+            {value: 'dateBooking', label: 'Datum Boeking'},
+            {value: 'firstNameCustomer', label: 'Voornaam klant'},];
 
 
     useEffect(() => {
             async function getAllBookings() {
                 toggleLoading(true);
                 setError('');
-                if (highestAuthority === 'admin') {
-                    try {
-                        const response = await fetchAllBookingsAdmin(token);
-                        setBookingsData(response);
-
-                        if (response) {
-                            setError('');
-                        }
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                        }, 4000);
-                        console.log(error);
+                try {
+                    let response;
+                    if (highestAuthority === 'admin') {
+                        response = await fetchAllBookingsAdmin(token);
+                    } else if (highestAuthority === 'customer') {
+                        response = await fetchAllBookingsCustomer(token, id);
+                    } else {
+                        response = await fetchAllBookingsWorkshopOwner(token, id);
                     }
-                } else if (highestAuthority === 'customer') {
-                    try {
-                        const response = await fetchAllBookingsCustomer(token, id);
-                        setBookingsData(response);
-                        console.log("response")
-                        console.log(response)
-
-                        if (response) {
-                            setError('');
-                        }
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                        }, 4000);
-                        console.log(error);
+                    setOriginalBookingsData(response);
+                    setBookingsData(response);
+                    if (response) {
+                        setError('');
                     }
-                } else {
-                    try {
-                        const response = await fetchAllBookingsWorkshopOwner(token, id);
-                        setBookingsData(response);
-
-                        if (response) {
-                            setError('');
-                        }
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                        }, 4000);
-                        console.log(error);
-                    }
+                } catch (e) {
+                    setError(errorHandling(e));
+                    openModalError();
+                    setTimeout(() => {
+                        closeModalError();
+                    }, 4000);
+                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -111,31 +92,40 @@ function AllBookings() {
                 controller.abort();
             }
         }
-        , [needUpdateBookingData])
+
+        ,
+        [needUpdateBookingData]
+    )
+    ;
+
+    useEffect(() => {
+        function setOptions() {
+            setOptionsWorkshopId(createOptionsObjectSelectDropdown(bookingsData, "workshopId",));
+        }
+
+        void setOptions();
+    }, [originalBookingsData]);
 
 
-    async function handleFormSubmit(data) {
-        console.log(data)
-        // console.log(id);
-        // console.log(workshopId);
-        // try {
-        //     const response = await createBooking (token, data.amount, data.comments, user.id, workshopId);
-        //     console.log(response);
-        //     setTotalPriceBooking(response.totalPrice);
-        //
-        //     openModalBookingSuccessful();
-        //     setTimeout(() => {
-        //         closeModalBookingSuccessful();
-        //     }, 4000);
-        //
-        //
-        // } catch (e) {
-        //     setError(errorHandling(e));
-        //     openModalError();
-        //     setTimeout(() => {
-        //         closeModalError();
-        //     }, 3000);
+    useEffect(() => {
+        setBookingsData(sortArrayBookings(bookingsData, sortValue.value));
+    }, [sortValue]);
+
+
+    useEffect(() => {
+        if (Object.keys(workshopId).length !== 0) {
+            setBookingsData(originalBookingsData.filter((booking) => {
+                return `${booking.workshopId}` === workshopId.value;
+            }));
+        }
+    }, [workshopId]);
+
+
+    function removeWorkshopIdFilter() {
+        setWorkshopId([]);
+        setBookingsData(originalBookingsData);
     }
+
 
     const validateSpotsAvailable = (value) => {
         if ((toUpdateBookingData.booking.sppotsAvailableWorkshop + toUpdateBookingData.booking.amount) < value) {
@@ -144,26 +134,16 @@ function AllBookings() {
         return true;
     };
 
-    const handleChange = (event) => {
-        // const {name, value} = event.target;
-        // setBookingData((prevValues) => ({
-        //     ...prevValues,
-        //     [name]: value,
-        // }));
-    };
-
-    function updateBooking(bookingId, amount, commentsCustomer, customerId, workshopId, sppotsAvailableWorkshop) {
+    function changeBooking(bookingId, firstNameCustomer, lastNameCustomer, amount, commentsCustomer, workshopId, sppotsAvailableWorkshop) {
         setToUpdateBookingData({
             booking: {
-                bookingId,
-                amount,
-                commentsCustomer,
-                customerId,
-                workshopId,
-                sppotsAvailableWorkshop
+                sppotsAvailableWorkshop,
+                amount
             }
         });
         setValue('bookingId', bookingId);
+        setValue('firstNameCustomer', firstNameCustomer)
+        setValue('lastNameCustomer', lastNameCustomer)
         setValue('amount', amount);
         setValue('commentsCustomer', commentsCustomer);
         setValue('workshopId', workshopId);
@@ -171,15 +151,32 @@ function AllBookings() {
         openModalUpdateBooking();
     }
 
+    async function handleFormSubmit(data) {
+        try {
+            await updateBooking(token, data.amount, data.commentsCustomer, data.workshopId, data.bookingId);
+            closeModalUpdateBooking();
+            openModalUpdateBookingSuccessful();
+            toggleNeedUpdateBookingData(!needUpdateBookingData);
+            setTimeout(() => {
+                closeModalUpdateBookingSuccessful();
+            }, 4000);
+
+
+        } catch (e) {
+            setError(errorHandling(e));
+            console.log(e)
+            openModalError();
+            setTimeout(() => {
+                closeModalError();
+            }, 3000);
+        }
+    }
 
     async function deleteBooking(bookingId) {
-        console.log("delete booking")
         closeModalDeleteCheck();
-        toggleLoading(true);
         setError('');
         try {
-            const response = await removeBooking(token, bookingId);
-            console.log(response);
+            await removeBooking(token, bookingId);
             setError('');
             openModalDeleteSuccessful();
             toggleNeedUpdateBookingData(!needUpdateBookingData);
@@ -195,10 +192,38 @@ function AllBookings() {
             }, 4000);
             console.log(error);
         }
-        toggleLoading(false);
         setToDeleteBookingId(null);
     }
 
+    async function downloadCsvFileBookings(type, workshopId) {
+        try {
+            let response;
+            if (workshopId) {
+                response = await getCsvFileWorkshop(token, workshopId);
+            } else if (type === 'admin') {
+                response = await getCsvFileAdmin(token);
+            } else if (type === 'workshopowner') {
+                response = await getCsvFileWorkshopOwner(token, id);
+            }
+            setError('');
+            const blob = new Blob([response], {type: 'text/csv'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "boekingen.csv";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+        } catch (e) {
+            setError(errorHandling(e));
+            openModalError();
+            setTimeout(() => {
+                closeModalError();
+            }, 4000);
+            console.log(error);
+        }
+    }
 
     function openModalError() {
         setIsOpenError(true);
@@ -209,17 +234,6 @@ function AllBookings() {
 
     function closeModalError() {
         setIsOpenError(false);
-    }
-
-    function openModalUpdateBooking() {
-        setIsOpenUpdateBooking(true);
-    }
-
-    function afterOpenModalUpdateBooking() {
-    }
-
-    function closeModalUpdateBooking() {
-        setIsOpenUpdateBooking(false);
     }
 
     function checkDeleteBooking(bookingId) {
@@ -250,11 +264,34 @@ function AllBookings() {
         setToDeleteBookingId(null);
     }
 
+    function openModalUpdateBooking() {
+        setIsOpenUpdateBooking(true);
+    }
+
+    function afterOpenModalUpdateBooking() {
+    }
+
+    function closeModalUpdateBooking() {
+        setIsOpenUpdateBooking(false);
+        reset();
+    }
+
+    function openModalUpdateBookingSuccessful() {
+        setIsOpenUpdateBookingSuccessful(true);
+    }
+
+    function afterOpenModalUpdateBookingSuccessful() {
+    }
+
+    function closeModalUpdateBookingSuccessful() {
+        setIsOpenUpdateBookingSuccessful(false);
+    }
+
 
     return (
         <main className={`outer-container ${styles["all-bookings__outer-container"]}`}>
             <div className={`inner-container ${styles["all-bookings__inner-container"]}`}>
-                <h1>{highestAuthority === 'admin' ? "Alle" : "Al mijn"} boekingen</h1>
+                <h1>{highestAuthority === 'admin' ? "Alle boekingen" : highestAuthority === 'workshopowner' ? "Alle boekingen op mijn workshops" : "Al mijn boekingen"} </h1>
 
                 {loading && <p>Loading...</p>}
 
@@ -269,6 +306,19 @@ function AllBookings() {
                     >
                     </CustomModal>
                 }
+
+
+                <CustomModal
+                    modalIsOpen={modalIsOpenDeleteCheck}
+                    afterOpenModal={afterOpenModalDeleteCheck}
+                    closeModal={closeModalDeleteCheck}
+                    contentLabel="Check deleting booking"
+                    checkModalHeader="Weet je het zeker?"
+                    buttonHeaderCheckModalYes="Ja ik weet het zeker"
+                    onclickHandlerCheckModalYes={() => deleteBooking(toDeleteBookingId)}
+                    onclickHandlerCheckModalBack={closeModalDeleteCheck}
+                    checkMessage="Wil je de boeking echt verwijderen? -Door op Ja te klikken wordt de boeking verwijderd"
+                ></CustomModal>
 
                 <CustomModal
                     modalIsOpen={modalIsOpenDeleteSuccessful}
@@ -285,23 +335,43 @@ function AllBookings() {
                     contentLabel="Update booking"
                     functionalModalHeader={`Wijzig deze boeking`}
                 >
+
                     <div className={styles["booking__modal"]}>
-                        <form className={styles["create-booking__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
+                        <form className={styles["update-booking__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
+
+                            <p className={styles["subheader__input-fields"]}>Niet te wijzigen:</p>
 
                             <InputField
                                 type="number"
                                 name="bookingId"
                                 label="Boeking ID"
-                                disabled="true"
                                 register={register}
                                 errors={errors}
-                                validation={{
-                                    disabled: true,
-                                }}
-                                value = {toUpdateBookingData.booking.bookingId}
-                                // onChangeHandler={handleChange}
+                                readOnly={true}
                             >
                             </InputField>
+                            <InputField
+                                type="text"
+                                name="firstNameCustomer"
+                                label="Voornaam klant"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                            >
+                            </InputField>
+                            <InputField
+                                type="text"
+                                name="lastNameCustomer"
+                                label="Achternaam klant"
+                                register={register}
+                                errors={errors}
+                                readOnly={true}
+                            >
+                            </InputField>
+
+                            <p className={styles["subheader__input-fields"]}>Wijzigen:</p>
+
+
                             <InputField
                                 type="number"
                                 name="workshopId"
@@ -315,8 +385,6 @@ function AllBookings() {
                                 }}
                                 register={register}
                                 errors={errors}
-                                // value={toUpdateBookingData.booking.workshopId}
-                                // onChangeHandler={handleChange}
                             >
                             </InputField>
                             <InputField
@@ -330,30 +398,24 @@ function AllBookings() {
                                             message: "Aantal plekken is verplicht",
                                         },
                                     validate: validateSpotsAvailable
-                                    //TODO validate date workshop future
                                 }
                                 }
                                 register={register}
                                 errors={errors}
-                                // value={toUpdateBookingData.booking.amount}
-                                // onChangeHandler={handleChange}
                             >
                             </InputField>
                             <InputField
                                 type="text"
-                                name="comments"
+                                name="commentsCustomer"
                                 label="Opmerkingen"
                                 register={register}
                                 errors={errors}
-                                // value={toUpdateBookingData.booking.commentsCustomer}
-                                // onChangeHandler={handleChange}
                             >
                             </InputField>
 
                             <Button
                                 type="submit"
                             >Boeking plaatsen</Button>
-
                         </form>
                     </div>
 
@@ -361,16 +423,49 @@ function AllBookings() {
                 </CustomModal>
 
                 <CustomModal
-                    modalIsOpen={modalIsOpenDeleteCheck}
-                    afterOpenModal={afterOpenModalDeleteCheck}
-                    closeModal={closeModalDeleteCheck}
-                    contentLabel="Check deleting booking"
-                    checkModalHeader="Weet je het zeker?"
-                    buttonHeaderCheckModalYes="Ja ik weet het zeker"
-                    onclickHandlerCheckModalYes={() => deleteBooking(toDeleteBookingId)}
-                    onclickHandlerCheckModalBack={closeModalDeleteCheck}
-                    checkMessage="Wil je de boeking echt verwijderen? -Door op Ja te klikken wordt de boeking verwijderd"
+                    modalIsOpen={modalIsOpenUpdateBookingSuccessful}
+                    afterOpenModal={afterOpenModalUpdateBookingSuccessful}
+                    closeModal={closeModalUpdateBookingSuccessful}
+                    contentLabel="Successful update booking"
+                    updateHeader="De boeking is succesvol gewijzigd"
                 ></CustomModal>
+
+
+                {highestAuthority !== 'customer' &&
+                    <div className={styles["top__bookings__dropdown-menu"]}>
+
+                        <div className={styles["dropdown"]}>
+                            <h4>Sorteer op:</h4>
+                            <Select className={styles["sort__dropdown"]}
+                                    id="select-dropdown-sort"
+                                    name="select-dropdown-sort"
+                                    label="select-dropdown-sort"
+                                    placeholder="Selecteer.."
+                                    defaultValue={sortValue}
+                                    onChange={setSortValue}
+                                    options={optionsSortValue}
+                                    isMulti={false}
+                            />
+                        </div>
+
+                        <div className={styles["container__filter-dropdown__button"]}>
+                            <div className={styles["dropdown"]}>
+                                <h4>Kies workshop ID:</h4>
+                                <Select className={styles["filter__dropdown"]}
+                                    id="select-dropdown-workshopId"
+                                    name="select-dropdown-workshopId"
+                                    label="select-dropdown-workshopId"
+                                    placeholder="Selecteer.."
+                                    value={workshopId}
+                                    onChange={setWorkshopId}
+                                    options={optionsWorkshopId}
+                                    isMulti={false}
+                                />
+                            </div>
+                            <Button type="text" onClick={removeWorkshopIdFilter}>Alle workshops</Button>
+                        </div>
+                    </div>
+                }
 
                 <table className={styles["table__bookings"]}>
                     <thead>
@@ -409,8 +504,7 @@ function AllBookings() {
                                         <>
                                             <td><Link className={styles["link"]}
                                                       to="#"
-                                                // onClick={openModalUpdateBooking}
-                                                      onClick={() => updateBooking(booking.id, booking.amount, booking.commentsCustomer, booking.customerId, booking.workshopId, booking.sppotsAvailableWorkshop)}
+                                                      onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
                                             ><NotePencil
                                                 size={20}
                                                 weight="regular"/></Link>
@@ -429,7 +523,15 @@ function AllBookings() {
                     </tbody>
                 </table>
 
+                {(highestAuthority !== 'customer' && Object.keys(workshopId).length === 0) &&
+                    <Button type="text" onClick={() => downloadCsvFileBookings(highestAuthority)}>Download csv</Button>
+                }
 
+                {(highestAuthority !== 'customer' && Object.keys(workshopId).length !== 0) &&
+                    <Button type="text"
+                            onClick={() => downloadCsvFileBookings(highestAuthority, parseInt(workshopId.value))}>Download
+                        csv</Button>
+                }
             </div>
         </main>
     );

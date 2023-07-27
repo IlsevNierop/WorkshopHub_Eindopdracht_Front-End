@@ -8,29 +8,45 @@
     margin: 2rem;
 }
 
-/*.sort {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    gap: 0.25rem;*/
-/*    align-items: flex-start;*/
-/*    width: 100%;*/
-/*}*/
+.top__bookings__dropdown-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
 
-/*.sort__dropdown {*/
-/*    width: 12rem;*/
-/*}*/
+.dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+    width: 100%;
+}
 
-/*.sort__dropdown-verified {*/
-/*    width: 10rem;*/
-/*    background-color: var(--color-light-orange);*/
-/*}*/
+.filter__dropdown {
+    width: 10rem;
+}
+
+.button__all-workshops {
+    width: 200px;
+}
+
+.container__filter-dropdown__button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    max-height: 70px;
+    gap: 0.5rem;
+    /*flex-basis: 600px;*/
+}
+
 
 .table__bookings {
     width: 100%;
     text-align: left;
     border-collapse: collapse;
 }
-
 
 .table-header-row__bookings > th{
     background-color: var(--color-terracotta-orange);
@@ -83,4 +99,24 @@
 .link {
     text-decoration: none;
     color: var(--color-black)
+}
+
+.booking__modal{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.booking__modal h4 {
+    font-weight: normal;
+}
+
+.update-booking__form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.subheader__input-fields {
+    font-weight: bold;
 }
