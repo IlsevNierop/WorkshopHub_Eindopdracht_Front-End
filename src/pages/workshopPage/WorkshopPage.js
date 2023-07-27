@@ -15,7 +15,6 @@ import {getInOrOutdoors} from "../../helper/getInOrOutdoors";
 import {updateTimeFormat} from "../../helper/updateTimeFormat";
 import Button from "../../components/Button/Button";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
-import SignIn from "../../components/SignIn/SignIn";
 import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
@@ -223,13 +222,14 @@ function WorkshopPage() {
         console.log(user.id);
         console.log(workshopId);
         try {
-            const response = await createBooking (token, data.amount, data.comments, user.id, workshopId);
+            const response = await createBooking(token, data.amount, data.comments, user.id, workshopId);
             console.log(response);
             setTotalPriceBooking(response.totalPrice);
-
+            closeModalBooking();
             openModalBookingSuccessful();
             setTimeout(() => {
                 closeModalBookingSuccessful();
+                navigate("/boekingen")
             }, 4000);
 
 
@@ -242,7 +242,7 @@ function WorkshopPage() {
         }
     }
 
-    function onClikHandlerBooking(){
+    function onClikHandlerBooking() {
         if (user == null) {
             signInWithSubHeader("Om deze workshop te boeken, dien je eerst in te loggen");
         }
@@ -292,7 +292,7 @@ function WorkshopPage() {
         setIsOpenBookingSuccessful(true);
     }
 
-    function afterOpenModalBookingSuccessful(){
+    function afterOpenModalBookingSuccessful() {
     }
 
     function closeModalBookingSuccessful() {
@@ -427,7 +427,7 @@ function WorkshopPage() {
                     closeModal={closeModalBookingSuccessful}
                     contentLabel="Booking workshop sucessful"
                     updateHeader="De workshop is geboekt"
-                    updateMessage={`De totale prijs is ${totalPriceBooking} euro`}
+                    updateMessage={`De totale prijs is ${totalPriceBooking} euro. - Je wordt doorgestuurd naar het overzicht van jouw boekingen.`}
                 >
                 </CustomModal>
 
@@ -484,13 +484,15 @@ function WorkshopPage() {
                             </section>
 
                             <section className={styles["bottom__column__workshop-info"]}>
-                                <Button type="text" onClick={onClikHandlerBooking} disabled={(singleWorkshopData.spotsAvailable === 0) && true}>
+                                <Button type="text" onClick={onClikHandlerBooking}
+                                        disabled={(singleWorkshopData.spotsAvailable === 0) && true}>
                                     Boeken
                                 </Button>
                                 {(singleWorkshopData.spotsAvailable === 0) ?
                                     <p className={styles["sold-out__sentence"]}>Uitverkocht</p>
                                     :
-                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable} plekken beschikbaar</p>
+                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable} plekken
+                                        beschikbaar</p>
                                 }
 
                                 <div className={styles["category-workshop-row"]}>

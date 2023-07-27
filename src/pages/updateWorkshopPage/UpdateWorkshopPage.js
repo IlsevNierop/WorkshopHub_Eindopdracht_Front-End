@@ -322,8 +322,6 @@ function UpdateWorkshopPage() {
                                     bericht. - Zodra deze geverifieerd is, kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
                 ></CustomModal>
                 }
-
-
                 <CustomModal
                     modalIsOpen={modalIsOpenCheck}
                     afterOpenModal={afterOpenModalCheck}

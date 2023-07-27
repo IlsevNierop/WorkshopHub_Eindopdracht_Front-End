@@ -46,8 +46,8 @@ export function navLinks(highestAuthority) {
                 ],
             },
             {
-                title: "Boekingen",
-                link: "/test",
+                title: "Alle Boekingen",
+                link: "/boekingen",
             },
             {
                 title: "Gebruikers",
@@ -82,8 +82,8 @@ export function navLinks(highestAuthority) {
                 link: "/test",
             },
             {
-                title: "Boekingen",
-                link: "/test",
+                title: "Mijn Boekingen",
+                link: "/boekingen",
             },
             {
                 title: "Nieuwe Workshop",
@@ -97,7 +97,7 @@ export function navLinks(highestAuthority) {
             },
             {
                 title: "Mijn Boekingen",
-                link: "/test",
+                link: "/boekingen",
             },
             {
                 title: "Mijn Reviews",
