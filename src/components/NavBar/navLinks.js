@@ -29,21 +29,7 @@ export function navLinks(highestAuthority) {
                 ],
             }, {
                 title: "Reviews",
-                submenu: [
-                    {
-                        title: "Alle Reviews",
-                        link: "/allereviews",
-                    },
-                    {
-                        title: "Goedkeuren Reviews",
-                        link: "/goedkeurenreviews",
-                    },
-                    {
-                        title: "Nieuwe Workshop",
-                        link: "/nieuweworkshop",
-                    },
-
-                ],
+                link: "/reviews",
             },
             {
                 title: "Alle Boekingen",
@@ -78,10 +64,6 @@ export function navLinks(highestAuthority) {
                 ],
             },
             {
-                title: "Reviews",
-                link: "/test",
-            },
-            {
                 title: "Mijn Boekingen",
                 link: "/boekingen",
             },
@@ -101,7 +83,7 @@ export function navLinks(highestAuthority) {
             },
             {
                 title: "Mijn Reviews",
-                link: "/test",
+                link: "/reviews",
             }];
     }
 

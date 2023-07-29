@@ -1,21 +1,14 @@
-.all-bookings__outer-container {
+.all-reviews__outer-container {
     flex-grow: 1;
     background-color: var(--color-grey-100);
 }
 
-.all-bookings__inner-container {
+.all-reviews__inner-container {
     align-items: center;
     margin: 2rem;
 }
 
-.top__bookings__dropdown-menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.dropdown {
+.sort {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -23,67 +16,52 @@
     width: 100%;
 }
 
-.filter__dropdown {
-    width: 10rem;
+.sort__dropdown {
+    width: 12rem;
 }
 
-.button__all-workshops {
-    width: 200px;
-}
-
-.container__filter-dropdown__button {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
-    max-height: 70px;
-    gap: 0.5rem;
-}
-
-
-.table__bookings {
+.table__reviews {
     width: 100%;
     text-align: left;
     border-collapse: collapse;
 }
 
-.table-header-row__bookings > th{
+.table-header-row__reviews > th{
     background-color: var(--color-terracotta-orange);
     padding: 0.5rem;
     border-bottom: 1px solid var(--color-earth-blue);
     font-size: 14px;
 }
 
-.table-header-row__bookings > th:first-child {
+.table-header-row__reviews > th:first-child {
     border-radius: 5px 0 0 0;
 }
 
-.table-header-row__bookings > th:last-child {
+.table-header-row__reviews > th:last-child {
     border-radius: 0 5px 0 0;
 }
 
-.table__bookings td {
+.table__reviews td {
     padding: 0.5rem;
     background-color: var(--color-grey-200);
     font-size: 14px;
 }
 
-.date__booking {
+.date__reviews {
     width: 40px;
 }
 
-.table__bookings tr:nth-child(even) td {
+.table__reviews tr:nth-child(even) td {
     background-color: var(--color-light-orange);
 }
 
-.table__bookings tr:last-child td:first-child {
+.table__reviews tr:last-child td:first-child {
     border-radius: 0 0 0 5px;
 }
 
-.table__bookings tr:last-child td:last-child {
+.table__reviews tr:last-child td:last-child {
     border-radius: 0 0 5px 0;
 }
-
 
 .inside-table tr:nth-child(odd) td {
     background: rgba(255, 255, 255, 0.7);
@@ -94,23 +72,23 @@
     font-weight: bolder;
 }
 
-
 .link {
     text-decoration: none;
     color: var(--color-black)
 }
 
-.booking__modal{
+.review__modal{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-width: 550px;
 }
 
-.booking__modal h4 {
+.review__modal h4 {
     font-weight: normal;
 }
 
-.update-booking__form {
+.update-review__form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

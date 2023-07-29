@@ -5,7 +5,7 @@ import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {
     fetchAllBookingsAdmin, fetchAllBookingsCustomer, fetchAllBookingsWorkshopOwner,
-    getCsvFile, getCsvFileAdmin, getCsvFileWorkshop, getCsvFileWorkshopOwner, removeBooking, updateBooking
+    getCsvFileAdmin, getCsvFileWorkshop, getCsvFileWorkshopOwner, removeBooking, updateBooking
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
@@ -452,14 +452,14 @@ function AllBookings() {
                             <div className={styles["dropdown"]}>
                                 <h4>Kies workshop ID:</h4>
                                 <Select className={styles["filter__dropdown"]}
-                                    id="select-dropdown-workshopId"
-                                    name="select-dropdown-workshopId"
-                                    label="select-dropdown-workshopId"
-                                    placeholder="Selecteer.."
-                                    value={workshopId}
-                                    onChange={setWorkshopId}
-                                    options={optionsWorkshopId}
-                                    isMulti={false}
+                                        id="select-dropdown-workshopId"
+                                        name="select-dropdown-workshopId"
+                                        label="select-dropdown-workshopId"
+                                        placeholder="Selecteer.."
+                                        value={workshopId}
+                                        onChange={setWorkshopId}
+                                        options={optionsWorkshopId}
+                                        isMulti={false}
                                 />
                             </div>
                             <Button type="text" onClick={removeWorkshopIdFilter}>Alle workshops</Button>
@@ -479,10 +479,12 @@ function AllBookings() {
                             <th>Totaal bedrag</th>
                             <th>Workshop</th>
                             <th>Titel workshop</th>
+                            <th>Datum workshop</th>
                             {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
                                 <>
                                     <th>Wijzigen</th>
                                     <th>Verwijderen</th>
+                                    <th>Review</th>
                                 </>
                             }
                         </tr>
@@ -499,20 +501,44 @@ function AllBookings() {
                                     <td>{booking.totalPrice} euro</td>
                                     <td>{booking.workshopId}</td>
                                     <td>{booking.workshopTitle}</td>
+                                    <td>{updateDateFormatShort(booking.workshopDate)}</td>
 
                                     {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
                                         <>
-                                            <td><Link className={styles["link"]}
-                                                      to="#"
-                                                      onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
-                                            ><NotePencil
-                                                size={20}
-                                                weight="regular"/></Link>
+                                            <td>
+                                                {new Date(booking.workshopDate) < new Date() ? (
+                                                    "De boeking kan niet gewijzigd worden"
+                                                ) : (
+                                                    <Link
+                                                        className={styles["link"]}
+                                                        to="#"
+                                                        onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
+                                                    >
+                                                        <NotePencil size={20} weight="regular"/>
+                                                    </Link>
+                                                )}
                                             </td>
-                                            <td><Link className={styles["link"]} to="#"
-                                                      onClick={() => checkDeleteBooking(booking.id)}><TrashSimple
-                                                size={20}
-                                                weight="regular"/></Link>
+                                            <td>
+                                                {new Date(booking.workshopDate) < new Date() ? (
+                                                    "De boeking kan niet verwijderd worden"
+                                                ) : (
+                                                    <Link
+                                                        className={styles["link"]}
+                                                        to="#"
+                                                        onClick={() => checkDeleteBooking(booking.id)}
+                                                    >
+                                                        <TrashSimple size={20} weight="regular"/>
+                                                    </Link>
+                                                )}
+                                            </td>
+                                            <td>
+                                                {booking.reviewCustomerWritten ? (
+                                                    <Link className={styles["link"]} to="/reviews">Bekijk al je
+                                                        reviews</Link>
+                                                ) : (
+                                                    <Link className={styles["link"]} to="/nieuwereview">Laat review
+                                                        achter</Link>
+                                                )}
                                             </td>
                                         </>
                                     }
