@@ -1,0 +1,17 @@
+.page-not-found__outer-container {
+    flex-grow: 1;
+    background-color: var(--color-grey-100);
+}
+
+.page-not-found__inner-container {
+    align-items: center;
+    margin: 2rem;
+}
+
+.h3__page-not-found {
+    font-weight: normal;
+}
+
+.counter__h3 {
+    font-weight: bolder;
+}
