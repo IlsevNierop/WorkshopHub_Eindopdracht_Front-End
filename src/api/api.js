@@ -603,6 +603,20 @@ export async function fetchAllReviewsCustomer(token, customerId) {
     });
     return response.data;
 }
+
+export async function createReview(token, rating, reviewDescription, customerId, workshopId) {
+    const response = await axios.post(`${baseUrl}reviews/${workshopId}/${customerId}`, {
+        rating: rating,
+        reviewDescription: reviewDescription,
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
 export async function verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
     const response = await axios.put(`${baseUrl}reviews/admin/verify/${reviewId}`, {
             rating: rating,

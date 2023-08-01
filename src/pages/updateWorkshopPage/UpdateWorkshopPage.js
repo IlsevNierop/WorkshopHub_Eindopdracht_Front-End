@@ -14,8 +14,6 @@ import {Controller, useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {capitalizeFirstLetter} from "../../helper/capitalizeFirstLetter";
-import Modal from "react-modal";
-import {Confetti, X} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 
 

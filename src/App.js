@@ -16,6 +16,7 @@ import Workshops from "./pages/workshops/Workshops";
 import AllWorkshopsFromOwner from "./pages/allWorkshopsFromOwner/AllWorkshopsFromOwner";
 import AllBookings from "./pages/allBookings/AllBookings";
 import AllReviews from "./pages/allReviews/AllReviews";
+import CreateReview from "./pages/createReview/CreateReview";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <Workshops/> : <Home />}/>
                     <Route path="/boekingen" element={isAuth?  <AllBookings/> : <Home />}/>
                     <Route path="/reviews" element={user != null && user.highestAuthority !== 'workshopowner' ?  <AllReviews/> : <Home />}/>
+                    <Route path="/nieuwereview/:workshopId/:workshopTitle/:workshopDate" element={user != null && user.highestAuthority !== 'workshopowner' ? <CreateReview/> : <Home />}/>
 
                     {/*<Route path="*" element={ <PageNotFound/> }/>*/}
                 </Routes>

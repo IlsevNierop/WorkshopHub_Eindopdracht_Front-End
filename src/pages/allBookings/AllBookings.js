@@ -535,7 +535,7 @@ function AllBookings() {
                                                 {booking.reviewCustomerWritten ? (
                                                    "Heeft al een review"
                                                 ) : (
-                                                    <Link className={"link-table-text"} to="/nieuwereview">Laat review
+                                                    <Link className={"link-table-text"} to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat review
                                                         achter</Link>
                                                 )}
                                             </td>
