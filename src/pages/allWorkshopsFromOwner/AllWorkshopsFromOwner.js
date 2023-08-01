@@ -70,8 +70,8 @@ function AllWorkshopsFromOwner() {
 
 
     return (
-        <main className={`outer-container ${styles["all-workshops-owner__outer-container"]}`}>
-            <div className={`inner-container ${styles["all-workshops-owner__inner-container"]}`}>
+        <main className={`outer-container ${styles["all-allWorkshops-owner__outer-container"]}`}>
+            <div className={`inner-container ${styles["all-allWorkshops-owner__inner-container"]}`}>
 
 
                 {workshopsFromOwner &&

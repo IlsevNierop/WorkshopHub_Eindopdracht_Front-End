@@ -286,7 +286,7 @@ function AllReviews() {
                     modalIsOpen={modalIsOpenVerifySuccessful}
                     afterOpenModal={afterModalVerifySuccessful}
                     closeModal={closeModalVerifySuccessful}
-                    contentLabel="Update review successful"
+                    contentLabel="Verify review successful"
                     updateHeader={`De review is succesvol geaccordeerd`}
                 ></CustomModal>
 
@@ -428,7 +428,7 @@ function AllReviews() {
                                                 register={register}
                                                 errors={errors}
                                             >
-                                                Goedgekeurd
+                                                Goedkeuren
                                             </InputField>
                                             <InputField
                                                 classNameInputField="radio-checkbox__review-verified"
@@ -447,7 +447,7 @@ function AllReviews() {
                                                 register={register}
                                                 errors={errors}
                                             >
-                                                Afgekeurd
+                                                Afkeuren
                                             </InputField>
                                         </div>
                                     </label>
