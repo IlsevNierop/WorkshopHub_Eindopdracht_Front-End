@@ -30,7 +30,7 @@ function InputField({
                         {label}
 
                         {onChangeHandler ?
-                            // Het toevoegen van een onChange is nodig voor de update profile pagina (daar werkt de setvalue niet, vanwege de disabled fields), maar wanneer ik een onChange variabele toevoeg aan het input element (zelfs bij het NIET meegeven van dit als argument) dan overschrijft dat het default gedrag van Hook Form voor wat betreft submitten met enter (terwijl in ingevuld veld) en het valideren van de velden na 1x geprobeerd te hebben te submitten. Daarom heb ik voor het aanmaken van een workshop, registreren user, inloggen etc een hook form input zonder onChange, en voor het wijzigen van workshop, profiel, een hook form input met onChange
+                            //The onChange is needed for updating the profile page (setValue doesn't work, because of the disabled fields), but adding an onChange variable on the input element (even when it's not an argument when implementing the component) the default onchange behaviour of Hook Form gets overwritten for (at least) submitting with pressing enter (while in an inputfield), and for validating the fields (onblur /ontouched) after trying to submit the first time. Therefor, I made different Hook Form inputfields For workshop, register user, log in etc an inputfield without onChange, and for editing the profile page for example, an inputfield with onChange.
                             <>
                                 <input
                                     className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}

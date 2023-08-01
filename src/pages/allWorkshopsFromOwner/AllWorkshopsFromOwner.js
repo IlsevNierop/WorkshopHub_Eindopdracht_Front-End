@@ -27,55 +27,40 @@ function AllWorkshopsFromOwner() {
                 toggleLoading(true);
                 setError('');
 
-                if (user !== null) {
-                    try {
-                        const response = await fetchWorkshopsFromOwnerLoggedIn(token, workshopOwnerId, user.id);
-                        setWorkshopsFromOwner(response);
-                        setworkshopOwnerName(response[0].workshopOwnerCompanyName);
-
-                        if (response) {
-                            setError('');
-                        }
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
+                try {
+                    let response;
+                    if (user !== null) {
+                        response = await fetchWorkshopsFromOwnerLoggedIn(token, workshopOwnerId, user.id);
+                    } else {
+                        response = await fetchWorkshopsFromOwner(workshopOwnerId);
                     }
-                    toggleLoading(false);
-                } else {
-                    try {
-                        const response = await fetchWorkshopsFromOwner(workshopOwnerId);
-                        setWorkshopsFromOwner(response);
-                        setworkshopOwnerName(response[0].workshopOwnerCompanyName);
+                    setWorkshopsFromOwner(response);
+                    setworkshopOwnerName(response[0].workshopOwnerCompanyName);
+                    setError('');
 
-                        if (response) {
-                            setError('');
-                        }
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
-                    }
-                    toggleLoading(false);
+                } catch (e) {
+                    setError(errorHandling(e));
+                    console.log(error);
                 }
+                toggleLoading(false);
             }
+
             void getWorkshopsFromOwner();
 
             return function cleanup() {
                 controller.abort();
             }
         }
-
         , []);
 
 
     return (
-        <main className={`outer-container ${styles["all-allWorkshops-owner__outer-container"]}`}>
-            <div className={`inner-container ${styles["all-allWorkshops-owner__inner-container"]}`}>
+        <main className={`outer-container ${styles["all-workshops-owner__outer-container"]}`}>
+            <div className={`inner-container ${styles["all-workshops-owner__inner-container"]}`}>
 
 
                 {workshopsFromOwner &&
-                <h1>Alle workshops van {workshopOwnerName}</h1>
+                    <h1>Alle workshops van {workshopOwnerName}</h1>
                 }
 
                 {loading && <p>Loading...</p>}
@@ -83,7 +68,7 @@ function AllWorkshopsFromOwner() {
 
                 <section className={styles["overview__workshop-tiles"]}>
                     {workshopsFromOwner.length === 0 &&
-                            <h3>Er zijn geen workshops in de toekomst van deze workshop eigenaar.</h3>
+                        <h3>Er zijn geen workshops in de toekomst van deze workshop eigenaar.</h3>
                     }
                     {workshopsFromOwner && workshopsFromOwner.map((workshop) => {
                         return (

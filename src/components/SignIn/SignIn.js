@@ -14,7 +14,7 @@ import {ModalSignInContext} from "../../context/ModalSigninContext";
 function SignIn() {
 
     const {login} = useContext(AuthContext);
-    const {modalIsOpenSignIn, setModalIsOpenSignIn, signInSubHeader, setSignInSubHeader} = useContext(ModalSignInContext);
+    const {modalIsOpenSignIn, setModalIsOpenSignIn, signInSubHeader} = useContext(ModalSignInContext);
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
     const [error, setError] = useState('');
@@ -28,10 +28,6 @@ function SignIn() {
         openModalResetPassword();
     }
 
-    // function openModalSignIn() {
-    //     setModalIsOpenSignIn(true);
-    // }
-
     function afterOpenModalSignin() {
 
     }
@@ -42,6 +38,7 @@ function SignIn() {
         setShowPassword(false);
         reset();
     }
+
     function openModalResetPassword() {
         setIsOpenResetPassword(true);
     }
@@ -56,6 +53,7 @@ function SignIn() {
         setShowPassword(false);
         reset();
     }
+
     function openModalMessage() {
         setIsOpenMessage(true);
     }
@@ -105,9 +103,6 @@ function SignIn() {
             console.log(error);
         }
     }
-
-
-
 
 
     return (
@@ -180,9 +175,10 @@ function SignIn() {
                 contentLabel="Reset Password"
                 functionalModalHeader="Wachtwoord wijzigen"
             >
-                {/*Dit is niet de juiste manier om je wachtwoord te resetten, want ik verifieer de gebruiker niet. Maar omdat ik niet met emails werk, kan ik niet de echte situatie (met validatielink in email) nabootsen. Omdat ik toch een wachtwoor reset optie wil, heb ik het zo opgelost dat je het gewoon kunt resetten door je mailadres en een nieuw wachtwoord in te vullen.*/}
+                {/*This is not the correct way to reset a password, because the user is verified (normally through email for example). But because I don't have email functionality, don't know of a way to validate the user, but do want a password reset functionality, it's possible to reset a password, by just filling in your email adress and new password. */}
                 <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
-                <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en kies een nieuw wachtwoord.</h4>
+                <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en kies een
+                    nieuw wachtwoord.</h4>
                 <form className={styles["reset-password__form"]} onSubmit={handleSubmit(handleFormSubmitResetPassword)}>
                     <InputField
                         type="text"
@@ -253,8 +249,6 @@ function SignIn() {
             </CustomModal>
 
         </>
-
-
     );
 }
 

@@ -1,6 +1,6 @@
 export function sortArrayAllWorkshops(array, sortValue) {
     let newArray;
-    if (sortValue === 'workshopId'){
+    if (sortValue === 'workshopId') {
 
         newArray = array.map((workshop) => {
             return workshop
@@ -8,7 +8,7 @@ export function sortArrayAllWorkshops(array, sortValue) {
         newArray.sort((a, b) => a.id - b.id);
     }
 
-    if (sortValue === 'title'){
+    if (sortValue === 'title') {
 
         newArray = array.map((workshop) => {
             return workshop
@@ -25,7 +25,7 @@ export function sortArrayAllWorkshops(array, sortValue) {
             return 0;
         });
     }
-    if (sortValue === 'date'){
+    if (sortValue === 'date') {
 
         newArray = array.map((workshop) => {
             return workshop
@@ -49,7 +49,7 @@ export function sortArrayAllWorkshops(array, sortValue) {
             return 0;
         });
     }
-    if (sortValue === 'verified'){
+    if (sortValue === 'verified') {
 
         newArray = array.map((workshop) => {
             return workshop

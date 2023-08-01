@@ -92,7 +92,6 @@ function AllBookings() {
                 controller.abort();
             }
         }
-
         ,
         [needUpdateBookingData]
     )
@@ -295,7 +294,6 @@ function AllBookings() {
 
                 {loading && <p>Loading...</p>}
 
-
                 {error &&
                     <CustomModal
                         modalIsOpen={modalIsOpenError}
@@ -306,7 +304,6 @@ function AllBookings() {
                     >
                     </CustomModal>
                 }
-
 
                 <CustomModal
                     modalIsOpen={modalIsOpenDeleteCheck}
@@ -371,7 +368,6 @@ function AllBookings() {
 
                             <p className={styles["subheader__input-fields"]}>Wijzigen:</p>
 
-
                             <InputField
                                 type="number"
                                 name="workshopId"
@@ -418,8 +414,6 @@ function AllBookings() {
                             >Boeking plaatsen</Button>
                         </form>
                     </div>
-
-
                 </CustomModal>
 
                 <CustomModal
@@ -429,7 +423,6 @@ function AllBookings() {
                     contentLabel="Successful update booking"
                     updateHeader="De boeking is succesvol gewijzigd"
                 ></CustomModal>
-
 
                 {highestAuthority !== 'customer' &&
                     <div className={styles["top__bookings__dropdown-menu"]}>
@@ -541,13 +534,12 @@ function AllBookings() {
                                                             review
                                                             achter</Link>
                                                     )
-                                                :
+                                                    :
                                                     "Na afloop kun je hier een review achterlaten"
                                                 }
                                             </td>
                                         </>
                                     }
-
                                 </tr>
                             )
                         })}

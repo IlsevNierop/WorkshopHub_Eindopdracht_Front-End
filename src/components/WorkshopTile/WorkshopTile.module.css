@@ -1,4 +1,4 @@
-.workshop-tile{
+.workshop-tile {
     border: 1px solid var(--color-grey-300);
     border-radius: 0.5rem;
     position: relative;
@@ -61,7 +61,7 @@
     align-items: flex-end;
 }
 
-.bottom-row-workshop >  p {
+.bottom-row-workshop > p {
     font-size: 0.75rem;
 }
 

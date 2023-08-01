@@ -6,7 +6,6 @@ import {addOrRemoveWorkshopFavourites} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
-import SignIn from "../SignIn/SignIn";
 import CustomModal from "../CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
 import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
@@ -25,7 +24,7 @@ function WorkshopTile({
                           workshopId,
                       }) {
     const {user} = useContext(AuthContext);
-    const { setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
+    const {setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
 
     const token = localStorage.getItem('token');
 
@@ -99,7 +98,8 @@ function WorkshopTile({
                            weight={favourite ? "fill" : "light"}/></Link>
 
                 <Link className={styles["workshop-tile__link"]} to={link}>
-                    <img className={styles["workshop-image"]} src={image? image : defaultpic} alt={`Foto van de workshop ${workshoptitle}`}/>
+                    <img className={styles["workshop-image"]} src={image ? image : defaultpic}
+                         alt={`Foto van de workshop ${workshoptitle}`}/>
 
                     <aside className={styles["information-workshop-column"]}>
                         <section className={styles["top-row-workshop"]}>

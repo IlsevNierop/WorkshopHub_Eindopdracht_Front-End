@@ -1,4 +1,3 @@
-
 export function returnHighestAuthority(authorities) {
 
     if (authorities != null) {
@@ -7,17 +6,14 @@ export function returnHighestAuthority(authorities) {
             return a.authority
         });
 
-        if (stringAuthorities.includes("ROLE_ADMIN")){
+        if (stringAuthorities.includes("ROLE_ADMIN")) {
             return 'admin'
-        }
-        else if (stringAuthorities.includes("ROLE_WORKSHOPOWNER")){
+        } else if (stringAuthorities.includes("ROLE_WORKSHOPOWNER")) {
             return 'workshopowner'
-        }
-        else {
+        } else {
             return 'customer'
         }
-    }
-    else {
+    } else {
         return null;
     }
 }

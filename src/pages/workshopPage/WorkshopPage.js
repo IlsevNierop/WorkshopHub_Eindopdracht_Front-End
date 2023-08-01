@@ -469,7 +469,7 @@ function WorkshopPage() {
                             <section className={styles["top__column__workshop-info"]}>
 
                                 <Link className={styles["link__companyname__workshop-info"]}
-                                      to={`/allwworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
+                                      to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
                                     <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 </Link>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}

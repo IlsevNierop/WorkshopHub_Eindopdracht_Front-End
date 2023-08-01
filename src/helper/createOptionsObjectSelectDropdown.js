@@ -2,10 +2,9 @@ export function createOptionsObjectSelectDropdown(array, variable1, variable2) {
     if (array) {
 
         const arrayAllOptions = array.map((workshop) => {
-            if (workshop[variable1] !== null)
-            {
-                return workshop[variable1];
-            }
+                if (workshop[variable1] !== null) {
+                    return workshop[variable1];
+                }
             }
         ).filter((value) => value !== undefined);
 
@@ -13,8 +12,7 @@ export function createOptionsObjectSelectDropdown(array, variable1, variable2) {
 
         if (variable2 != null) {
             arrayAllOptions2 = array.map((workshop) => {
-                    if (workshop[variable2] !== null)
-                    {
+                    if (workshop[variable2] !== null) {
                         return workshop[variable2];
                     }
                 }

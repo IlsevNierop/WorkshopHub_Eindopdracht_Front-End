@@ -25,12 +25,8 @@ function FavouriteWorkshops() {
                 try {
                     const response = await fetchFavouriteWorkshops(token, id);
                     setFavouriteWorkshops(response);
-
                     favouriteWorkshops.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                    if (response) {
-                        setError('');
-                    }
+                    setError('');
 
                 } catch (e) {
                     setError(errorHandling(e));
@@ -38,6 +34,7 @@ function FavouriteWorkshops() {
                 }
                 toggleLoading(false);
             }
+
             void getFavouriteWorkshops();
 
             return function cleanup() {
@@ -45,8 +42,6 @@ function FavouriteWorkshops() {
             }
         }
         , [])
-
-
 
 
     return (
@@ -61,7 +56,6 @@ function FavouriteWorkshops() {
 
                     {favouriteWorkshops && favouriteWorkshops.map((workshop) => {
                         return (
-                            // TODO default pic toevoegen?
                             //TODO while in overview changes favourite icon - no refresh - add state + dependency for useeffect
                             <WorkshopTile
                                 key={workshop.id}

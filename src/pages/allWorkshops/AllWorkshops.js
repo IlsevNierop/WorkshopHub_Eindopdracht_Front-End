@@ -59,41 +59,22 @@ function AllWorkshops() {
             async function getAllWorkshops() {
                 toggleLoading(true);
                 setError('');
-                if (highestAuthority === 'admin') {
-                    try {
-                        const response = await fetchAllWorkshopsAdmin(token);
-                        setWorkshopsData(response);
-
-                        if (response) {
-                            setError('');
-                        }
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                        }, 4000);
-                        console.log(error);
+                try {
+                    let response;
+                    if (highestAuthority === 'admin') {
+                        response = await fetchAllWorkshopsAdmin(token);
+                    } else {
+                        response = await fetchAllWorkshopsOwnerByOwner(token, id);
                     }
-                } else {
-                    try {
-                        const response = await fetchAllWorkshopsOwnerByOwner(token, id);
-                        setWorkshopsData(response);
-
-                        if (response) {
-                            setError('');
-                        }
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                        }, 4000);
-                        console.log(error);
-                    }
-
+                    setWorkshopsData(response);
+                    setError('');
+                } catch (e) {
+                    setError(errorHandling(e));
+                    openModalError();
+                    setTimeout(() => {
+                        closeModalError();
+                    }, 4000);
+                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -279,10 +260,6 @@ function AllWorkshops() {
                     checkMessage="Deze workshop is gepubliceerd en staat online. - Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd
                                 worden door een administrator voordat de workshop weer gepubliceerd kan worden."
                 ></CustomModal>
-
-
-                {/*//TODO zoeken op toevoegen en sorteren*/}
-
 
                 <div className={styles["sort"]}>
                     <h4>Sorteer op:</h4>

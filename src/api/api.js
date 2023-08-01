@@ -12,8 +12,6 @@ const controller = new AbortController();
 
 const baseUrl = "http://localhost:8080/"
 
-// TODO moet gemakkelijker kunnen, niet elke pagina een hele try en catch
-
 /* --------------- 1 User API requests ----------------------- */
 
 export async function signIn(email, password) {
@@ -124,7 +122,6 @@ export async function updateCustomer(token, userId, firstname, lastname, email, 
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
             signal: controller.signal,
         });
     return response;
@@ -136,7 +133,6 @@ export async function uploadProfilePic(token, userId, formData) {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
         },
-        // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
         signal: controller.signal,
     });
     return response;
@@ -160,10 +156,6 @@ export async function verifyWorkshopOwnerByAdmin(token, workshopOwnerId, worksho
     return response;
 }
 
-
-
-
-// TODO match order with backend
 /* --------------- 2 Workshop API requests ----------------------- */
 
 export async function fetchWorkshopData() {
@@ -279,7 +271,6 @@ export async function fetchSingleWorkshopDataLoggedIn(token, id, workshopId) {
             params: {
                 userId: id
             },
-            // TODO is het nodig bij een put een cleanup te hebben? Er wordt niets geladen op basis van de response
             signal: controller.signal,
         });
     return response.data;
@@ -343,7 +334,8 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            signal: controller.signal,
         });
     return response;
 }
@@ -480,7 +472,8 @@ export async function verifyWorkshopByOwner(token, workshopId, publishWorkshop) 
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            signal: controller.signal,
         });
 }
 
@@ -491,7 +484,8 @@ export async function removeWorkshop(token, workshopId) {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            signal: controller.signal,
         });
 }
 
@@ -567,7 +561,8 @@ export async function removeBooking(token, bookingId) {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            signal: controller.signal,
         });
 }
 
@@ -617,6 +612,7 @@ export async function fetchAllReviewsAdmin(token) {
     });
     return response.data;
 }
+
 export async function fetchAllReviewsCustomer(token, customerId) {
     const response = await axios.get(`${baseUrl}reviews/customer/${customerId}`, {
         headers: {
@@ -641,6 +637,7 @@ export async function createReview(token, rating, reviewDescription, customerId,
     });
     return response.data;
 }
+
 export async function verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
     const response = await axios.put(`${baseUrl}reviews/admin/verify/${reviewId}`, {
             rating: rating,
@@ -674,6 +671,7 @@ export async function updateReviewByAdmin(token, reviewId, rating, reviewDescrip
         });
     return response;
 }
+
 export async function updateReviewByCustomer(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin, customerId) {
     const response = await axios.put(`${baseUrl}reviews/${customerId}/${reviewId}`, {
             rating: rating,
@@ -697,6 +695,7 @@ export async function removeReview(token, reviewId) {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            signal: controller.signal,
         });
 }

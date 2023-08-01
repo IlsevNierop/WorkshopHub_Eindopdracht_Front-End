@@ -6,8 +6,7 @@ import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {
     fetchAllReviewsAdmin,
     fetchAllReviewsCustomer,
-    removeBooking,
-    removeReview, updateBooking, updateReviewByAdmin, updateReviewByCustomer,
+    removeReview, updateReviewByAdmin, updateReviewByCustomer,
     verifyReviewByAdmin
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
@@ -161,7 +160,6 @@ function AllReviews() {
         setValue('reviewDescription', reviewDescription);
         setValue('reviewVerified', reviewVerified);
         setValue('feedbackAdmin', feedbackAdmin);
-
         openModalUpdateReview();
     }
 
@@ -465,8 +463,8 @@ function AllReviews() {
                             {(highestAuthority === 'customer' && reviewVerified) &&
                                 <>
                                     <p>Let op, deze review is goedgekeurd. </p>
-                                    <p> Als je de review aanpast, wordt deze offline gehaald en moet de review eerst goedgekeurd
-                                        worden door een administrator</p>
+                                    <p>Als je de review aanpast, wordt deze offline gehaald en moet de review eerst
+                                        goedgekeurd worden door een administrator</p>
                                 </>
                             }
                             <Button

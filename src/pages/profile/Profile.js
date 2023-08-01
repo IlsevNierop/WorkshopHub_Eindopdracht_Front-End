@@ -45,15 +45,11 @@ function Profile() {
         {value: true, label: "Workshop eigenaar"}
     ];
 
-
-
-
     function openModal() {
         setIsOpen(true);
     }
 
     function afterOpenModal() {
-
     }
 
     function closeModal() {
@@ -101,7 +97,6 @@ function Profile() {
                         profilePicUrl,
                     } = await fetchDataCustomer(token, id);
 
-
                     setUserData({
                         firstname: firstName,
                         lastname: lastName,
@@ -114,7 +109,6 @@ function Profile() {
                     console.log(error);
                 }
             }
-
         }
 
         void fetchUserData();
@@ -210,7 +204,6 @@ function Profile() {
                 profilepic: response.data,
             });
 
-            //TODO na wijzigen foto is dit nodig, om de foto direct te tonen. Na 1e keer uploaden niet, kan dit op andere manier?
             window.location.reload();
 
         } catch (e) {
@@ -259,23 +252,22 @@ function Profile() {
 
                     <div className={styles["profile"]}>
                         <section className={styles["left-side__profile"]}>
-                            {userData && userData.profilepic == null &&
+                            {userData &&
                                 <>
                                     <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
-                                        className={styles["photo-icon"]} size={32}/>
-                                        {/*//TODO duplicated code - simplify */}
-                                        <p className={styles["placeholder-photo"]}>Upload een profielfoto</p></Link>
+                                        className={userData.profilepic != null ? styles["photo-icon__profile-pic"] : styles["photo-icon__placeholder"]}
+                                        size={32}/>
+                                        {userData.profilepic == null &&
+                                            <p className={styles["placeholder-photo"]}>Upload een profielfoto</p>
+                                        }
+                                    </Link>
+                                    {userData.profilepic != null &&
+                                        <img className={styles["profile-pic"]} src={userData.profilepic}
+                                             alt="Profielfoto"/>
+                                    }
                                 </>
                             }
 
-                            {userData && userData.profilepic != null &&
-                                <>
-                                    <Link to="#" className={styles["link__upload-photo"]} onClick={openModal}><Camera
-                                        className={styles["photo-icon"]} size={32}/></Link>
-                                    <img className={styles["profile-pic"]} src={userData.profilepic}
-                                         alt="Profielfoto"/>
-                                </>
-                            }
                             {userData && userData.workshopownerverified &&
                                 <div className={styles["verification"]}>
                                     <Check size={20} color="#52B706"/>
@@ -403,7 +395,6 @@ function Profile() {
                                                     showPassword={showPassword}
                                                 >
                                                 </InputField>
-                                                {/*TODO maak dropdown onderdeel van hook form*/}
                                                 <div className={styles["user-type__row"]}>
                                                     <h4 className={styles["user-type__label"]}>Consument/
                                                         workshop eigenaar: </h4>
@@ -535,8 +526,6 @@ function Profile() {
                             }
                         </div>
                     }
-
-                    {/*TODO add wijzig password - dubbel veld?*/}
 
                 </div>
             </main>

@@ -7,10 +7,10 @@ const Button = ({children, type, className, onClick, disabled}) => {
             <button
                 className={`${styles["button"]} ${styles[`${className}`]}`}
                 type={type}
-                onClick = {onClick}
+                onClick={onClick}
                 disabled={disabled}
             >
-                { children }
+                {children}
             </button>
         </>
     );
