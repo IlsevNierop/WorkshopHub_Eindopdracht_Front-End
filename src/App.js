@@ -3,7 +3,7 @@ import Footer from "./components/Footer/Footer";
 import NavBar from "./components/NavBar/NavBar";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home/Home";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {AuthContext} from "./context/AuthContext";
 import Profile from "./pages/profile/Profile";
 import Register from "./pages/register/Register";
@@ -18,15 +18,14 @@ import AllBookings from "./pages/allBookings/AllBookings";
 import AllReviews from "./pages/allReviews/AllReviews";
 import CreateReview from "./pages/createReview/CreateReview";
 import AllUsers from "./pages/allUsers/AllUsers";
+import PageNotFound from "./pages/pageNotFound/PageNotFound";
 
 function App() {
 
     const {isAuth, user} = useContext(AuthContext);
 
-
     return (
         <>
-            {/*TODO add private routes*/}
             <div className="app-container">
                 <NavBar></NavBar>
                 <Routes>
@@ -44,9 +43,7 @@ function App() {
                     <Route path="/nieuwereview/:workshopId/:workshopTitle/:workshopDate" element={user != null && user.highestAuthority !== 'workshopowner' ? <CreateReview/> : <Home />}/>
                     <Route path="/boekingen" element={isAuth?  <AllBookings/> : <Home />}/>
                     <Route path="/gebruikers" element={user != null && user.highestAuthority === 'admin' ?  <AllUsers/> : <Home />}/>
-
-
-                    {/*<Route path="*" element={ <PageNotFound/> }/>*/}
+                    <Route path="*" element={ <PageNotFound/> }/>
                 </Routes>
                 <Footer></Footer>
             </div>
