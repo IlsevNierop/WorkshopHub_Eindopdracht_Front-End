@@ -476,89 +476,96 @@ function AllReviews() {
 
                 </CustomModal>
 
-                <h1>{highestAuthority === 'admin' ? "Alle " : "Mijn "}reviews</h1>
+                {reviewsData && reviewsData.length > 0 ?
+                    <h1>{highestAuthority === 'admin' ? "Alle " : "Mijn "}reviews</h1>
+                    :
+                    <h1>{highestAuthority === 'admin' ? "Er zijn nog geen " : "Je hebt nog geen "}reviews</h1>
+                }
 
 
-                <div className={styles["sort"]}>
-                    <h4>Sorteer op:</h4>
-                    <Select className={styles["sort__dropdown"]}
-                            id="select-dropdown-sort"
-                            name="select-dropdown-sort"
-                            label="select-dropdown-sort"
-                            placeholder="Selecteer.."
-                            defaultValue={sortValue}
-                            onChange={setSortValue}
-                            options={optionsSortValue}
-                            isMulti={false}
-                    />
-                </div>
+                {reviewsData && reviewsData.length > 0 &&
+                    <div className={styles["sort"]}>
+                        <h4>Sorteer op:</h4>
+                        <Select className={styles["sort__dropdown"]}
+                                id="select-dropdown-sort"
+                                name="select-dropdown-sort"
+                                label="select-dropdown-sort"
+                                placeholder="Selecteer.."
+                                defaultValue={sortValue}
+                                onChange={setSortValue}
+                                options={optionsSortValue}
+                                isMulti={false}
+                        />
+                    </div>
+                }
 
-                <table className="table">
-                    <thead>
-                        <tr className={"table-header-row"}>
-                            <th>Review</th>
-                            <th>Naam</th>
-                            <th>Omschrijving</th>
-                            <th>Rating</th>
-                            <th>Workshop titel</th>
-                            <th>Workshop eigenaar</th>
-                            <th>Datum workshop</th>
-                            <th>Review geaccordeerd</th>
-                            <th>Feedback</th>
-                            <th>Wijzigen</th>
-                            <th>Verwijderen</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reviewsData && reviewsData.map((review) => {
-                            return (<tr key={review.id}>
-                                    <td>{review.id}</td>
-                                    <td>{review.firstNameReviewer} {review.lastNameReviewer}</td>
-                                    <td>{review.reviewDescription}  </td>
-                                    <td>{review.rating}</td>
-                                    <td>{review.workshopTitle}</td>
-                                    <td>{review.companyNameWorkshopOwner}</td>
-                                    <td>{updateDateFormatShort(review.workshopDate)}</td>
-                                    <td className={review.reviewVerified ? "td-verified" : "td-not-verified"}>
-                                        {review.reviewVerified ? (
-                                                "Geaccordeerd"
-                                            ) :
-                                            highestAuthority === 'admin' ?
-                                                (
-                                                    <Link
-                                                        className={"link-table-text"}
-                                                        to="#"
-                                                        onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
-                                                    >
-                                                        Direct accorderen
-                                                    </Link>
-                                                )
-                                                :
-                                                review.reviewVerified === false ?
-                                                    "Afgekeurd"
+                {reviewsData && reviewsData.length > 0 &&
+                    <table className="table">
+                        <thead>
+                            <tr className={"table-header-row"}>
+                                <th>Review</th>
+                                <th>Naam</th>
+                                <th>Omschrijving</th>
+                                <th>Rating</th>
+                                <th>Workshop titel</th>
+                                <th>Workshop eigenaar</th>
+                                <th>Datum workshop</th>
+                                <th>Review geaccordeerd</th>
+                                <th>Feedback</th>
+                                <th>Wijzigen</th>
+                                <th>Verwijderen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {reviewsData && reviewsData.map((review) => {
+                                return (<tr key={review.id}>
+                                        <td>{review.id}</td>
+                                        <td>{review.firstNameReviewer} {review.lastNameReviewer}</td>
+                                        <td>{review.reviewDescription}  </td>
+                                        <td>{review.rating}</td>
+                                        <td>{review.workshopTitle}</td>
+                                        <td>{review.companyNameWorkshopOwner}</td>
+                                        <td>{updateDateFormatShort(review.workshopDate)}</td>
+                                        <td className={review.reviewVerified ? "td-verified" : "td-not-verified"}>
+                                            {review.reviewVerified ? (
+                                                    "Geaccordeerd"
+                                                ) :
+                                                highestAuthority === 'admin' ?
+                                                    (
+                                                        <Link
+                                                            className={"link-table-text"}
+                                                            to="#"
+                                                            onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
+                                                        >
+                                                            Direct accorderen
+                                                        </Link>
+                                                    )
                                                     :
-                                                    "Nog niet akkoord"
-                                        }</td>
-                                    <td>{review.feedbackAdmin}</td>
-                                    <td><Link className={"link-icon"}
-                                              to="#"
-                                              onClick={() => changeReview(review.id, review.firstNameReviewer, review.lastNameReviewer, review.rating, review.reviewDescription, review.reviewVerified, review.feedbackAdmin)}
-                                    ><NotePencil
-                                        size={20}
-                                        weight="regular"/></Link>
-                                    </td>
-                                    <td><Link className={"link-icon"} to="#"
-                                              onClick={() => checkDeleteReview(review.id)}
-                                    ><TrashSimple
-                                        size={20}
-                                        weight="regular"/></Link>
-                                    </td>
+                                                    review.reviewVerified === false ?
+                                                        "Afgekeurd"
+                                                        :
+                                                        "Nog niet akkoord"
+                                            }</td>
+                                        <td>{review.feedbackAdmin}</td>
+                                        <td><Link className={"link-icon"}
+                                                  to="#"
+                                                  onClick={() => changeReview(review.id, review.firstNameReviewer, review.lastNameReviewer, review.rating, review.reviewDescription, review.reviewVerified, review.feedbackAdmin)}
+                                        ><NotePencil
+                                            size={20}
+                                            weight="regular"/></Link>
+                                        </td>
+                                        <td><Link className={"link-icon"} to="#"
+                                                  onClick={() => checkDeleteReview(review.id)}
+                                        ><TrashSimple
+                                            size={20}
+                                            weight="regular"/></Link>
+                                        </td>
 
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>}
 
             </div>
         </main>
