@@ -17,13 +17,13 @@ import Select from "react-select";
 import {sortArrayReviews} from "../../helper/sortArrayReviews";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 
 function AllReviews() {
     const token = localStorage.getItem('token');
     const {user: {highestAuthority, id}} = useContext(AuthContext);
 
-    const {register, setValue, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
+    const {register, setValue, handleSubmit, formState: {errors}, reset, control} = useForm({mode: 'onBlur'});
 
     const controller = new AbortController();
 
@@ -382,23 +382,30 @@ function AllReviews() {
                             >
                             </InputField>
 
-                            {/*//TODO make this textarea */}
-                            <InputField
-                                type="text"
+                            <label htmlFor="reviewDescription">Omschrijving review*</label>
+                            <Controller
                                 name="reviewDescription"
-                                label="Omschrijving review* "
-                                validation={{
-                                    required:
-                                        {
-                                            value: true,
-                                            message: "Omschrijving is verplicht",
-                                        },
-                                }
-                                }
-                                register={register}
-                                errors={errors}
-                            >
-                            </InputField>
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: 'Omschrijving is verplicht',
+                                }}
+                                render={({field}) => (
+                                    <div>
+                            <textarea
+                                className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
+                                {...field}
+                                name="reviewDescription"
+                                id="reviewDescription"
+                                cols={51}
+                                rows={10}
+                                placeholder="Vul hier de omschrijving van je review in."
+                            />
+                                        {errors.description && <p style={{whiteSpace: 'pre-line'}}
+                                                                  className={styles["input-field__error-message"]}>{errors.description.message}</p>}
+                                    </div>
+                                )}
+                            />
 
                             {highestAuthority === 'admin' &&
                                 <>

@@ -19,9 +19,6 @@ function CreateWorkshop() {
     const [previewUrl, setPreviewUrl] = useState('');
     const [modalIsOpen, setIsOpen] = useState(false);
 
-    const controller = new AbortController();
-
-
     const validateFutureDate = (value) => {
         const selectedDate = new Date(value);
         const currentDate = new Date();
@@ -77,7 +74,7 @@ function CreateWorkshop() {
                     modalIsOpen={modalIsOpen}
                     afterOpenModal={afterOpenModal}
                     closeModal={closeModal}
-                    contentLabel="Create workshops successful"
+                    contentLabel="Create workshop successful"
                     updateHeader="Dank voor het uploaden van je nieuwe workshop"
                     updateMessage="Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.-
            Zodra deze geverifieerd is, kun je de workshop publiceren."

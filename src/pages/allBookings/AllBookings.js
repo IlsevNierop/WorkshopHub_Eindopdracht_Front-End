@@ -532,12 +532,18 @@ function AllBookings() {
                                                 )}
                                             </td>
                                             <td>
-                                                {booking.reviewCustomerWritten ? (
-                                                   "Heeft al een review"
-                                                ) : (
-                                                    <Link className={"link-table-text"} to="/nieuwereview">Laat review
-                                                        achter</Link>
-                                                )}
+                                                {new Date(booking.workshopDate) < new Date() ?
+                                                    booking.reviewCustomerWritten ? (
+                                                        "Heeft al een review"
+                                                    ) : (
+                                                        <Link className={"link-table-text"}
+                                                              to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
+                                                            review
+                                                            achter</Link>
+                                                    )
+                                                :
+                                                    "Na afloop kun je hier een review achterlaten"
+                                                }
                                             </td>
                                         </>
                                     }
