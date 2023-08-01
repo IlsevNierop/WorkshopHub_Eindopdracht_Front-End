@@ -299,9 +299,9 @@ function Workshops() {
                 </div>
 
                 {highestAuthority === 'admin' &&
-                    <table className={styles["table__workshops"]}>
+                    <table className={"table"}>
                         <thead>
-                            <tr className={styles["table-header-row__workshops"]}>
+                            <tr className={"table-header-row"}>
                                 <th>Workshop ID</th>
                                 <th>Titel</th>
                                 <th>Datum</th>
@@ -315,18 +315,18 @@ function Workshops() {
                         <tbody>
                             {workshopsData && workshopsData.map((workshop) => {
                                 return (<tr key={workshop.id}>
-                                        <td><Link className={styles["link__workshoppage"]}
+                                        <td><Link className={"link-table-text"}
                                                   to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
                                         <td>{workshop.workshopOwnerCompanyName}</td>
                                         {/*//TODO een link met direct verifieren met modal ter check*/}
-                                        <td className={workshop.workshopVerified ? `${styles["td-verified"]}` : `${styles["td-not-verified"]}`}>{workshop.workshopVerified ? "Geaccordeerd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet akkoord")}</td>
-                                        <td className={workshop.workshopVerified ? `${styles["td-published"]}` : `${styles["td-not-published"]}`}>{workshop.publishWorkshop ? (
+                                        <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Geaccordeerd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet akkoord")}</td>
+                                        <td className={workshop.workshopVerified ? "td-published" : "td-not-published"}>{workshop.publishWorkshop ? (
                                             "Gepubliceerd"
                                         ) : workshop.workshopVerified ? (
                                             <Link
-                                                className={styles["link-publish"]}
+                                                className={"link-table-text"}
                                                 to="#"
                                                 onClick={() => publishWorkshop(workshop.id, true)}
                                             >
@@ -335,7 +335,7 @@ function Workshops() {
                                         ) : (
                                             "Nog niet gepubliceerd"
                                         )}</td>
-                                        <td><Link className={styles["link"]}
+                                        <td><Link className={"link-icon"}
                                                   to={workshop.publishWorkshop === true ?
                                                       "#"
                                                       :
@@ -350,7 +350,7 @@ function Workshops() {
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
-                                        <td><Link className={styles["link"]} to="#"
+                                        <td><Link className={"link-icon"} to="#"
                                                   onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>
