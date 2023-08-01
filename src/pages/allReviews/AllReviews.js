@@ -488,9 +488,9 @@ function AllReviews() {
                     />
                 </div>
 
-                <table className={styles["table__reviews"]}>
+                <table className="table">
                     <thead>
-                        <tr className={styles["table-header-row__reviews"]}>
+                        <tr className={"table-header-row"}>
                             <th>Review</th>
                             <th>Naam</th>
                             <th>Omschrijving</th>
@@ -513,15 +513,15 @@ function AllReviews() {
                                     <td>{review.rating}</td>
                                     <td>{review.workshopTitle}</td>
                                     <td>{review.companyNameWorkshopOwner}</td>
-                                    <td className={styles["date__workshop"]}>{updateDateFormatShort(review.workshopDate)}</td>
-                                    <td className={review.reviewVerified ? `${styles["td-verified"]}` : `${styles["td-not-verified"]}`}>
+                                    <td>{updateDateFormatShort(review.workshopDate)}</td>
+                                    <td className={review.reviewVerified ? "td-verified" : "td-not-verified"}>
                                         {review.reviewVerified ? (
                                                 "Geaccordeerd"
                                             ) :
                                             highestAuthority === 'admin' ?
                                                 (
                                                     <Link
-                                                        className={styles["link-verify"]}
+                                                        className={"link-table-text"}
                                                         to="#"
                                                         onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
                                                     >
@@ -535,14 +535,14 @@ function AllReviews() {
                                                     "Nog niet akkoord"
                                         }</td>
                                     <td>{review.feedbackAdmin}</td>
-                                    <td><Link className={styles["link"]}
+                                    <td><Link className={"link-icon"}
                                               to="#"
                                               onClick={() => changeReview(review.id, review.firstNameReviewer, review.lastNameReviewer, review.rating, review.reviewDescription, review.reviewVerified, review.feedbackAdmin)}
                                     ><NotePencil
                                         size={20}
                                         weight="regular"/></Link>
                                     </td>
-                                    <td><Link className={styles["link"]} to="#"
+                                    <td><Link className={"link-icon"} to="#"
                                               onClick={() => checkDeleteReview(review.id)}
                                     ><TrashSimple
                                         size={20}

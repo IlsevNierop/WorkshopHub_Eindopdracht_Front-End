@@ -467,9 +467,9 @@ function AllBookings() {
                     </div>
                 }
 
-                <table className={styles["table__bookings"]}>
+                <table className={"table"}>
                     <thead>
-                        <tr className={styles["table-header-row__bookings"]}>
+                        <tr className={"table-header-row"}>
                             <th>Boeking</th>
                             <th>Datum boeking</th>
                             <th>Aantal</th>
@@ -493,7 +493,7 @@ function AllBookings() {
                         {bookingsData && bookingsData.map((booking) => {
                             return (<tr key={booking.id}>
                                     <td>{booking.id}</td>
-                                    <td className={styles["date__booking"]}>{updateDateFormatShort(booking.dateOrder)}</td>
+                                    <td>{updateDateFormatShort(booking.dateOrder)}</td>
                                     <td>{booking.amount}</td>
                                     <td>{booking.firstNameCustomer} {booking.lastNameCustomer} </td>
                                     <td>{booking.emailCustomer}</td>
@@ -510,7 +510,7 @@ function AllBookings() {
                                                     "De boeking kan niet gewijzigd worden"
                                                 ) : (
                                                     <Link
-                                                        className={styles["link"]}
+                                                        className={"link-icon"}
                                                         to="#"
                                                         onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
                                                     >
@@ -523,7 +523,7 @@ function AllBookings() {
                                                     "De boeking kan niet verwijderd worden"
                                                 ) : (
                                                     <Link
-                                                        className={styles["link"]}
+                                                        className={"link-icon"}
                                                         to="#"
                                                         onClick={() => checkDeleteBooking(booking.id)}
                                                     >
@@ -533,10 +533,9 @@ function AllBookings() {
                                             </td>
                                             <td>
                                                 {booking.reviewCustomerWritten ? (
-                                                    <Link className={styles["link"]} to="/reviews">Bekijk al je
-                                                        reviews</Link>
+                                                   "Heeft al een review"
                                                 ) : (
-                                                    <Link className={styles["link"]} to="/nieuwereview">Laat review
+                                                    <Link className={"link-table-text"} to="/nieuwereview">Laat review
                                                         achter</Link>
                                                 )}
                                             </td>
