@@ -47,7 +47,7 @@ function NavBar() {
                             </li>
                             :
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="#" onClick={() => signInWithSubHeader("Om je favoriete workshops te zien, dien je eerst in te loggen")}><Heart size={32} color="black"
+                                <NavLink to="#" onClick={() => signInWithSubHeader("Om je favoriete allWorkshops te zien, dien je eerst in te loggen")}><Heart size={32} color="black"
                                                                  weight="regular"/>
                                 </NavLink>
                             </li>

@@ -25,6 +25,17 @@ export async function signIn(email, password) {
     return response.data
 }
 
+export async function fetchAllUsers(token) {
+    const response = await axios.get(`${baseUrl}users/admin/`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+    });
+    return response.data;
+}
+
 export async function fetchDataWorkshopOwner(token, userId) {
     const response = await axios.get(`${baseUrl}users/workshopowner/${userId}`, {
         headers: {
@@ -137,6 +148,19 @@ export async function resetPassword(email, password) {
     });
     return response;
 }
+
+export async function verifyWorkshopOwnerByAdmin(token, workshopOwnerId, workshopOwnerVerified) {
+    const response = await axios.put(`${baseUrl}users/admin/${workshopOwnerId}?workshopOwnerVerified=${workshopOwnerVerified}`, null, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+
+    });
+    return response;
+}
+
+
 
 
 // TODO match order with backend

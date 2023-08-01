@@ -291,7 +291,7 @@ function AllBookings() {
     return (
         <main className={`outer-container ${styles["all-bookings__outer-container"]}`}>
             <div className={`inner-container ${styles["all-bookings__inner-container"]}`}>
-                <h1>{highestAuthority === 'admin' ? "Alle boekingen" : highestAuthority === 'workshopowner' ? "Alle boekingen op mijn workshops" : "Al mijn boekingen"} </h1>
+                <h1>{highestAuthority === 'admin' ? "Alle boekingen" : highestAuthority === 'workshopowner' ? "Alle boekingen op mijn workshops" : "Mijn boekingen"} </h1>
 
                 {loading && <p>Loading...</p>}
 

@@ -197,7 +197,7 @@ function WorkshopPage() {
             openModalUpdateMessage();
             setTimeout(() => {
                 closeModalUpdateMessage();
-                navigate("/workshops");
+                navigate("/allWorkshops");
             }, 3000);
 
         } catch (e) {

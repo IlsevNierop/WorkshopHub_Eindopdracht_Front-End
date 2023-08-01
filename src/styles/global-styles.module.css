@@ -136,3 +136,7 @@ body {
     color: var(--color-warning);
     font-weight: bolder;
 }
+:global .link-table-text-not-verified {
+    color: var(--color-warning);
+    font-weight: bolder;
+}

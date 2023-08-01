@@ -1,4 +1,4 @@
-// mogelijk in een object een dieper object wat dan een dropdown menu creeert (onder workshops - goedkeuren workshops bijvoorbeeld)
+// mogelijk in een object een dieper object wat dan een dropdown menu creeert (onder allWorkshops - goedkeuren allWorkshops bijvoorbeeld)
 //
 
 
@@ -37,7 +37,7 @@ export function navLinks(highestAuthority) {
             },
             {
                 title: "Gebruikers",
-                link: "/test",
+                link: "/gebruikers",
             }];
     } else if (highestAuthority === 'workshopowner') {
         return [
@@ -66,10 +66,6 @@ export function navLinks(highestAuthority) {
             {
                 title: "Mijn Boekingen",
                 link: "/boekingen",
-            },
-            {
-                title: "Nieuwe Workshop",
-                link: "/nieuweworkshop",
             }];
     } else {
         return [

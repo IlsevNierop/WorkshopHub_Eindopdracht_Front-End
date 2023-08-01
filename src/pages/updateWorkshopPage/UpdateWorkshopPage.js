@@ -256,7 +256,7 @@ function UpdateWorkshopPage() {
                 openModal();
                 setTimeout(() => {
                     closeModal();
-                    //TODO maak 'mijn workshops'
+                    //TODO maak 'mijn allWorkshops'
                     navigate("/")
                 }, 6000);
             } catch (e) {
