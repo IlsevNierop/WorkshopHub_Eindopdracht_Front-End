@@ -162,7 +162,7 @@ function Home() {
                     <h4>Filter je zoekopdracht:</h4>
 
                     <div className={styles["sort"]}>
-                        <h4>Sorteer op:</h4>
+                        <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                         <Select className={styles["sort__dropdown"]}
                                 id="select-dropdown-sort"
                                 name="select-dropdown-sort"
@@ -181,7 +181,7 @@ function Home() {
 
                         <div className={styles["filter-item"]}>
 
-                            <h5>Categorie</h5>
+                            <label className="select-dropdown" htmlFor="select-dropdown-category">Categorie</label>
                             <Select
                                 id="select-dropdown-category"
                                 name="select-dropdown-category"
@@ -196,7 +196,7 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Wanneer</h5>
+                            <label className={styles["date-range-picker"]} htmlFor="date-range">Wanneer</label>
                             <DateRange
                                 label="date-range"
                                 editableDateInputs={true}
@@ -210,7 +210,7 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Locatie</h5>
+                            <label className="select-dropdown" htmlFor="select-dropdown-location">Locatie</label>
                             <Select
                                 id="select-dropdown-location"
                                 name="select-dropdown-location"
@@ -224,7 +224,7 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Maximale prijs</h5>
+                            <label className={styles["price-slider"]} htmlFor="price-slider">Maximale prijs</label>
                             <p>{priceSlider}</p>
                             <Slider
                                 id="price"
@@ -240,7 +240,7 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Minimale beoordeling</h5>
+                            <label className={styles["minimum-rating"]} htmlFor="minimum-rating">Minimale beoordeling</label>
                             <div className={styles["rating-column"]}>
                                 <InputField
                                     classNameLabel="rating-row"
@@ -318,7 +318,7 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <h5>Waar vindt de workshop plaats</h5>
+                            <label className="select-dropdown" htmlFor="select-dropdown-environment">Waar vindt de workshop plaats</label>
                             <Select
                                 id="select-dropdown-environment"
                                 name="select-dropdown-environment"

@@ -176,7 +176,7 @@ function UpdateWorkshopPage() {
         try {
             let response;
             if (highestAuthority === 'admin') {
-                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.verify, data.feedbackAdmin, file);
             } else {
                 response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
             }
@@ -517,12 +517,12 @@ function UpdateWorkshopPage() {
 
                     {highestAuthority === 'admin' &&
                         <div className={styles["container__admin__input-fields"]}>
-                            <label htmlFor="workshopVerified">Workshop goed- of afkeuren
+                            <label htmlFor="verify">Workshop goed- of afkeuren
                                 <div className={styles["workshop-verified-radio-row"]}>
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshop-verified"
-                                        classNameLabel="label__radio-checkbox__workshop-verified"
-                                        name="workshopVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={true}
                                         validation={{
@@ -539,9 +539,9 @@ function UpdateWorkshopPage() {
                                         Goedkeuren
                                     </InputField>
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshop-verified"
-                                        classNameLabel="label__radio-checkbox__workshop-verified"
-                                        name="workshopVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={false}
                                         validation={{

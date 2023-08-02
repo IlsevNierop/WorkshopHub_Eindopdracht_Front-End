@@ -262,7 +262,7 @@ function AllWorkshops() {
                 ></CustomModal>
 
                 <div className={styles["sort"]}>
-                    <h4>Sorteer op:</h4>
+                    <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                     <Select className={styles["sort__dropdown"]}
                             id="select-dropdown-sort"
                             name="select-dropdown-sort"
@@ -292,7 +292,9 @@ function AllWorkshops() {
                         <tbody>
                             {workshopsData && workshopsData.map((workshop) => {
                                 return (<tr key={workshop.id}>
-                                        <td><Link className={"link-table-text"}
+                                        <td><Link
+                                            aria-label="link__workshop-page"
+                                            className={"link-table-text"}
                                                   to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
@@ -311,7 +313,9 @@ function AllWorkshops() {
                                         ) : (
                                             "Nog niet gepubliceerd"
                                         )}</td>
-                                        <td><Link className={"link-icon"}
+                                        <td><Link
+                                            aria-label="link__edit-workshop"
+                                            className={"link-icon"}
                                                   to={workshop.publishWorkshop === true ?
                                                       "#"
                                                       :
@@ -326,7 +330,9 @@ function AllWorkshops() {
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
-                                        <td><Link className={"link-icon"} to="#"
+                                        <td><Link
+                                            aria-label="link__delete-workshop"
+                                            className={"link-icon"} to="#"
                                                   onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>
@@ -355,7 +361,9 @@ function AllWorkshops() {
                         <tbody>
                             {workshopsData && workshopsData.map((workshop) => {
                                 return (<tr key={workshop.id}>
-                                        <td><Link className={"link-table-text"}
+                                        <td><Link
+                                            aria-label="link__workshop-page"
+                                            className={"link-table-text"}
                                                   to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
@@ -374,7 +382,9 @@ function AllWorkshops() {
                                             "Nog niet gepubliceerd"
                                         )}</td>
                                         <td>{workshop.feedbackAdmin}</td>
-                                        <td><Link className={"link-icon"}
+                                        <td><Link
+                                            aria-label="link__edit-workshop"
+                                            className={"link-icon"}
                                                   to={workshop.publishWorkshop === true ?
                                                       "#"
                                                       :
@@ -389,7 +399,9 @@ function AllWorkshops() {
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
-                                        <td><Link className={"link-icon"} to="#"
+                                        <td><Link
+                                            aria-label="link__delete-workshop"
+                                            className={"link-icon"} to="#"
                                                   onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>

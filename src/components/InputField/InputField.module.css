@@ -13,6 +13,9 @@
     width: 382px;
 }
 
+.input-field:not(.input-field-verify), .input-field__workshop-picture {
+    min-width: 200px;
+}
 
 .input-field, .input-field__workshop-picture {
     border: solid 1px var(--color-grey-500);
@@ -21,7 +24,8 @@
     font-family: 'Raleway', sans-serif;
     font-size: 12px;
     border-radius: 5px;
-    min-width: 200px;
+    accent-color: var(--color-earth-blue);
+
 }
 
 .input-field__workshop-picture {
@@ -62,6 +66,16 @@
     align-items: center;
 }
 
-.radio-checkbox {
+.radio-checkbox, .radio-checkbox__verify {
     accent-color: var(--color-earth-blue);
 }
+
+.label__radio-checkbox__verify {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+

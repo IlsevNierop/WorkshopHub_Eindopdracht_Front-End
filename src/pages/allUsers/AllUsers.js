@@ -75,7 +75,7 @@ function AllUsers() {
         setError('');
 
         try {
-            const response = await verifyWorkshopOwnerByAdmin(token, toVerifyWorkshopOwnerId, data.workshopOwnerVerified);
+            const response = await verifyWorkshopOwnerByAdmin(token, toVerifyWorkshopOwnerId, data.verify);
             setError('');
             closeModalVerifyWorkshopOwner();
             toggleNeedUpdateUsersData(!needUpdateUsersData);
@@ -175,14 +175,14 @@ function AllUsers() {
                     <div className={styles["verify-workshopowner__modal"]}>
                         <form className={styles["verify-workshopowner__form"]}
                               onSubmit={handleSubmit(handleFormSubmit)}>
-                            <label htmlFor="reviewVerified">Goed of afkeuren van workshop eigenaar met
+                            <label htmlFor="verify">Goed of afkeuren van workshop eigenaar met
                                 ID: {toVerifyWorkshopOwnerId}
-                                <div className={styles["workshop-owner-verified-radio-row"]}>
+                                <div className={styles["workshop-owner-verified-radio-checkboxes"]}>
 
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshop-owner-verified"
-                                        classNameLabel="label__radio-checkbox__workshop-owner-verified"
-                                        name="workshopOwnerVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={true}
                                         validation={{
@@ -199,9 +199,9 @@ function AllUsers() {
                                         Goedkeuren
                                     </InputField>
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshopOwner-verified"
-                                        classNameLabel="label__radio-checkbox__workshopOwner-verified"
-                                        name="workshopOwnerVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={false}
                                         validation={{
@@ -229,7 +229,7 @@ function AllUsers() {
                 </CustomModal>
 
                 <div className={styles["sort"]}>
-                    <h4>Sorteer op:</h4>
+                    <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                     <Select className={styles["sort__dropdown"]}
                             id="select-dropdown-sort"
                             name="select-dropdown-sort"
@@ -281,7 +281,7 @@ function AllUsers() {
                                                 to="#"
                                                 onClick={() => verifyWorkshopOwner(user.id, true)}
                                             >
-                                                Afgekeurd
+                                                Afgekeurd (direct verifieren)
                                             </Link>
                                             :
                                             (

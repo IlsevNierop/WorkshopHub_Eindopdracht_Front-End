@@ -42,7 +42,9 @@ function InputField({
                                     onChange={onChangeHandler}
                                 />
                                 {name === "password" &&
-                                    <Link className={styles["password-visibility"]} to="#"
+                                    <Link
+                                        aria-label="link__show-hide-password"
+                                        className={styles["password-visibility"]} to="#"
                                           onClick={() => setShowPassword(!showPassword)}> {showPassword ?
                                         <Eye size={18} color="#bfbdbd"/> :
                                         <EyeClosed size={18} color="#bfbdbd"/>}</Link>}

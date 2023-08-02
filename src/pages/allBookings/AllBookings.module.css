@@ -23,8 +23,8 @@
     width: 100%;
 }
 
-.filter__dropdown {
-    width: 10rem;
+.filter__dropdown, .sort__dropdown {
+    width: 12rem;
 }
 
 .button__all-workshops {

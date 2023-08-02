@@ -441,7 +441,9 @@ function WorkshopPage() {
                             <img className={styles["workshop-image"]}
                                  src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultpic}
                                  alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
-                            <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                            <Link
+                                aria-label="link__add-remove-favourite-workshop"
+                                to="#" onClick={addOrRemoveFavouriteWorkshop}>
                                 <Heart className={styles["favourite-icon"]} size={24}
                                        color={favourite ? "#fe5c5c" : "282828"}
                                        weight={favourite ? "fill" : "light"}/></Link>
@@ -452,7 +454,9 @@ function WorkshopPage() {
                         <aside className={styles["right-side__top__workshop"]}>
                             <section className={styles["top__column__workshop-info"]}>
 
-                                <Link className={styles["link__companyname__workshop-info"]}
+                                <Link
+                                    aria-label="link__all-workshops-from-workshop-owner-page"
+                                    className={styles["link__companyname__workshop-info"]}
                                       to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
                                     <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 </Link>

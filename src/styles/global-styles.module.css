@@ -60,6 +60,10 @@ body {
     font-weight: bolder;
 }
 
+:global .select-dropdown {
+    font-weight: bolder;
+}
+
 
 /***********************table styles*************************************/
 
