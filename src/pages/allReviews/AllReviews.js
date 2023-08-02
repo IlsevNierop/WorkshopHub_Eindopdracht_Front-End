@@ -407,8 +407,8 @@ function AllReviews() {
 
                             {highestAuthority === 'admin' &&
                                 <>
-                                    <label htmlFor="reviewVerified">Review goed- of afkeuren
-                                        <div className={styles["review-verified-radio-row"]}>
+                                    <div className={styles["review-verified-radio-row"]}>
+                                        <label htmlFor="reviewVerified">Review goed- of afkeuren
                                             <InputField
                                                 classNameInputField="radio-checkbox__review-verified"
                                                 classNameLabel="label__radio-checkbox__review-verified"
@@ -447,8 +447,8 @@ function AllReviews() {
                                             >
                                                 Afkeuren
                                             </InputField>
-                                        </div>
-                                    </label>
+                                        </label>
+                                    </div>
                                     <InputField
                                         type="text"
                                         name="feedbackAdmin"
