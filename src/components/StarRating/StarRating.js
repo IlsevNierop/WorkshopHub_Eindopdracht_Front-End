@@ -31,7 +31,8 @@ function StarRating({rating, size}) {
                         </div>
                     );
                 } else {
-                    return <Star className={`${styles["star__rating"]} ${styles["star__rating__empty_star"]}`} size={size}
+                    return <Star className={`${styles["star__rating"]} ${styles["star__rating__empty_star"]}`}
+                                 size={size}
                                  color="#bfbdbd" weight="light" key={index}/>;
                 }
             })}

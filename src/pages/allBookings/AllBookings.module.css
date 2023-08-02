@@ -40,7 +40,7 @@
     gap: 0.5rem;
 }
 
-.booking__modal{
+.booking__modal {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

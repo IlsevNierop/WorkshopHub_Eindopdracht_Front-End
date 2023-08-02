@@ -31,11 +31,11 @@ function AllUsers() {
     const controller = new AbortController();
 
     const optionsSortValue =
-         [
-                {value: 'userId', label: 'Gebruikers ID'},
-                {value: 'firstName', label: 'Voornaam'},
-                {value: 'verified', label: 'Geverifieerd'},
-            ];
+        [
+            {value: 'userId', label: 'Gebruikers ID'},
+            {value: 'firstName', label: 'Voornaam'},
+            {value: 'verified', label: 'Geverifieerd'},
+        ];
 
 
     useEffect(() => {
@@ -44,13 +44,8 @@ function AllUsers() {
             setError('');
             try {
                 const response = await fetchAllUsers(token);
-                console.log(response)
-
                 setUsersData(response);
-
-                if (response) {
-                    setError('');
-                }
+                setError('');
 
             } catch (e) {
                 setError(errorHandling(e));
@@ -83,7 +78,6 @@ function AllUsers() {
             const response = await verifyWorkshopOwnerByAdmin(token, toVerifyWorkshopOwnerId, data.workshopOwnerVerified);
             setError('');
             closeModalVerifyWorkshopOwner();
-            console.log(response);
             toggleNeedUpdateUsersData(!needUpdateUsersData);
             openModalVerifySuccessful();
             setTimeout(() => {
@@ -181,7 +175,8 @@ function AllUsers() {
                     <div className={styles["verify-workshopowner__modal"]}>
                         <form className={styles["verify-workshopowner__form"]}
                               onSubmit={handleSubmit(handleFormSubmit)}>
-                            <label htmlFor="reviewVerified">Goed of afkeuren van workshop eigenaar met ID: {toVerifyWorkshopOwnerId}
+                            <label htmlFor="reviewVerified">Goed of afkeuren van workshop eigenaar met
+                                ID: {toVerifyWorkshopOwnerId}
                                 <div className={styles["workshop-owner-verified-radio-row"]}>
 
                                     <InputField
@@ -232,7 +227,6 @@ function AllUsers() {
                         </form>
                     </div>
                 </CustomModal>
-
 
                 <div className={styles["sort"]}>
                     <h4>Sorteer op:</h4>

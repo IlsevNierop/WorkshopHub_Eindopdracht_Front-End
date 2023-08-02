@@ -26,7 +26,6 @@ function CreateWorkshop() {
         if (selectedDate <= currentDate) {
             return 'De datum van de workshop moet in de toekomst liggen';
         }
-
         return true;
     };
 
@@ -39,7 +38,6 @@ function CreateWorkshop() {
 
     async function handleFormSubmit(data) {
         setPreviewUrl('');
-
         try {
             const response = await createWorkshop(id, token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
             reset();
@@ -48,8 +46,6 @@ function CreateWorkshop() {
             setTimeout(() => {
                 closeModal();
             }, 5000);
-
-
         } catch (e) {
             setError(errorHandling(e));
         }
@@ -287,14 +283,14 @@ function CreateWorkshop() {
                     <label className={styles["label__input-field__workshop-picture"]}
                            htmlFor="workshop-picture-field">
                         Kies afbeelding
-                    <InputField
-                        type="file"
-                        name="workshop-picture"
-                        label="Foto uploaden"
-                        classNameInputField="input-field__workshop-picture"
-                        onChangeHandler={handleImageChange}
-                    >
-                    </InputField>
+                        <InputField
+                            type="file"
+                            name="workshop-picture"
+                            label="Foto uploaden"
+                            classNameInputField="input-field__workshop-picture"
+                            onChangeHandler={handleImageChange}
+                        >
+                        </InputField>
                     </label>
 
                     {previewUrl &&

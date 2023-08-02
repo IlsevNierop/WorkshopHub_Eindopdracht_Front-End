@@ -18,7 +18,6 @@ import Slider from "../../components/Slider/Slider";
 import InputField from "../../components/InputField/InputField";
 
 
-
 function Home() {
 
     const {user} = useContext(AuthContext);
@@ -92,37 +91,24 @@ function Home() {
             async function fetchDataWorkshops() {
                 toggleLoading(true);
                 setError('');
-                if (user != null) {
-                    try {
-                        const response = await fetchWorkshopDataLoggedIn(token, user.id);
-                        setWorkshopData(response);
-                        setOriginalWorkshopData(response);
-
-                        if (response) {
-                            setError('');
-                        }
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
+                try {
+                    let response;
+                    if (user != null) {
+                        response = await fetchWorkshopDataLoggedIn(token, user.id);
+                    } else {
+                        response = await fetchWorkshopData();
                     }
-                    toggleLoading(false);
-                } else {
-                    try {
-                        const response = await fetchWorkshopData();
-                        setWorkshopData(response);
-                        setOriginalWorkshopData(response);
 
-                        if (response) {
-                            setError('');
-                        }
 
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
-                    }
-                    toggleLoading(false);
+                    setWorkshopData
+                    (response);
+                    setOriginalWorkshopData(response);
+                    setError('');
+                } catch (e) {
+                    setError(errorHandling(e));
+                    console.log(error);
                 }
+                toggleLoading(false);
             }
 
             void fetchDataWorkshops();
@@ -131,7 +117,6 @@ function Home() {
                 controller.abort();
             }
         }
-
         , [user]);
 
 
@@ -279,7 +264,7 @@ function Home() {
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={1}  size={20}></StarRating>
+                                    <StarRating rating={1} size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"
@@ -291,7 +276,7 @@ function Home() {
                                     onChangeHandler={handleChangeRating}
                                     minRating={minRating}
                                 >
-                                    <StarRating rating={2}  size={20}></StarRating>
+                                    <StarRating rating={2} size={20}></StarRating>
                                 </InputField>
                                 <InputField
                                     classNameLabel="rating-row"

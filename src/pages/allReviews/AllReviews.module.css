@@ -20,7 +20,7 @@
     width: 12rem;
 }
 
-.review__modal{
+.review__modal {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

@@ -68,11 +68,11 @@ function CustomModal({
                     style={customStyles}
                     contentLabel={contentLabel}
                 >
-                   <div className={styles["column__modal__error"]}>
+                    <div className={styles["column__modal__error"]}>
 
-                    <p className="error-message">Er gaat iets mis</p>
-                    <p className="error-message">{errorMessage}</p>
-                   </div>
+                        <p className="error-message">Er gaat iets mis</p>
+                        <p className="error-message">{errorMessage}</p>
+                    </div>
                 </Modal>)
 
             }

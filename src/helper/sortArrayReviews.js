@@ -1,6 +1,6 @@
 export function sortArrayReviews(array, sortValue) {
     let newArray;
-    if (sortValue === 'reviewId'){
+    if (sortValue === 'reviewId') {
 
         newArray = array.map((booking) => {
             return booking
@@ -8,7 +8,7 @@ export function sortArrayReviews(array, sortValue) {
         newArray.sort((a, b) => a.id - b.id);
     }
 
-    if (sortValue === 'companyNameWorkshopOwner'){
+    if (sortValue === 'companyNameWorkshopOwner') {
 
         newArray = array.map((booking) => {
             return booking
@@ -26,7 +26,7 @@ export function sortArrayReviews(array, sortValue) {
         });
     }
 
-    if (sortValue === 'rating'){
+    if (sortValue === 'rating') {
 
         newArray = array.map((booking) => {
             return booking
@@ -34,7 +34,7 @@ export function sortArrayReviews(array, sortValue) {
         newArray.sort((a, b) => a.rating - b.rating);
     }
 
-    if (sortValue === 'reviewVerified'){
+    if (sortValue === 'reviewVerified') {
 
         newArray = array.map((booking) => {
             return booking
@@ -52,7 +52,7 @@ export function sortArrayReviews(array, sortValue) {
         });
     }
 
-    if (sortValue === 'firstNameReviewer'){
+    if (sortValue === 'firstNameReviewer') {
 
         newArray = array.map((booking) => {
             return booking

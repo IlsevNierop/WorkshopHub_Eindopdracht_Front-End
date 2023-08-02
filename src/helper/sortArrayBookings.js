@@ -1,13 +1,13 @@
 export function sortArrayBookings(array, sortValue) {
     let newArray;
-    if (sortValue === 'bookingId'){
+    if (sortValue === 'bookingId') {
 
         newArray = array.map((booking) => {
             return booking
         });
         newArray.sort((a, b) => a.id - b.id);
     }
-    if (sortValue === 'workshopId'){
+    if (sortValue === 'workshopId') {
 
         newArray = array.map((booking) => {
             return booking
@@ -15,7 +15,7 @@ export function sortArrayBookings(array, sortValue) {
         newArray.sort((a, b) => a.workshopId - b.workshopId);
     }
 
-    if (sortValue === 'dateBooking'){
+    if (sortValue === 'dateBooking') {
 
         newArray = array.map((booking) => {
             return booking
@@ -23,7 +23,7 @@ export function sortArrayBookings(array, sortValue) {
         newArray.sort((a, b) => new Date(a.dateOrder) - new Date(b.dateOrder));
     }
 
-    if (sortValue === 'firstNameCustomer'){
+    if (sortValue === 'firstNameCustomer') {
 
         newArray = array.map((booking) => {
             return booking

@@ -1,6 +1,6 @@
 export function sortArrayAllUsers(array, sortValue) {
     let newArray;
-    if (sortValue === 'userId'){
+    if (sortValue === 'userId') {
 
         newArray = array.map((user) => {
             return user;
@@ -8,7 +8,7 @@ export function sortArrayAllUsers(array, sortValue) {
         newArray.sort((a, b) => a.id - b.id);
     }
 
-    if (sortValue === 'firstName'){
+    if (sortValue === 'firstName') {
 
         newArray = array.map((user) => {
             return user;
@@ -25,7 +25,7 @@ export function sortArrayAllUsers(array, sortValue) {
             return 0;
         });
     }
-    if (sortValue === 'verified'){
+    if (sortValue === 'verified') {
 
         newArray = array.map((user) => {
             return user;

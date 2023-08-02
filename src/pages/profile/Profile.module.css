@@ -19,36 +19,12 @@
 }
 
 .left-side__profile {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0.5rem;
     gap: 1rem;
-
 }
-
-.profile-pic {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-}
-
-.placeholder-photo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    background-color: var(--color-grey-300);
-    text-decoration: none;
-}
-
 
 .form__upload-profile-picture {
     display: flex;
@@ -69,7 +45,6 @@
 .profile-picture__preview__label {
     display: flex;
     flex-direction: column;
-
 }
 
 .profile-picture__preview {
@@ -78,26 +53,58 @@
     object-fit: cover;
 }
 
+
+.profile-pic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+.placeholder-photo {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    background-color: var(--color-grey-300);
+    text-decoration: none;
+}
+
 .link__upload-photo {
+    position: relative;
     text-decoration: none;
     color: var(--color-black);
 }
 
-.photo-icon {
+.photo-icon__profile-pic {
     position: absolute;
     z-index: 0.5;
     padding: 0.25rem;
     border-radius: 50px;
     background-color: var(--color-grey-200);
     top: 130px;
-    right: 55px;
+    right: -65px;
+}
+
+.photo-icon__placeholder {
+    position: absolute;
+    z-index: 0.5;
+    padding: 0.25rem;
+    border-radius: 50px;
+    background-color: var(--color-grey-200);
+    top: 130px;
+    right: 20px;
 }
 
 .verification {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-
 }
 
 .profile-fields {
@@ -138,7 +145,6 @@
     gap: 1rem;
     border-top: solid 2px var(--color-grey-500);
     padding: 1.5rem 0;
-
 }
 
 .button {

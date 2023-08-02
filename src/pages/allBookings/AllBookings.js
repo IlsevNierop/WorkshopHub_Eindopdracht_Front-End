@@ -92,7 +92,6 @@ function AllBookings() {
                 controller.abort();
             }
         }
-
         ,
         [needUpdateBookingData]
     )
@@ -291,10 +290,13 @@ function AllBookings() {
     return (
         <main className={`outer-container ${styles["all-bookings__outer-container"]}`}>
             <div className={`inner-container ${styles["all-bookings__inner-container"]}`}>
-                <h1>{highestAuthority === 'admin' ? "Alle boekingen" : highestAuthority === 'workshopowner' ? "Alle boekingen op mijn workshops" : "Mijn boekingen"} </h1>
+                {bookingsData && bookingsData.length > 0 ?
+                    <h1>{(highestAuthority === 'admin' || highestAuthority === 'workshopowner')  ? "Alle boekingen" : "Mijn boekingen"} </h1>
+                    :
+                    <h1>{(highestAuthority === 'admin' || highestAuthority === 'workshopowner') ? "Er zijn nog geen boekingen" : "Je hebt nog geen boekingen"} </h1>
+                }
 
                 {loading && <p>Loading...</p>}
-
 
                 {error &&
                     <CustomModal
@@ -306,7 +308,6 @@ function AllBookings() {
                     >
                     </CustomModal>
                 }
-
 
                 <CustomModal
                     modalIsOpen={modalIsOpenDeleteCheck}
@@ -371,7 +372,6 @@ function AllBookings() {
 
                             <p className={styles["subheader__input-fields"]}>Wijzigen:</p>
 
-
                             <InputField
                                 type="number"
                                 name="workshopId"
@@ -418,8 +418,6 @@ function AllBookings() {
                             >Boeking plaatsen</Button>
                         </form>
                     </div>
-
-
                 </CustomModal>
 
                 <CustomModal
@@ -430,8 +428,7 @@ function AllBookings() {
                     updateHeader="De boeking is succesvol gewijzigd"
                 ></CustomModal>
 
-
-                {highestAuthority !== 'customer' &&
+                {(bookingsData && bookingsData.length > 0 && highestAuthority !== 'customer') &&
                     <div className={styles["top__bookings__dropdown-menu"]}>
 
                         <div className={styles["dropdown"]}>
@@ -467,92 +464,92 @@ function AllBookings() {
                     </div>
                 }
 
-                <table className={"table"}>
-                    <thead>
-                        <tr className={"table-header-row"}>
-                            <th>Boeking</th>
-                            <th>Datum boeking</th>
-                            <th>Aantal</th>
-                            <th>Naam</th>
-                            <th>Email</th>
-                            <th>Opmerkingen klant</th>
-                            <th>Totaal bedrag</th>
-                            <th>Workshop</th>
-                            <th>Titel workshop</th>
-                            <th>Datum workshop</th>
-                            {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
-                                <>
-                                    <th>Wijzigen</th>
-                                    <th>Verwijderen</th>
-                                    <th>Review</th>
-                                </>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bookingsData && bookingsData.map((booking) => {
-                            return (<tr key={booking.id}>
-                                    <td>{booking.id}</td>
-                                    <td>{updateDateFormatShort(booking.dateOrder)}</td>
-                                    <td>{booking.amount}</td>
-                                    <td>{booking.firstNameCustomer} {booking.lastNameCustomer} </td>
-                                    <td>{booking.emailCustomer}</td>
-                                    <td>{booking.commentsCustomer}</td>
-                                    <td>{booking.totalPrice} euro</td>
-                                    <td>{booking.workshopId}</td>
-                                    <td>{booking.workshopTitle}</td>
-                                    <td>{updateDateFormatShort(booking.workshopDate)}</td>
+                {bookingsData && bookingsData.length > 0 &&
+                    <table className={"table"}>
+                        <thead>
+                            <tr className={"table-header-row"}>
+                                <th>Boeking</th>
+                                <th>Datum boeking</th>
+                                <th>Aantal</th>
+                                <th>Naam</th>
+                                <th>Email</th>
+                                <th>Opmerkingen klant</th>
+                                <th>Totaal bedrag</th>
+                                <th>Workshop</th>
+                                <th>Titel workshop</th>
+                                <th>Datum workshop</th>
+                                {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
+                                    <>
+                                        <th>Wijzigen</th>
+                                        <th>Verwijderen</th>
+                                        <th>Review</th>
+                                    </>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {bookingsData && bookingsData.map((booking) => {
+                                return (<tr key={booking.id}>
+                                        <td>{booking.id}</td>
+                                        <td>{updateDateFormatShort(booking.dateOrder)}</td>
+                                        <td>{booking.amount}</td>
+                                        <td>{booking.firstNameCustomer} {booking.lastNameCustomer} </td>
+                                        <td>{booking.emailCustomer}</td>
+                                        <td>{booking.commentsCustomer}</td>
+                                        <td>{booking.totalPrice} euro</td>
+                                        <td>{booking.workshopId}</td>
+                                        <td>{booking.workshopTitle}</td>
+                                        <td>{updateDateFormatShort(booking.workshopDate)}</td>
 
-                                    {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
-                                        <>
-                                            <td>
-                                                {new Date(booking.workshopDate) < new Date() ? (
-                                                    "De boeking kan niet gewijzigd worden"
-                                                ) : (
-                                                    <Link
-                                                        className={"link-icon"}
-                                                        to="#"
-                                                        onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
-                                                    >
-                                                        <NotePencil size={20} weight="regular"/>
-                                                    </Link>
-                                                )}
-                                            </td>
-                                            <td>
-                                                {new Date(booking.workshopDate) < new Date() ? (
-                                                    "De boeking kan niet verwijderd worden"
-                                                ) : (
-                                                    <Link
-                                                        className={"link-icon"}
-                                                        to="#"
-                                                        onClick={() => checkDeleteBooking(booking.id)}
-                                                    >
-                                                        <TrashSimple size={20} weight="regular"/>
-                                                    </Link>
-                                                )}
-                                            </td>
-                                            <td>
-                                                {new Date(booking.workshopDate) < new Date() ?
-                                                    booking.reviewCustomerWritten ? (
-                                                        "Heeft al een review"
+                                        {(highestAuthority === 'admin' || highestAuthority === 'customer') &&
+                                            <>
+                                                <td>
+                                                    {new Date(booking.workshopDate) < new Date() ? (
+                                                        "De boeking kan niet gewijzigd worden"
                                                     ) : (
-                                                        <Link className={"link-table-text"}
-                                                              to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
-                                                            review
-                                                            achter</Link>
-                                                    )
-                                                :
-                                                    "Na afloop kun je hier een review achterlaten"
-                                                }
-                                            </td>
-                                        </>
-                                    }
-
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
+                                                        <Link
+                                                            className={"link-icon"}
+                                                            to="#"
+                                                            onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
+                                                        >
+                                                            <NotePencil size={20} weight="regular"/>
+                                                        </Link>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {new Date(booking.workshopDate) < new Date() ? (
+                                                        "De boeking kan niet verwijderd worden"
+                                                    ) : (
+                                                        <Link
+                                                            className={"link-icon"}
+                                                            to="#"
+                                                            onClick={() => checkDeleteBooking(booking.id)}
+                                                        >
+                                                            <TrashSimple size={20} weight="regular"/>
+                                                        </Link>
+                                                    )}
+                                                </td>
+                                                <td>
+                                                    {new Date(booking.workshopDate) < new Date() ?
+                                                        booking.reviewCustomerWritten ? (
+                                                            "Heeft al een review"
+                                                        ) : (
+                                                            <Link className={"link-table-text"}
+                                                                  to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
+                                                                review
+                                                                achter</Link>
+                                                        )
+                                                        :
+                                                        "Na afloop kun je hier een review achterlaten"
+                                                    }
+                                                </td>
+                                            </>
+                                        }
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>}
 
                 {(highestAuthority !== 'customer' && Object.keys(workshopId).length === 0) &&
                     <Button type="text" onClick={() => downloadCsvFileBookings(highestAuthority)}>Download csv</Button>

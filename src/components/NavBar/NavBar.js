@@ -39,7 +39,7 @@ function NavBar() {
                                      to="/" onClick={() => logout()}>
                                 Uitloggen</NavLink></li>}
 
-                        {isAuth?
+                        {isAuth ?
                             <li className={styles["nav-li-top"]}>
                                 <NavLink to="/favorieten"><Heart size={32} color="black"
                                                                  weight="regular"/>
@@ -47,8 +47,10 @@ function NavBar() {
                             </li>
                             :
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="#" onClick={() => signInWithSubHeader("Om je favoriete allWorkshops te zien, dien je eerst in te loggen")}><Heart size={32} color="black"
-                                                                 weight="regular"/>
+                                <NavLink to="#"
+                                         onClick={() => signInWithSubHeader("Om je favoriete workshops te zien, dien je eerst in te loggen")}><Heart
+                                    size={32} color="black"
+                                    weight="regular"/>
                                 </NavLink>
                             </li>
                         }
@@ -65,7 +67,7 @@ function NavBar() {
                         {
                             navLinks(user.highestAuthority).map((navlink) => {
 
-                                return (    <li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
+                                return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
                                         {navlink.submenu ? (
                                             <div className={styles["nav__dropdown_menu"]}>
                                                 <span className={styles['default-nav-link']}>{navlink.title}</span>
@@ -84,7 +86,7 @@ function NavBar() {
                                             </div>
                                         ) : (
                                             <NavLink
-                                                className={({ isActive }) =>
+                                                className={({isActive}) =>
                                                     isActive ? styles['active-nav-link'] : styles['default-nav-link']
                                                 }
                                                 to={navlink.link}

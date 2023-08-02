@@ -1,7 +1,3 @@
-// mogelijk in een object een dieper object wat dan een dropdown menu creeert (onder allWorkshops - goedkeuren allWorkshops bijvoorbeeld)
-//
-
-
 export function navLinks(highestAuthority) {
 
     if (highestAuthority === 'admin') {
@@ -48,7 +44,6 @@ export function navLinks(highestAuthority) {
                 title: "Workshops",
                 submenu: [
                     {
-                        //TODO filter toevoegen op deze pagina - welke moeten nog gepubliceerd worden - met icoontjes werken aantonen welke al geverifieerd zijn?
                         title: "Al Mijn Workshops",
                         link: "/workshops",
                     },
