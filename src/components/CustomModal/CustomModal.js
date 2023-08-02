@@ -86,7 +86,9 @@ function CustomModal({
                 >
                     <div className={styles["top-row__functional-modal"]}>
                         <h3>{functionalModalHeader}</h3>
-                        <Link to="#" onClick={closeModal}><X size={18}/></Link>
+                        <Link
+                            aria-label="link__close-modal"
+                            to="#" onClick={closeModal}><X size={18}/></Link>
                     </div>
                     {children}
                 </Modal>)
@@ -102,7 +104,9 @@ function CustomModal({
                     <section className={styles["column__modal-check"]}>
                         <div className={styles["top-row__modal-check"]}>
                             <h3>Weet je het zeker?</h3>
-                            <Link to="#" onClick={closeModal}><X size={18}/></Link>
+                            <Link
+                                aria-label="link__close-modal"
+                                to="#" onClick={closeModal}><X size={18}/></Link>
                         </div>
                         {checkMessage && (checkMessage.split("-")).filter(sentence => sentence.trim() !== "").map((sentence) => {
                             return (

@@ -432,7 +432,7 @@ function AllBookings() {
                     <div className={styles["top__bookings__dropdown-menu"]}>
 
                         <div className={styles["dropdown"]}>
-                            <h4>Sorteer op:</h4>
+                            <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                             <Select className={styles["sort__dropdown"]}
                                     id="select-dropdown-sort"
                                     name="select-dropdown-sort"
@@ -447,7 +447,7 @@ function AllBookings() {
 
                         <div className={styles["container__filter-dropdown__button"]}>
                             <div className={styles["dropdown"]}>
-                                <h4>Kies workshop ID:</h4>
+                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Kies workshop ID:</label>
                                 <Select className={styles["filter__dropdown"]}
                                         id="select-dropdown-workshopId"
                                         name="select-dropdown-workshopId"
@@ -508,6 +508,7 @@ function AllBookings() {
                                                         "De boeking kan niet gewijzigd worden"
                                                     ) : (
                                                         <Link
+                                                            aria-label="link__edit-booking"
                                                             className={"link-icon"}
                                                             to="#"
                                                             onClick={() => changeBooking(booking.id, booking.firstNameCustomer, booking.lastNameCustomer, booking.amount, booking.commentsCustomer, booking.workshopId, booking.sppotsAvailableWorkshop)}
@@ -521,6 +522,7 @@ function AllBookings() {
                                                         "De boeking kan niet verwijderd worden"
                                                     ) : (
                                                         <Link
+                                                            aria-label="link__delete-booking"
                                                             className={"link-icon"}
                                                             to="#"
                                                             onClick={() => checkDeleteBooking(booking.id)}
@@ -534,7 +536,8 @@ function AllBookings() {
                                                         booking.reviewCustomerWritten ? (
                                                             "Heeft al een review"
                                                         ) : (
-                                                            <Link className={"link-table-text"}
+                                                            <Link
+                                                                className={"link-table-text"}
                                                                   to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
                                                                 review
                                                                 achter</Link>

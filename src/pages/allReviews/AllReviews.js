@@ -485,7 +485,7 @@ function AllReviews() {
 
                 {reviewsData && reviewsData.length > 0 &&
                     <div className={styles["sort"]}>
-                        <h4>Sorteer op:</h4>
+                        <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                         <Select className={styles["sort__dropdown"]}
                                 id="select-dropdown-sort"
                                 name="select-dropdown-sort"
@@ -531,15 +531,24 @@ function AllReviews() {
                                                     "Geaccordeerd"
                                                 ) :
                                                 highestAuthority === 'admin' ?
-                                                    (
-                                                        <Link
-                                                            className={"link-table-text"}
-                                                            to="#"
-                                                            onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
-                                                        >
-                                                            Direct accorderen
-                                                        </Link>
-                                                    )
+                                                    ((review.reviewVerified === false) ?
+                                                        (
+                                                            <Link
+                                                                className={"link-table-text-not-verified"}
+                                                                to="#"
+                                                                onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
+                                                            >
+                                                                Afgekeurd (direct accorderen)
+                                                            </Link>)
+                                                        :
+                                                        (<Link
+                                                                className={"link-table-text"}
+                                                                to="#"
+                                                                onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
+                                                            >
+                                                                Direct accorderen
+                                                            </Link>
+                                                        ))
                                                     :
                                                     review.reviewVerified === false ?
                                                         "Afgekeurd"
@@ -547,15 +556,19 @@ function AllReviews() {
                                                         "Nog niet akkoord"
                                             }</td>
                                         <td>{review.feedbackAdmin}</td>
-                                        <td><Link className={"link-icon"}
-                                                  to="#"
-                                                  onClick={() => changeReview(review.id, review.firstNameReviewer, review.lastNameReviewer, review.rating, review.reviewDescription, review.reviewVerified, review.feedbackAdmin)}
+                                        <td><Link
+                                            aria-label="link__edit-review"
+                                            className={"link-icon"}
+                                            to="#"
+                                            onClick={() => changeReview(review.id, review.firstNameReviewer, review.lastNameReviewer, review.rating, review.reviewDescription, review.reviewVerified, review.feedbackAdmin)}
                                         ><NotePencil
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
-                                        <td><Link className={"link-icon"} to="#"
-                                                  onClick={() => checkDeleteReview(review.id)}
+                                        <td><Link
+                                            aria-label="link__delete-review"
+                                            className={"link-icon"} to="#"
+                                            onClick={() => checkDeleteReview(review.id)}
                                         ><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>

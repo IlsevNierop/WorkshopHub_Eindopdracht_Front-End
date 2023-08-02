@@ -92,12 +92,16 @@ function WorkshopTile({
             }
 
             <article className={styles["workshop-tile"]}>
-                <Link to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                <Link
+                    aria-label="link__add-remove-favourite-workshop"
+                    to="#" onClick={addOrRemoveFavouriteWorkshop}>
                     <Heart className={styles["favourite-icon"]} size={24}
                            color={favourite ? "#fe5c5c" : "282828"}
                            weight={favourite ? "fill" : "light"}/></Link>
 
-                <Link className={styles["workshop-tile__link"]} to={link}>
+                <Link
+                    aria-label="link__workshop-page"
+                    className={styles["workshop-tile__link"]} to={link}>
                     <img className={styles["workshop-image"]} src={image ? image : defaultpic}
                          alt={`Foto van de workshop ${workshoptitle}`}/>
 

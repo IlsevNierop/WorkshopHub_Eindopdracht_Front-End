@@ -253,7 +253,9 @@ function Profile() {
                         <section className={styles["left-side__profile"]}>
                             {userData &&
                                 <>
-                                    <Link className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
+                                    <Link
+                                        aria-label="link__upload-profile-photo"
+                                        className={styles["link__upload-photo"]} to="#" onClick={openModal}><Camera
                                         className={userData.profilepic != null ? styles["photo-icon__profile-pic"] : styles["photo-icon__placeholder"]}
                                         size={32}/>
                                         {userData.profilepic == null &&
@@ -395,8 +397,9 @@ function Profile() {
                                                 >
                                                 </InputField>
                                                 <div className={styles["user-type__row"]}>
-                                                    <h4 className={styles["user-type__label"]}>Consument/
-                                                        workshop eigenaar: </h4>
+
+                                                    <label className={`select-dropdown ${styles["user-type__label"]}`} htmlFor="select-dropdown-sort">Consument/
+                                                        workshop eigenaar:</label>
                                                     <Select className={styles["user-type__dropdown"]}
                                                             defaultValue={userType}
                                                             onChange={setUserType}

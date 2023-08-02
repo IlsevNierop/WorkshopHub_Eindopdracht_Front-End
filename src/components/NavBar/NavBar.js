@@ -24,7 +24,7 @@ function NavBar() {
         <>
             <div className={`outer-container ${styles["nav-outer-top"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-top"]}`}>
-                    <NavLink to="/"><img className={styles["image-logo"]} src={logo} alt="WorkshopHub logo"/>
+                    <NavLink to="/" aria-label="link__homepage"><img className={styles["image-logo"]} src={logo} alt="WorkshopHub logo"/>
                     </NavLink>
                     <ul className={styles["nav-ul-top"]}>
 
@@ -41,13 +41,16 @@ function NavBar() {
 
                         {isAuth ?
                             <li className={styles["nav-li-top"]}>
-                                <NavLink to="/favorieten"><Heart size={32} color="black"
+                                <NavLink to="/favorieten"
+                                         aria-label="link__favourite-workshops"
+                                ><Heart size={32} color="black"
                                                                  weight="regular"/>
                                 </NavLink>
                             </li>
                             :
                             <li className={styles["nav-li-top"]}>
                                 <NavLink to="#"
+                                         aria-label="link__sign-in__favourite-workshops"
                                          onClick={() => signInWithSubHeader("Om je favoriete workshops te zien, dien je eerst in te loggen")}><Heart
                                     size={32} color="black"
                                     weight="regular"/>

@@ -39,6 +39,10 @@
     width: 12rem;
 }
 
+.date-range-picker, .price-slider, .minimum-rating {
+    font-weight: bolder;
+}
+
 .workshop-tiles__filters {
     display: flex;
     flex-direction: row;

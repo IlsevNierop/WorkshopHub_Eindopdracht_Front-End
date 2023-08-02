@@ -229,7 +229,7 @@ function AllUsers() {
                 </CustomModal>
 
                 <div className={styles["sort"]}>
-                    <h4>Sorteer op:</h4>
+                    <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
                     <Select className={styles["sort__dropdown"]}
                             id="select-dropdown-sort"
                             name="select-dropdown-sort"
@@ -281,7 +281,7 @@ function AllUsers() {
                                                 to="#"
                                                 onClick={() => verifyWorkshopOwner(user.id, true)}
                                             >
-                                                Afgekeurd
+                                                Afgekeurd (direct verifieren)
                                             </Link>
                                             :
                                             (
