@@ -517,12 +517,12 @@ function UpdateWorkshopPage() {
 
                     {highestAuthority === 'admin' &&
                         <div className={styles["container__admin__input-fields"]}>
-                            <label htmlFor="workshopVerified">Workshop goed- of afkeuren
+                            <label htmlFor="verify">Workshop goed- of afkeuren
                                 <div className={styles["workshop-verified-radio-row"]}>
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshop-verified"
-                                        classNameLabel="label__radio-checkbox__workshop-verified"
-                                        name="workshopVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={true}
                                         validation={{
@@ -539,9 +539,9 @@ function UpdateWorkshopPage() {
                                         Goedkeuren
                                     </InputField>
                                     <InputField
-                                        classNameInputField="radio-checkbox__workshop-verified"
-                                        classNameLabel="label__radio-checkbox__workshop-verified"
-                                        name="workshopVerified"
+                                        classNameInputField="radio-checkbox__verify"
+                                        classNameLabel="label__radio-checkbox__verify"
+                                        name="verify"
                                         type="radio"
                                         value={false}
                                         validation={{

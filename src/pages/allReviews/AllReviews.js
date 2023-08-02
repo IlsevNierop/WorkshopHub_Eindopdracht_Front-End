@@ -408,11 +408,11 @@ function AllReviews() {
                             {highestAuthority === 'admin' &&
                                 <>
                                     <div className={styles["review-verified-radio-row"]}>
-                                        <label htmlFor="reviewVerified">Review goed- of afkeuren
+                                        <label htmlFor="verify">Review goed- of afkeuren
                                             <InputField
-                                                classNameInputField="radio-checkbox__review-verified"
-                                                classNameLabel="label__radio-checkbox__review-verified"
-                                                name="reviewVerified"
+                                                classNameInputField="radio-checkbox__verify"
+                                                classNameLabel="label__radio-checkbox__verify"
+                                                name="verify"
                                                 type="radio"
                                                 value={true}
                                                 validation={{
@@ -429,9 +429,9 @@ function AllReviews() {
                                                 Goedkeuren
                                             </InputField>
                                             <InputField
-                                                classNameInputField="radio-checkbox__review-verified"
-                                                classNameLabel="label__radio-checkbox__review-verified"
-                                                name="reviewVerified"
+                                                classNameInputField="radio-checkbox__verify"
+                                                classNameLabel="label__radio-checkbox__verify"
+                                                name="verify"
                                                 type="radio"
                                                 value={false}
                                                 validation={{

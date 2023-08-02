@@ -13,7 +13,7 @@
     width: 382px;
 }
 
-.input-field:not(.input-field-reviewVerified, .input-field-workshopVerified), .input-field__workshop-picture {
+.input-field:not(.input-field-verify), .input-field__workshop-picture {
     min-width: 200px;
 }
 
@@ -66,11 +66,11 @@
     align-items: center;
 }
 
-.radio-checkbox, .radio-checkbox__review-verified, .radio-checkbox__workshop-verified {
+.radio-checkbox, .radio-checkbox__verify {
     accent-color: var(--color-earth-blue);
 }
 
-.label__radio-checkbox__review-verified, .label__radio-checkbox__workshop-verified {
+.label__radio-checkbox__verify {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
