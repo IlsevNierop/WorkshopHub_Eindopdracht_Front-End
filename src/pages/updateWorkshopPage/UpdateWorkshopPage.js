@@ -176,7 +176,7 @@ function UpdateWorkshopPage() {
         try {
             let response;
             if (highestAuthority === 'admin') {
-                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.verify, data.feedbackAdmin, file);
             } else {
                 response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
             }

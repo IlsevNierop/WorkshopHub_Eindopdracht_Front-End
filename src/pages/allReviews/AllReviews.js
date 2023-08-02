@@ -166,9 +166,9 @@ function AllReviews() {
     async function handleFormSubmit(data) {
         try {
             if (highestAuthority === 'admin') {
-                await updateReviewByAdmin(token, data.reviewId, data.rating, data.reviewDescription, data.reviewVerified, data.feedbackAdmin);
+                await updateReviewByAdmin(token, data.reviewId, data.rating, data.reviewDescription, data.verify, data.feedbackAdmin);
             } else {
-                await updateReviewByCustomer(token, data.reviewId, data.rating, data.reviewDescription, data.reviewVerified, data.feedbackAdmin, id);
+                await updateReviewByCustomer(token, data.reviewId, data.rating, data.reviewDescription, data.verify, data.feedbackAdmin, id);
             }
             closeModalUpdateReview();
             openModalUpdateReviewSuccessful();
