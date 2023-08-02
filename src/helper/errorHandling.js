@@ -8,21 +8,19 @@ export function errorHandling(e) {
     } else if (e.response.status === 400 && e.response.data.includes("not yet approved")) {
         return "Deze workshop kan pas gepubliceerd worden nadat een administrator goedkeuring heeft gegeven.";
     } else if (e.response.status === 400 && e.response.data.includes("relation")) {
-        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere allWorkshops/boekingen/reviews of accounts. Je dient eerst de andere items te verwijderen voordat je dit itemt kunt verwijderen. Als een workshop boekingen of reviews heeft, kan je de workshop niet direct verwijderen.";
+        return "Deze workshop/boeking/review of dit account kan niet verwijderd worden, omdat het relaties heeft met andere workshops/boekingen/reviews of accounts. Je dient eerst de andere items te verwijderen voordat je dit itemt kunt verwijderen.";
     } else if (e.response.status === 400 && e.response.data.includes("verified the workshop for publishing")) {
         return "Deze workshop kan niet verwijderd worden, omdat de workshop eigenaar de workshop gepubliceerd heeft.";
-    } else if (e.response.status === 400 && e.response.data.includes("already exists with the email")) {
-        return "Er bestaat al een andere gebruiker met dit e-mailadres.";
     } else if (e.response.status === 400 && e.response.data.includes("can't add an authority two times")) {
         return "De gebruiker heeft deze rol al toegekend gekregen, het is niet mogelijk om een rol twee keer toe te kennen.";
     } else if (e.response.status === 400 && e.response.data.includes("can't book a workshop that has already taken place")) {
         return "Het is niet mogelijk een workshop in het verleden te boeken.";
     } else if (e.response.status === 400 && e.response.data.includes("spots are available for this workshop")) {
-        return "Er zijn onvoldoende plekken beschikbaar voor deze workshop voor deze boeking.";
+        return "Er zijn onvoldoende plekken beschikbaar voor deze workshop om deze boeking te doen.";
     } else if (e.response.status === 400 && e.response.data.includes("only submit 1 review per attended workshop")) {
         return "Je kan maar 1 review achterlaten per gevolgde workshop.";
     } else if (e.response.status === 401) {
-        return "De combinatie van e-mailadres en wachtwoord is niet geldig.";
+        return "De combinatie van e-mailadres en wachtwoord is ongeldig.";
     } else if (e.response.status === 403 && e.response.data.includes("verified owner")) {
         return "Pas als je account geverifieerd is kun je een workshop aanmaken en publiceren.";
     } else if (e.response.status === 403 && e.response.data.includes("workshop hasn't taken place yet")) {

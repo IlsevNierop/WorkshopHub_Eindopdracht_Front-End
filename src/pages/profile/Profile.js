@@ -128,7 +128,6 @@ function Profile() {
 
     async function handleFormSubmit(data) {
         setError('');
-        console.log("Form submit");
 
         if (userType.value) {
             try {

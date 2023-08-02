@@ -58,10 +58,8 @@ function AllWorkshopsFromOwner() {
         <main className={`outer-container ${styles["all-workshops-owner__outer-container"]}`}>
             <div className={`inner-container ${styles["all-workshops-owner__inner-container"]}`}>
 
-
                 {workshopsFromOwner &&
-                    <h1>Alle workshops van {workshopOwnerName}</h1>
-                }
+                    <h1>Alle workshops van {workshopOwnerName}</h1>}
 
                 {loading && <p>Loading...</p>}
                 {error && <p className="error-message">{error}</p>}
@@ -86,8 +84,7 @@ function AllWorkshopsFromOwner() {
                                 link={`/workshop/${workshop.id}`}
                             ></WorkshopTile>
                         )
-                    })
-                    }
+                    })}
                 </section>
 
                 <Link className={styles["link"]} to="/">Terug naar de homepage</Link>

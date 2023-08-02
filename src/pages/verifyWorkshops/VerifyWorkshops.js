@@ -18,38 +18,23 @@ function VerifyWorkshops() {
     const [loading, toggleLoading] = useState(false);
 
     useEffect(() => {
-        async function getWorkshopsToVerify() {
-            toggleLoading(true);
-            setError('');
-
-            if (highestAuthority === 'admin') {
+            async function getWorkshopsToVerify() {
+                toggleLoading(true);
+                setError('');
                 try {
-                    const response = await fetchWorkshopsToVerifyByAdmin(token);
-                    setWorkshopsToVerifyData(response);
-
-                    if (response) {
-                        setError('');
+                    let response;
+                    if (highestAuthority === 'admin') {
+                        response = await fetchWorkshopsToVerifyByAdmin(token);
+                    } else {
+                        response = await fetchWorkshopsToVerifyByOwner(token, id);
                     }
-
-                } catch (e) {
+                    setWorkshopsToVerifyData(response);
+                    setError('');
+                } catch
+                    (e) {
                     setError(errorHandling(e));
                     console.log(error);
                 }
-            }
-            else {
-                try {
-                    const response = await fetchWorkshopsToVerifyByOwner(token, id);
-                    setWorkshopsToVerifyData(response);
-
-                    if (response) {
-                        setError('');
-                    }
-
-                } catch (e) {
-                    setError(errorHandling(e));
-                    console.log(error);
-                }
-            }
                 toggleLoading(false);
             }
             void getWorkshopsToVerify();
@@ -57,8 +42,7 @@ function VerifyWorkshops() {
             return function cleanup() {
                 controller.abort();
             }
-        }
-        , [])
+        },[]);
 
 
     return (
@@ -74,9 +58,9 @@ function VerifyWorkshops() {
                 <section className={styles["overview__workshop-tiles"]}>
                     {workshopsToVerifyData.length === 0 &&
                         <>
-                        <Confetti size={32} color="#c45018" weight="fill"/>
-                        <h3>Er zijn momenteel geen openstaande workshops.</h3>
-                        <Confetti size={32} color="#c45018" weight="fill"/>
+                            <Confetti size={32} color="#c45018" weight="fill"/>
+                            <h3>Er zijn momenteel geen openstaande workshops.</h3>
+                            <Confetti size={32} color="#c45018" weight="fill"/>
                         </>
                     }
                     {workshopsToVerifyData && workshopsToVerifyData.map((workshop) => {

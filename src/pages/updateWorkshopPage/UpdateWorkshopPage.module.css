@@ -1,5 +1,5 @@
 .update-workshop-page__outer-container {
-    flex-grow:1;
+    flex-grow: 1;
     background-color: var(--color-grey-100);
 }
 
@@ -103,9 +103,11 @@
     padding: 8px;
     gap: 0.5rem;
 }
+
 .container__admin__input-fields > p {
-   font-size: 1rem;
+    font-size: 1rem;
 }
+
 .container__admin__input-fields > label {
     display: flex;
     flex-direction: column;

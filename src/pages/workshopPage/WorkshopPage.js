@@ -52,54 +52,28 @@ function WorkshopPage() {
 
 
     useEffect(() => {
-            async function fetchDataSingleWorkshop() {
-                toggleLoading(true);
-                setError('');
-                if (user && user.highestAuthority === 'admin') {
-                    try {
-                        const response = await fetchSingleWorkshopDataAdmin(token, workshopId);
-                        console.log(response)
-                        setSingleWorkshopData(response);
-                        setFavourite(singleWorkshopData.isFavourite);
-                        setError('');
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        openModalError();
-                        setTimeout(() => {
-                            closeModalError();
-                            navigate("/");
-                        }, 3000);
-                        console.log(e)
+        async function fetchDataSingleWorkshop() {
+            toggleLoading(true);
+            setError('');
+            if (user && (user.highestAuthority === 'admin' || user.highestAuthority === 'workshopowner')) {
+                try {
+                    let response;
+                    if (user && user.highestAuthority === 'admin') {
+                        response = await fetchSingleWorkshopDataAdmin(token, workshopId);
+                    } else if (user && user.highestAuthority === 'workshopowner') {
+                        response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
                     }
-                    toggleLoading(false);
-                } else if (user && user.highestAuthority === 'workshopowner') {
-                    try {
-                        const response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
-                        console.log(response)
-                        setSingleWorkshopData(response);
-                        setFavourite(singleWorkshopData.isFavourite);
-                        setError('');
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                        console.log(error);
-                        // this is for when a workshopowner wants to see someone else's workshop
+                    console.log(response)
+                    setSingleWorkshopData(response);
+                    setFavourite(singleWorkshopData.isFavourite);
+                    setError('');
+                } catch (e) {
+                    setError(errorHandling(e));
+                    if (user && user.highestAuthority === 'workshopowner') {
+                        // this is for when a workshopowner wants to see someone else's workshop. Because upfront it's unclear if the workshopowner is the owner of the workshop, first I try to get the data as if he/she is the owner, in case of an error, he/she is clearly not the owner, and data is being fetched as if the workshopowner is a 'normal' viewer.
                         await getDataSingleWorkshopDataLoggedIn(token, user.id);
                     }
-                    toggleLoading(false);
-                } else if (user) {
-                    await getDataSingleWorkshopDataLoggedIn(token, user.id);
-                } else {
-                    try {
-                        const response = await fetchSingleWorkshopData(workshopId);
-                        console.log(response)
-                        setSingleWorkshopData(response);
-                        setFavourite(singleWorkshopData.isFavourite);
-                        setError('');
-
-                    } catch (e) {
-                        setError(errorHandling(e));
+                    if (user && user.highestAuthority === 'admin') {
                         openModalError();
                         setTimeout(() => {
                             closeModalError();
@@ -107,19 +81,40 @@ function WorkshopPage() {
                         }, 3000);
                         console.log(e)
                     }
-                    toggleLoading(false);
                 }
-            }
-
-            void fetchDataSingleWorkshop();
-
-
-            return function cleanup() {
-                controller.abort();
+                toggleLoading(false);
+            } else {
+                try {
+                    let response;
+                    if (user) {
+                        await getDataSingleWorkshopDataLoggedIn(token, user.id);
+                    } else {
+                        response = await fetchSingleWorkshopData(workshopId);
+                    }
+                    console.log(response)
+                    setSingleWorkshopData(response);
+                    setFavourite(singleWorkshopData.isFavourite);
+                    setError('');
+                } catch
+                    (e) {
+                    setError(errorHandling(e));
+                    openModalError();
+                    setTimeout(() => {
+                        closeModalError();
+                        navigate("/");
+                    }, 3000);
+                    console.log(e)
+                }
+                toggleLoading(false);
             }
         }
 
-        , []);
+        void fetchDataSingleWorkshop();
+
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
 
     useEffect(() => {
         setFavourite(singleWorkshopData.isFavourite);
@@ -197,7 +192,7 @@ function WorkshopPage() {
             openModalUpdateMessage();
             setTimeout(() => {
                 closeModalUpdateMessage();
-                navigate("/allWorkshops");
+                navigate("/workshops");
             }, 3000);
 
         } catch (e) {
@@ -218,9 +213,6 @@ function WorkshopPage() {
     };
 
     async function handleFormSubmit(data) {
-        console.log(data)
-        console.log(user.id);
-        console.log(workshopId);
         try {
             const response = await createBooking(token, data.amount, data.comments, user.id, workshopId);
             console.log(response);
@@ -231,7 +223,6 @@ function WorkshopPage() {
                 closeModalBookingSuccessful();
                 navigate("/boekingen")
             }, 4000);
-
 
         } catch (e) {
             setError(errorHandling(e));
@@ -251,7 +242,6 @@ function WorkshopPage() {
         }
     }
 
-    //TODO when no spots available: disable button and say 'sold out'
 
     function signInWithSubHeader(subheader) {
         setModalIsOpenSignIn(true);
@@ -273,7 +263,6 @@ function WorkshopPage() {
     function closeModalCheck() {
         setIsOpenCheck(false);
         setWorkshopOffline(false);
-
     }
 
     function openModalUpdateMessage() {
@@ -323,7 +312,6 @@ function WorkshopPage() {
         reset();
     }
 
-
     return (
 
         <main className={`outer-container ${styles["workshop-page__outer-container"]}`}>
@@ -355,9 +343,7 @@ function WorkshopPage() {
                         contentLabel="Error"
                         errorMessage={error}
                     >
-                    </CustomModal>
-                }
-
+                    </CustomModal>}
 
                 <CustomModal
                     modalIsOpen={modalIsOpenCheck}
@@ -374,9 +360,9 @@ function WorkshopPage() {
                         workshopOffline
                             ? "Weet je zeker dat je deze offline wil halen?"
                             : "Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop weer gepubliceerd kan worden."}`}
-
                 >
                 </CustomModal>
+
                 <CustomModal
                     modalIsOpen={modalIsOpenBooking}
                     afterOpenModal={afterOpenModalBooking}
@@ -421,6 +407,7 @@ function WorkshopPage() {
                         </form>
                     </div>
                 </CustomModal>
+
                 <CustomModal
                     modalIsOpen={modalIsOpenBookingSuccessful}
                     afterOpenModal={afterOpenModalBookingSuccessful}
@@ -430,7 +417,6 @@ function WorkshopPage() {
                     updateMessage={`De totale prijs is ${totalPriceBooking} euro. - Je wordt doorgestuurd naar het overzicht van jouw boekingen.`}
                 >
                 </CustomModal>
-
 
                 {loading && <p>Loading...</p>}
                 <h1>{singleWorkshopData.title}</h1>
@@ -448,9 +434,7 @@ function WorkshopPage() {
                                 {singleWorkshopData.numberOfReviews === 1
                                     ? `${singleWorkshopData.numberOfReviews} review`
                                     : `${singleWorkshopData.numberOfReviews != null ? singleWorkshopData.numberOfReviews : "nog geen"} reviews`
-                                }
-
-                                )
+                                })
                             </p>
                         </div>
                         <div className={styles["image__wrapper"]}>
@@ -483,7 +467,7 @@ function WorkshopPage() {
                                 <h5 className={styles["workshop-info"]}> max. {singleWorkshopData.amountOfParticipants} deelnemers </h5>
                             </section>
 
-                            <section className={styles["bottom__column__workshop-info"]}>
+                            <section>
                                 <Button type="text" onClick={onClikHandlerBooking}
                                         disabled={(singleWorkshopData.spotsAvailable === 0) && true}>
                                     Boeken
@@ -505,14 +489,12 @@ function WorkshopPage() {
                     }
                 </article>
 
-                {
-                    Object.keys(singleWorkshopData).length > 0 &&
+                {Object.keys(singleWorkshopData).length > 0 &&
                     <>
                         <article className={styles["description__middle-part__workshop"]}>
                             <h4>Omschrijving van de workshop</h4>
                             <p>{singleWorkshopData.description}</p>
                         </article>
-
 
                         <section className={styles["bottom-part__workshop"]}>
 
@@ -527,8 +509,7 @@ function WorkshopPage() {
                                                 {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} / 5 (
                                                 {singleWorkshopData.numberOfReviews === 1
                                                     ? `${singleWorkshopData.numberOfReviews} review`
-                                                    : `${singleWorkshopData.numberOfReviews} reviews`}
-                                                )
+                                                    : `${singleWorkshopData.numberOfReviews} reviews`})
                                             </p>
                                         </div>
 
@@ -549,8 +530,7 @@ function WorkshopPage() {
                                                         <p>{review.reviewDescription}</p>
                                                     </article>
                                                 )
-                                            })
-                                            }
+                                            })}
                                         </section>
                                     </>
                                     :
@@ -566,17 +546,13 @@ function WorkshopPage() {
                             {singleWorkshopData.highlightedInfo &&
                                 <div className={styles["info__bottom__workshop"]}>
                                     <h4>Belangrijk om te weten</h4>
-
-
                                     <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
                                         return (
                                             <li className={styles["list-item"]} key={info.slice(0, 3)}>{info}</li>
                                         )
                                     })
                                     }</ul>
-
-                                </div>
-                            }
+                                </div>}
                         </section>
 
                         <section className={styles["extra-bottom__workshop__owner__admin"]}>
@@ -588,17 +564,13 @@ function WorkshopPage() {
                                                 onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
                                             wijzigen</Button>
                                         :
-
                                         <>
                                             <Button type="text" onClick={verifyWorkshop}>Direct goedkeuren</Button>
                                             <Button type="text"
                                                     onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Aanpassen
                                                 en goed/afkeuren</Button>
-                                        </>
-                                    }
-
-                                </>
-                            }
+                                        </>}
+                                </>}
                             {(user != null && user.highestAuthority === 'workshopowner' && user.id === singleWorkshopData.workshopOwnerId) &&
                                 <article className={styles["extra-bottom__workshopowner"]}>
                                     {(singleWorkshopData.workshopVerified !== null && singleWorkshopData.publishWorkshop !== true && singleWorkshopData.feedbackAdmin) &&
@@ -614,8 +586,7 @@ function WorkshopPage() {
                                                         onClick={() => publishWorkshop(true)}
                                                 >
                                                     Direct publiceren</Button>
-                                            </>
-                                        }
+                                            </>}
                                         {singleWorkshopData.publishWorkshop === true ?
                                             <>
                                                 <Button type="text"
@@ -627,14 +598,11 @@ function WorkshopPage() {
                                             :
                                             <Button type="text"
                                                     onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
-                                                wijzigen</Button>
-                                        }
+                                                wijzigen</Button>}
                                     </div>
-
                                 </article>
                             }
                         </section>
-
                     </>
                 }
 

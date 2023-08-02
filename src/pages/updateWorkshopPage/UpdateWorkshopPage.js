@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import styles from './UpdateWorkshopPage.module.css';
 
 import {
-    createWorkshop,
     fetchSingleWorkshopDataByOwner,
     fetchSingleWorkshopDataToVerifyByAdmin,
     updateAndVerifyWorkshopByAdmin, updateWorkshopByWorkshopOwner
@@ -56,11 +55,16 @@ function UpdateWorkshopPage() {
 
 
     useEffect(() => {
-        async function fetchWorkshopData() {
-            toggleLoading(true);
-            setError('');
-            if (highestAuthority === 'admin') {
+            async function fetchWorkshopData() {
+                toggleLoading(true);
+                setError('');
                 try {
+                    let response;
+                    if (highestAuthority === 'admin') {
+                        response = await fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId);
+                    } else if (highestAuthority === 'workshopowner') {
+                        response = await fetchSingleWorkshopDataByOwner(token, workshopId);
+                    }
                     const {
                         workshopOwnerCompanyName,
                         title,
@@ -79,71 +83,8 @@ function UpdateWorkshopPage() {
                         publishWorkshop,
                         feedbackAdmin,
                         workshopVerified
-                    } = await fetchSingleWorkshopDataToVerifyByAdmin(token, workshopId);
+                    } = response;
 
-                    setWorkshopToVerifyData({
-                        workshopOwnerCompanyName,
-                        title,
-                        date,
-                        startTime,
-                        endTime,
-                        price,
-                        location,
-                        workshopCategory1,
-                        workshopCategory2,
-                        inOrOutdoors,
-                        amountOfParticipants,
-                        highlightedInfo,
-                        description,
-                        workshopPicUrl,
-                        publishWorkshop,
-                        feedbackAdmin,
-                        workshopVerified
-                    });
-                    setError('');
-
-                    setValue('description', description);
-                    setValue('title', title);
-                    setValue('date', date);
-                    setValue('startTime', startTime.slice(0, 5));
-                    setValue('endTime', endTime.slice(0, 5));
-                    setValue('price', price);
-                    setValue('location', location);
-                    setValue('workshopCategory1', workshopCategory1);
-                    setValue('workshopCategory2', workshopCategory2);
-                    setValue('inOrOutdoors', inOrOutdoors);
-                    setValue('amountOfParticipants', amountOfParticipants);
-                    setValue('highlightedInfo', highlightedInfo);
-                    setValue('description', description);
-                    setValue('workshopPicUrl', workshopPicUrl);
-
-
-                } catch (e) {
-                    setError(errorHandling(e));
-                    console.log(error);
-                }
-                toggleLoading(false);
-            } else if (highestAuthority === 'workshopowner') {
-                try {
-                    const {
-                        workshopOwnerCompanyName,
-                        title,
-                        date,
-                        startTime,
-                        endTime,
-                        price,
-                        location,
-                        workshopCategory1,
-                        workshopCategory2,
-                        inOrOutdoors,
-                        amountOfParticipants,
-                        highlightedInfo,
-                        description,
-                        workshopPicUrl,
-                        publishWorkshop,
-                        feedbackAdmin,
-                        workshopVerified
-                    } = await fetchSingleWorkshopDataByOwner(token, workshopId);
 
                     setWorkshopToVerifyData({
                         workshopOwnerCompanyName,
@@ -165,6 +106,8 @@ function UpdateWorkshopPage() {
                         workshopVerified
                     });
 
+                    setError('');
+
                     setValue('description', description);
                     setValue('title', title);
                     setValue('date', date);
@@ -180,7 +123,6 @@ function UpdateWorkshopPage() {
                     setValue('description', description);
                     setValue('workshopPicUrl', workshopPicUrl);
 
-                    setError('');
 
                 } catch (e) {
                     setError(errorHandling(e));
@@ -188,15 +130,14 @@ function UpdateWorkshopPage() {
                 }
                 toggleLoading(false);
             }
+
+            void fetchWorkshopData();
+
+            return function cleanup() {
+                controller.abort();
+            }
         }
-
-        void fetchWorkshopData();
-
-        return function cleanup() {
-            controller.abort();
-        }
-
-    }, []);
+        , []);
 
 
     const validateFutureDate = (value) => {
@@ -219,7 +160,6 @@ function UpdateWorkshopPage() {
 
     async function handleFormSubmit(data) {
         setPreviewUrl('');
-        console.log(data)
 
         if (data.title) {
             data.title = capitalizeFirstLetter(data.title);
@@ -233,35 +173,27 @@ function UpdateWorkshopPage() {
         if (data.workshopCategory2) {
             data.workshopCategory2 = capitalizeFirstLetter(data.workshopCategory2);
         }
-
-
-        if (highestAuthority === 'admin') {
-            try {
-                const response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
-                reset();
-                setFile([]);
-                openModal();
-                setTimeout(() => {
-                    closeModal();
-                    navigate("/goedkeurenworkshops")
-                }, 5000);
-            } catch (e) {
-                setError(errorHandling(e));
+        try {
+            let response;
+            if (highestAuthority === 'admin') {
+                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.workshopVerified, data.feedbackAdmin, file);
+            } else {
+                response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
             }
-        } else {
-            try {
-                const response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
-                reset();
-                setFile([]);
-                openModal();
-                setTimeout(() => {
-                    closeModal();
-                    //TODO maak 'mijn allWorkshops'
-                    navigate("/")
-                }, 6000);
-            } catch (e) {
-                setError(errorHandling(e));
-            }
+            reset();
+            setFile([]);
+            openModal();
+            setTimeout(() => {
+                closeModal();
+                if (highestAuthority === 'admin') {
+                    navigate("/goedkeurenworkshops");
+                } else {
+                    navigate("/workshops");
+                }
+            }, 5000);
+        } catch (e) {
+            setError(errorHandling(e));
+            console.error(e);
         }
     }
 
@@ -288,38 +220,30 @@ function UpdateWorkshopPage() {
         setIsOpenCheck(false);
 
     }
+
     const handleIsCheckedChange = () => {
         setIsChecked(prevIsChecked => !prevIsChecked);
         closeModalCheck();
     };
 
 
-
     return (
         <main className={`outer-container ${styles["update-workshop-page__outer-container"]}`}>
             <div className={`inner-container ${styles["update-workshop-page__inner-container"]}`}>
 
-                {highestAuthority === 'admin' &&
                 <CustomModal
                     modalIsOpen={modalIsOpen}
                     afterOpenModal={afterOpenModal}
                     closeModal={closeModal}
                     contentLabel="Update workshops successful"
                     updateHeader="Dank voor het aanpassen van de workshop"
-                    updateMessage="De workshop eigenaar krijgt hiervan bericht. - Je wordt doorgestuurd naar het overzicht van de openstaande workshops."
+                    updateMessage={highestAuthority === 'admin' ?
+                        "De workshop eigenaar krijgt hiervan bericht. - Je wordt doorgestuurd naar het overzicht van de openstaande workshops."
+                        :
+                        "Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht. - Zodra deze geverifieerd is, kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
+                    }
                 ></CustomModal>
-                }
-                {highestAuthority !== 'admin' &&
-                <CustomModal
-                    modalIsOpen={modalIsOpen}
-                    afterOpenModal={afterOpenModal}
-                    closeModal={closeModal}
-                    contentLabel="Update workshops successful"
-                    updateHeader="Dank voor het aanpassen van de workshop"
-                    updateMessage="Je workshop zal geverifieerd worden door de administrator, hiervan krijg je
-                                    bericht. - Zodra deze geverifieerd is, kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
-                ></CustomModal>
-                }
+
                 <CustomModal
                     modalIsOpen={modalIsOpenCheck}
                     afterOpenModal={afterOpenModalCheck}
@@ -329,7 +253,12 @@ function UpdateWorkshopPage() {
                     buttonHeaderCheckModalYes="Ik weet het zeker"
                     onclickHandlerCheckModalYes={handleIsCheckedChange}
                     onclickHandlerCheckModalBack={closeModalCheck}
-                    checkMessage="Deze workshop is geverifieerd door een administrator.-Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop gepubliceerd kan worden."
+                    checkMessage={(highestAuthority === 'admin') ?
+                        "Deze workshop was al geverifieerd.-Als je de workshop wijzigt, wordt deze offline gehaald. -Door op ik weet het zeker te klikken, kun je daarna via de button verzend wijzigingen onderaan het formulier, de wijzingen verzenden"
+                        :
+                        "Deze workshop is geverifieerd door een administrator.-Als je de workshop wijzigt, wordt deze offline gehaald en moet die eerst geverifieerd worden door een administrator voordat de workshop gepubliceerd kan worden.-Door op ik weet het zeker te klikken, kun je daarna via de button verzend wijzigingen onderaan het formulier, de wijzingen verzenden"
+                    }
+
                 ></CustomModal>
 
 
@@ -346,9 +275,7 @@ function UpdateWorkshopPage() {
                 {loading && <p>Loading...</p>}
                 {error && <p className="error-message">{error}</p>}
 
-
                 <form className={styles["update-workshop__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
-
 
                     <InputField
                         type="text"
@@ -609,7 +536,7 @@ function UpdateWorkshopPage() {
                                         register={register}
                                         errors={errors}
                                     >
-                                        Goedgekeurd
+                                        Goedkeuren
                                     </InputField>
                                     <InputField
                                         classNameInputField="radio-checkbox__workshop-verified"
@@ -627,8 +554,7 @@ function UpdateWorkshopPage() {
                                         }
                                         register={register}
                                         errors={errors}
-                                    >
-                                        Afgekeurd
+                                    >Afkeuren
                                     </InputField>
                                 </div>
                             </label>
@@ -657,13 +583,11 @@ function UpdateWorkshopPage() {
 
                         </div>
                     }
-
                     {(workshopToVerifyData.workshopVerified === true && !isChecked) &&
                         // wanted to make this a button, but when using a button type text, the form was submitted when clicking it.
                         <Link className={styles["link-update-worskhop"]} to="#"
-                                onClick={openModalCheck}
-                        >
-                            Workshop wijzigen
+                              onClick={openModalCheck}
+                        >Workshop wijzigen
                         </Link>
                     }
                     {(workshopToVerifyData.workshopVerified !== true || isChecked === true) &&
@@ -671,10 +595,8 @@ function UpdateWorkshopPage() {
                             type="submit"
                         >Verzend wijzigingen</Button>
                     }
-
                 </form>
                 <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
-
             </div>
         </main>
     );

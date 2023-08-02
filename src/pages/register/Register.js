@@ -4,7 +4,6 @@ import InputField from "../../components/InputField/InputField";
 import Select from "react-select";
 import Button from "../../components/Button/Button";
 import {useController, useForm} from "react-hook-form";
-import {useNavigate} from "react-router-dom";
 import {createCustomer, createWorkshopOwner} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
@@ -33,41 +32,24 @@ function Register() {
         {value: true, label: "Workshop eigenaar"}
     ];
 
-    const navigate = useNavigate();
-    const controller = new AbortController();
-
     async function handleFormSubmit(data) {
-
-        if (workshopOwner) {
-            try {
-                const response = await createWorkshopOwner(data.firstname, data.lastname, data.email, data.password, data.workshopOwner, data.companyname, data.kvknumber, data.vatnumber);
-                reset();
-                openModal();
-                setTimeout(() => {
-                    closeModal();
-                    login(response.jwt, "/profiel");
-                }, 2000);
-
-
-            } catch (e) {
-                setError(errorHandling(e));
+        setError('');
+        try {
+            let response;
+            if (workshopOwner) {
+                response = await createWorkshopOwner(data.firstname, data.lastname, data.email, data.password, data.workshopOwner, data.companyname, data.kvknumber, data.vatnumber);
+            } else {
+                response = await createCustomer(data.firstname, data.lastname, data.email, data.password, data.workshopOwner,);
             }
+            reset();
+            openModal();
+            setTimeout(() => {
+                closeModal();
+                login(response.jwt, "/profiel");
+            }, 3000);
 
-        } else {
-            try {
-                console.log(data.workshopOwner);
-
-                const response = await createCustomer(data.firstname, data.lastname, data.email, data.password, data.workshopOwner,);
-                reset();
-                openModal();
-                setTimeout(() => {
-                    closeModal();
-                    login(response.jwt, "/profiel");
-                }, 2000);
-
-            } catch (e) {
-                setError(errorHandling(e));
-            }
+        } catch (e) {
+            setError(errorHandling(e));
         }
     }
 
@@ -196,8 +178,8 @@ function Register() {
                                                 value={userTypeLabel}
                                                 onChange={option => userTypeOnChange(option ? option.value : option)}
                                                 {...restUserTypeField}
-                                            required="true"
-                                                //TODO change required message
+                                                required="true"
+                                            //TODO change required message
                                         />
                                     </label>
                                     {errors.workshopOwner && <p>{errors.workshopOwner.message}</p>}
@@ -267,7 +249,7 @@ function Register() {
                         }
                         <Button
                             type="submit"
-                            disabled= {error? "disabled" : null}
+                            disabled={error ? "disabled" : null}
                         >Verstuur</Button>
                         {error && <p className="error-message">{error}</p>}
 
