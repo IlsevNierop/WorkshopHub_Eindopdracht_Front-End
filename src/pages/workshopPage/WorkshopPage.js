@@ -84,17 +84,19 @@ function WorkshopPage() {
                 }
                 toggleLoading(false);
             } else {
+                console.log("test")
                 try {
                     let response;
                     if (user) {
+                        console.log("user")
                         await getDataSingleWorkshopDataLoggedIn(token, user.id);
                     } else {
                         response = await fetchSingleWorkshopData(workshopId);
+                        console.log(response)
+                        setSingleWorkshopData(response);
+                        setFavourite(singleWorkshopData.isFavourite);
+                        setError('');
                     }
-                    console.log(response)
-                    setSingleWorkshopData(response);
-                    setFavourite(singleWorkshopData.isFavourite);
-                    setError('');
                 } catch
                     (e) {
                     setError(errorHandling(e));
@@ -123,6 +125,7 @@ function WorkshopPage() {
     async function getDataSingleWorkshopDataLoggedIn() {
         try {
             const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
+            console.log(response);
             setSingleWorkshopData(response);
             setFavourite(singleWorkshopData.isFavourite);
             setError('');
@@ -457,7 +460,7 @@ function WorkshopPage() {
                                 <Link
                                     aria-label="link__all-workshops-from-workshop-owner-page"
                                     className={styles["link__companyname__workshop-info"]}
-                                      to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
+                                    to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
                                     <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 </Link>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
