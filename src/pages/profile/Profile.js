@@ -469,11 +469,6 @@ function Profile() {
                                                     label="BTW nummer: "
                                                     validation={{
                                                         disabled: !editProfile,
-                                                        required:
-                                                            {
-                                                                value: true,
-                                                                message: "BTW nummer is verplicht",
-                                                            }
                                                     }
                                                     }
                                                     register={register}

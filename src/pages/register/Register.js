@@ -231,15 +231,7 @@ function Register() {
                                 <InputField
                                     type="text"
                                     name="vatnumber"
-                                    label="BTW nummer* "
-                                    validation={{
-                                        required:
-                                            {
-                                                value: true,
-                                                message: "BTW nummer is verplicht",
-                                            }
-                                    }
-                                    }
+                                    label="BTW nummer"
                                     register={register}
                                     errors={errors}
                                 >

@@ -45,22 +45,31 @@ function InputField({
                                     <Link
                                         aria-label="link__show-hide-password"
                                         className={styles["password-visibility"]} to="#"
-                                          onClick={() => setShowPassword(!showPassword)}> {showPassword ?
+                                        onClick={() => setShowPassword(!showPassword)}> {showPassword ?
                                         <Eye size={18} color="#bfbdbd"/> :
                                         <EyeClosed size={18} color="#bfbdbd"/>}</Link>}
                             </>
                             :
-                            <input
-                                className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}
-                                value={value}
+                            <>
+                                <input
+                                    className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}
+                                    value={value}
 
-                                type={type}
-                                id={`${name}-field`}
-                                {...register(name, validation)}
-                                readOnly={readOnly}
-                                placeholder={placeholder}
+                                    type={type}
+                                    id={`${name}-field`}
+                                    {...register(name, validation)}
+                                    readOnly={readOnly}
+                                    placeholder={placeholder}
 
-                            />
+                                />
+                                {name === "password" &&
+                                    <Link
+                                        aria-label="link__show-hide-password"
+                                        className={styles["password-visibility"]} to="#"
+                                        onClick={() => setShowPassword(!showPassword)}> {showPassword ?
+                                        <Eye size={18} color="#bfbdbd"/> :
+                                        <EyeClosed size={18} color="#bfbdbd"/>}</Link>}
+                            </>
                         }
                     </>
                     :
