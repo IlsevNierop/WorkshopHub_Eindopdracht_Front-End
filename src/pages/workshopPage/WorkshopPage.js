@@ -212,6 +212,9 @@ function WorkshopPage() {
         if (singleWorkshopData.spotsAvailable < value) {
             return `Er zijn maar ${singleWorkshopData.spotsAvailable} plekken beschikbaar, en je probeert ${value} plekken te boeken`;
         }
+        else if (value <= 0) {
+            return `Je moet minstens 1 plek boeken.`;
+        }
         return true;
     };
 
@@ -525,7 +528,7 @@ function WorkshopPage() {
                                             {singleWorkshopData.workshopOwnerReviews.map((review) => {
                                                 return (
                                                     <article className={styles["container__individual-review"]}
-                                                             key={review.id}>
+                                                             key={`review-${review.id}`}>
                                                         <div className={styles["top-row__review"]}>
                                                             <StarRating rating={review.rating} size={14}></StarRating>
                                                             <p>{review.rating.toFixed(1)} / 5</p>
@@ -544,7 +547,6 @@ function WorkshopPage() {
                                     <>
                                         <div className={styles["zero-review"]}>
                                             <p>Er zijn nog geen reviews</p>
-                                            {/*    TODO button toevoegen om review achter te laten? */}
                                         </div>
                                     </>
                                 }

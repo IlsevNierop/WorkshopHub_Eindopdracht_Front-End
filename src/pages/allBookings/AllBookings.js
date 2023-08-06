@@ -538,7 +538,7 @@ function AllBookings() {
                                                         ) : (
                                                             <Link
                                                                 className={"link-table-text"}
-                                                                  to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
+                                                                  to={`/nieuwereview/${booking.customerId}/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
                                                                 review
                                                                 achter</Link>
                                                         )
