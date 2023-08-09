@@ -8,7 +8,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Camera, Check} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
-    fetchDataWorkshopOwner,
+    fetchDataWorkshopOwner, resetPassword, resetPasswordLoggedIn,
     signIn,
     updateCustomer,
     updateWorkshopOwner,
@@ -26,8 +26,8 @@ function Profile() {
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
+    const {register: registerResetPassword, handleSubmit: handleSubmitResetPassword, formState: {errors : errorsResetPassword}, reset: resetResetPassword} = useForm({mode: 'onBlur'});
     const [error, setError] = useState('');
-    const [updateMessage, toggleUpdateMessage] = useState(false);
     const [userType, setUserType] = useState(workshopowner ? {
         value: true,
         label: "Workshop eigenaar"
@@ -36,6 +36,9 @@ function Profile() {
     const [previewUrl, setPreviewUrl] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [modalIsOpen, setIsOpen] = React.useState(false);
+    const [modalIsOpenUpdateProfile, setIsOpenUpdateProfile] = React.useState(false);
+    const [modalIsOpenResetPassword, setIsOpenResetPassword] = React.useState(false);
+    const [modalIsOpenUpdatePassword, setIsOpenUpdatePassword] = React.useState(false);
 
     const navigate = useNavigate();
     const controller = new AbortController();
@@ -56,6 +59,40 @@ function Profile() {
         setIsOpen(false);
         setPreviewUrl('');
         reset();
+    }
+
+    function openModalUpdateProfile() {
+        setIsOpenUpdateProfile(true);
+    }
+
+    function afterOpenModalUpdateProfile() {
+    }
+
+    function closeModalUpdateProfile() {
+        setIsOpenUpdateProfile(false);
+    }
+
+    function openModalUpdatePassword() {
+        setIsOpenUpdatePassword(true);
+    }
+
+    function afterOpenModalUpdatePassword() {
+    }
+
+    function closeModalUpdatePassword() {
+        setIsOpenUpdatePassword(false);
+    }
+
+    function openModalResetPassword() {
+        setIsOpenResetPassword(true);
+    }
+
+    function afterOpenModalResetPassword() {
+    }
+
+    function closeModalResetPassword() {
+        setIsOpenResetPassword(false);
+        resetResetPassword();
     }
 
     useEffect(() => {
@@ -128,57 +165,30 @@ function Profile() {
 
     async function handleFormSubmit(data) {
         setError('');
-
-        if (userType.value) {
-            try {
-                const response = await updateWorkshopOwner(token, id, data.firstname, data.lastname, data.email, data.password, data.companyname, data.kvknumber, data.vatnumber,
+        try {
+            let response;
+            if (userType.value) {
+                response = await updateWorkshopOwner(token, id, data.firstname, data.lastname, data.email, data.companyname, data.kvknumber, data.vatnumber,
                     userType.value);
-                if (response.status === 200) {
-                    // after updating profile information (like workshopowner & email, which are part of the jwt token) the user needs to be automatically logged in again, in order to also update the jwt token to match new user details.
-                    try {
-                        console.log(data.email, data.password)
-                        const {jwt} = await signIn(data.email, data.password);
-                        login(jwt);
-                        toggleUpdateMessage(true);
-                        setTimeout(() => {
-                            toggleUpdateMessage(false);
-                        }, 2000);
-                        toggleEditProfile(false);
-                    } catch (e) {
-                        setError(errorHandling(e));
-                    }
-                }
-            } catch (e) {
-                setError(errorHandling(e));
+            } else {
+                response = await updateCustomer(token, id, data.firstname, data.lastname, data.email, userType.value);
             }
-
-        } else {
-            try {
-
-                const response = await updateCustomer(token, id, data.firstname, data.lastname, data.email, data.password, userType.value);
-                if (response.status === 200) {
-                    // after updating profile information (like workshopowner & email, which are part of the jwt token) the user needs to be automatically logged in again, in order to also update the jwt token to match new user details.
-                    try {
-                        const {jwt} = await signIn(data.email, data.password);
-                        console.log(jwt);
-                        login(jwt);
-                        toggleUpdateMessage(true);
-                        setTimeout(() => {
-                            toggleUpdateMessage(false);
-                        }, 2000);
-                        toggleEditProfile(false);
-
-
-                    } catch (e) {
-                        setError(errorHandling(e));
-                    }
-
+            if (response.status === 202) {
+                try {
+                    login(response.data.jwt);
+                    openModalUpdateProfile();
+                    setTimeout(() => {
+                        closeModalUpdateProfile();
+                    }, 2000);
+                    toggleEditProfile(false);
+                } catch (e) {
+                    setError(errorHandling(e));
                 }
-            } catch (e) {
-                setError(errorHandling(e));
             }
+        } catch
+            (e) {
+            setError(errorHandling(e));
         }
-        reset();
     }
 
     function handleImageChange(e) {
@@ -211,6 +221,25 @@ function Profile() {
         }
     }
 
+    async function handleFormSubmitResetPassword(data) {
+
+        try {
+            const response = await resetPasswordLoggedIn(token, data.email, data.password);
+            console.log(response);
+            closeModalResetPassword();
+            openModalUpdatePassword();
+            setTimeout(() => {
+                closeModalUpdatePassword();
+            }, 2000);
+        } catch (e) {
+            setError(errorHandling(e));
+            setTimeout(() => {
+                setError('');
+            }, 4000);
+            console.log(error);
+        }
+    }
+
     return (
         <>
 
@@ -219,6 +248,87 @@ function Profile() {
                 <div className={`inner-container ${styles["profile__inner-container"]}`}>
 
                     <div>
+                        <CustomModal
+                            modalIsOpen={modalIsOpenUpdateProfile}
+                            afterOpenModal={afterOpenModalUpdateProfile}
+                            closeModal={closeModalUpdateProfile}
+                            contentLabel="Update profile successful"
+                            updateHeader="Je profiel is succesvol aangepast"
+                        ></CustomModal>
+
+                        <CustomModal
+                            modalIsOpen={modalIsOpenResetPassword}
+                            afterOpenModal={afterOpenModalResetPassword}
+                            closeModal={closeModalResetPassword}
+                            contentLabel="Reset Password"
+                            functionalModalHeader="Wachtwoord wijzigen"
+                        >
+                            <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
+                                nieuw wachtwoord.</h4>
+                            <form className={styles["reset-password__form"]} onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
+                                <InputField
+                                    type="text"
+                                    name="email"
+                                    label="Email: "
+                                    validation={{
+                                        required:
+                                            {
+                                                value: true,
+                                                message: "E-mail is verplicht",
+                                            }, pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,3}$/i,
+                                            message: "Vul een geldig e-mailadres in"
+                                        }
+                                    }}
+                                    register={registerResetPassword}
+                                    errors={errorsResetPassword}
+                                >
+                                </InputField>
+                                <InputField classNameLabel="password-input-field"
+                                            type={showPassword ? "text" : "password"}
+                                            name="password"
+                                            label="Wachtwoord: "
+                                            validation={{
+                                                required:
+                                                    {
+                                                        value: true,
+                                                        message: "Wachtwoord is verplicht",
+                                                    },
+                                                minLength: {
+                                                    value: 8,
+                                                    message: 'Wachtwoord moet minstens 8 karakters lang zijn',
+                                                },
+                                                maxLength: {
+                                                    value: 20,
+                                                    message: 'Wachtwoord mag niet meer dan 20 karakters lang zijn',
+                                                },
+                                                pattern: {
+                                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\\!\\#\\@\\$\\%\\&\\/\\(\\)\\=\\?\\*\\-\\+\\_\\.\\:\\;\\,\\{\\}\\^])[A-Za-z0-9!#@$%&/()=?*+-_.:;,{}].+$/,
+                                                    message: "Ongeldig wachtwoord. Het moet aan de volgende eisen voldoen: \n- Minimaal 1 kleine letter. \n- Minimaal 1 hoofdletter. \n- Minimaal 1 getal \n- Minimaal 1 symbool."
+                                                }
+                                            }
+                                            }
+                                            register={registerResetPassword}
+                                            errors={errorsResetPassword}
+                                            setShowPassword={setShowPassword}
+                                            showPassword={showPassword}
+                                >
+                                </InputField>
+                                {error && <p className="error-message">{error}</p>}
+                                <Button
+                                    type="submit"
+                                >Verstuur</Button>
+                            </form>
+                        </CustomModal>
+
+                        <CustomModal
+                            modalIsOpen={modalIsOpenUpdatePassword}
+                            afterOpenModal={afterOpenModalUpdatePassword}
+                            closeModal={closeModalUpdatePassword}
+                            contentLabel="Update password successful"
+                            updateHeader="Je wachtwoord is succesvol aangepast"
+                        ></CustomModal>
+
                         <CustomModal
                             modalIsOpen={modalIsOpen}
                             afterOpenModal={afterOpenModal}
@@ -277,11 +387,18 @@ function Profile() {
                             }
 
                             {!editProfile &&
-                                <Button
-                                    type="text"
-                                    onClick={() => toggleEditProfile(true)}
-                                >Wijzig profiel
-                                </Button>
+                                <>
+                                    <Button
+                                        type="text"
+                                        onClick={openModalResetPassword}
+                                    >Wijzig wachtwoord
+                                    </Button>
+                                    <Button
+                                        type="text"
+                                        onClick={() => toggleEditProfile(true)}
+                                    >Wijzig profiel
+                                    </Button>
+                                </>
                             }
 
 
@@ -289,8 +406,6 @@ function Profile() {
 
                         <section className={styles["profile-fields"]}>
 
-                            {updateMessage && <h4>Je profiel is succesvol aangepast</h4>
-                            }
                             <h1>Mijn Profiel</h1>
 
                             <form className={styles["profile__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
@@ -363,42 +478,11 @@ function Profile() {
                                         </InputField>
                                         {editProfile &&
                                             <>
-                                                <InputField
-                                                    classNameLabel="password-input-field"
-                                                    type={showPassword ? "text" : "password"}
-                                                    name="password"
-                                                    label="Wachtwoord: "
-                                                    validation={{
-                                                        required:
-                                                            {
-                                                                value: true,
-                                                                message: "Wachtwoord is verplicht",
-                                                            },
-                                                        minLength: {
-                                                            value: 8,
-                                                            message: 'Wachtwoord moet minstens 8 karakters lang zijn',
-                                                        },
-                                                        maxLength: {
-                                                            value: 20,
-                                                            message: 'Wachtwoord mag niet meer dan 20 karakters lang zijn',
-                                                        },
-                                                        pattern: {
-                                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\\!\\#\\@\\$\\%\\&\\/\\(\\)\\=\\?\\*\\-\\+\\_\\.\\:\\;\\,\\{\\}\\^])[A-Za-z0-9!#@$%&/()=?*+-_.:;,{}].+$/,
-                                                            message: "Ongeldig wachtwoord. Het moet aan de volgende eisen voldoen: \n- Minimaal 1 kleine letter. \n- Minimaal 1 hoofdletter. \n- Minimaal 1 getal \n- Minimaal 1 symbool."
-                                                        }
-                                                    }
-                                                    }
-                                                    register={register}
-                                                    errors={errors}
-                                                    value={userData.password}
-                                                    onChangeHandler={handleChange}
-                                                    setShowPassword={setShowPassword}
-                                                    showPassword={showPassword}
-                                                >
-                                                </InputField>
                                                 <div className={styles["user-type__row"]}>
 
-                                                    <label className={`select-dropdown ${styles["user-type__label"]}`} htmlFor="select-dropdown-sort">Consument/
+                                                    <label
+                                                        className={`select-dropdown ${styles["user-type__label"]}`}
+                                                        htmlFor="select-dropdown-sort">Consument/
                                                         workshop eigenaar:</label>
                                                     <Select className={styles["user-type__dropdown"]}
                                                             defaultValue={userType}
@@ -408,8 +492,6 @@ function Profile() {
                                                     />
                                                 </div>
                                             </>
-
-
                                         }
                                     </div>
                                 }
