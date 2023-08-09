@@ -24,6 +24,7 @@ function Profile() {
 
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
+    const [needToUpdateProfile, toggleNeedToUpdateProfile] = useState(false);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
     const {
         register: registerResetPassword,
@@ -156,7 +157,7 @@ function Profile() {
         return function cleanup() {
             controller.abort();
         }
-    }, []);
+    }, [needToUpdateProfile]);
 
 
     const handleChange = (event) => {
@@ -242,6 +243,12 @@ function Profile() {
             }, 4000);
             console.log(error);
         }
+    }
+
+    function cancelEditProfile() {
+        toggleNeedToUpdateProfile(!needToUpdateProfile);
+        reset();
+        toggleEditProfile(false);
     }
 
     return (
@@ -580,7 +587,7 @@ function Profile() {
                                         </Button>
                                         <Button
                                             type="text"
-                                            onClick={() => toggleEditProfile(false)}
+                                            onClick={() => cancelEditProfile()}
                                         >Annuleren
                                         </Button>
                                     </>
@@ -589,6 +596,7 @@ function Profile() {
                                 {error && <p className="error-message">{error}</p>}
 
                             </form>
+
                         </section>
 
 
