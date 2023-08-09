@@ -510,7 +510,7 @@ function AllReviews() {
                                 <th>Workshop titel</th>
                                 <th>Workshop eigenaar</th>
                                 <th>Datum workshop</th>
-                                <th>Review geaccordeerd</th>
+                                <th>Geaccordeerd door admin</th>
                                 <th>Feedback</th>
                                 <th>Wijzigen</th>
                                 <th>Verwijderen</th>

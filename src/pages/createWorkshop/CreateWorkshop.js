@@ -86,6 +86,7 @@ function CreateWorkshop() {
                         type="text"
                         name="title"
                         label="Titel* "
+                        placeholder="Vul hier de titel van je workshop"
                         validation={{
                             required:
                                 {
@@ -152,6 +153,7 @@ function CreateWorkshop() {
                         step="any"
                         name="price"
                         label="Prijs* "
+                        placeholder="Vul hier de prijs van je workshop"
                         validation={{
                             required:
                                 {
@@ -172,6 +174,7 @@ function CreateWorkshop() {
                         type="text"
                         name="location"
                         label="Locatie* "
+                        placeholder="Vul hier de stad in"
                         validation={{
                             required:
                                 {
@@ -188,6 +191,7 @@ function CreateWorkshop() {
                         type="text"
                         name="category1"
                         label="Categorie* "
+                        placeholder="Bijv koken, natuur, breien, handwerk"
                         validation={{
                             required:
                                 {
@@ -204,6 +208,7 @@ function CreateWorkshop() {
                         type="text"
                         name="category2"
                         label="Extra categorie"
+                        placeholder="Bijv koken, natuur, breien, handwerk"
                         register={register}
                         errors={errors}
                     >
@@ -251,6 +256,7 @@ function CreateWorkshop() {
                         type="text"
                         name="highlightedinfo"
                         label="Belangrijke details"
+                        placeholder="Zoals incl lunch, of materiaal"
                         register={register}
                         errors={errors}
                     >
@@ -280,9 +286,11 @@ function CreateWorkshop() {
                             </div>
                         )}
                     />
+                    <div className={styles["container__input-field__workshop-picture"]}>
                     <label className={styles["label__input-field__workshop-picture"]}
                            htmlFor="workshop-picture-field">
                         Kies afbeelding
+                    </label>
                         <InputField
                             type="file"
                             name="workshop-picture"
@@ -291,7 +299,7 @@ function CreateWorkshop() {
                             onChangeHandler={handleImageChange}
                         >
                         </InputField>
-                    </label>
+                    </div>
 
                     {previewUrl &&
                         <label className={styles["workshop-picture__preview__label"]}>

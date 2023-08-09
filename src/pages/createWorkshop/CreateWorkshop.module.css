@@ -56,12 +56,6 @@
     color: var(--color-warning);
 }
 
-.label__input-field__workshop-picture {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
 
 .workshop-picture__preview__label {
     display: flex;

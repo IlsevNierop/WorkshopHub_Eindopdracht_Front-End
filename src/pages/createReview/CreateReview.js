@@ -11,7 +11,7 @@ import {updateDateFormatLong} from "../../helper/updateDateFormatLong";
 import CustomModal from "../../components/CustomModal/CustomModal";
 
 function CreateReview() {
-    const {workshopId, workshopTitle, workshopDate} = useParams();
+    const {customerId, workshopId, workshopTitle, workshopDate} = useParams();
 
     const {user: {id}} = useContext(AuthContext);
     const token = localStorage.getItem('token');
@@ -26,7 +26,7 @@ function CreateReview() {
         console.log(data)
 
         try {
-            const response = await createReview(token, data.rating, data.reviewDescription, id, workshopId);
+            const response = await createReview(token, data.rating, data.reviewDescription, customerId, workshopId);
             console.log(response);
             setError('')
             openModalCreateSuccessful();

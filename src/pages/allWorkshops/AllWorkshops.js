@@ -351,7 +351,7 @@ function AllWorkshops() {
                                 <th>Workshop ID</th>
                                 <th>Titel</th>
                                 <th>Datum</th>
-                                <th>Geaccordeerd</th>
+                                <th>Geaccordeerd door admin</th>
                                 <th>Gepubliceerd</th>
                                 <th>Feedback Admin</th>
                                 <th>Wijzigen</th>

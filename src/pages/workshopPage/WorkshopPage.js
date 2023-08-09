@@ -43,6 +43,8 @@ function WorkshopPage() {
     const [singleWorkshopData, setSingleWorkshopData] = useState({});
     const [workshopOffline, setWorkshopOffline] = useState(false);
     const [totalPriceBooking, setTotalPriceBooking] = useState(false);
+    const [reviewsToShow, setReviewsToShow] = useState([]);
+    // const [displayedReviewCount, setDisplayedReviewCount] = useState(3);
 
     const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
@@ -65,6 +67,7 @@ function WorkshopPage() {
                     }
                     console.log(response)
                     setSingleWorkshopData(response);
+                    setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
                     setFavourite(singleWorkshopData.isFavourite);
                     setError('');
                 } catch (e) {
@@ -84,17 +87,20 @@ function WorkshopPage() {
                 }
                 toggleLoading(false);
             } else {
+                console.log("test")
                 try {
                     let response;
                     if (user) {
+                        console.log("user")
                         await getDataSingleWorkshopDataLoggedIn(token, user.id);
                     } else {
                         response = await fetchSingleWorkshopData(workshopId);
+                        console.log(response)
+                        setSingleWorkshopData(response);
+                        setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
+                        setFavourite(singleWorkshopData.isFavourite);
+                        setError('');
                     }
-                    console.log(response)
-                    setSingleWorkshopData(response);
-                    setFavourite(singleWorkshopData.isFavourite);
-                    setError('');
                 } catch
                     (e) {
                     setError(errorHandling(e));
@@ -123,7 +129,9 @@ function WorkshopPage() {
     async function getDataSingleWorkshopDataLoggedIn() {
         try {
             const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
+            console.log(response);
             setSingleWorkshopData(response);
+            setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
             setFavourite(singleWorkshopData.isFavourite);
             setError('');
 
@@ -209,6 +217,9 @@ function WorkshopPage() {
         if (singleWorkshopData.spotsAvailable < value) {
             return `Er zijn maar ${singleWorkshopData.spotsAvailable} plekken beschikbaar, en je probeert ${value} plekken te boeken`;
         }
+        else if (value <= 0) {
+            return `Je moet minstens 1 plek boeken.`;
+        }
         return true;
     };
 
@@ -241,6 +252,11 @@ function WorkshopPage() {
             openModalBooking();
         }
     }
+
+    const handleShowAllReviews = () => {
+        // setDisplayedReviewCount(singleWorkshopData.workshopOwnerReviews.length);
+        setReviewsToShow(singleWorkshopData.workshopOwnerReviews);
+    };
 
 
     function signInWithSubHeader(subheader) {
@@ -457,7 +473,7 @@ function WorkshopPage() {
                                 <Link
                                     aria-label="link__all-workshops-from-workshop-owner-page"
                                     className={styles["link__companyname__workshop-info"]}
-                                      to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
+                                    to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
                                     <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
                                 </Link>
                                 <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
@@ -519,10 +535,11 @@ function WorkshopPage() {
 
                                         <section className={styles["container__reviews"]}>
 
-                                            {singleWorkshopData.workshopOwnerReviews.map((review) => {
+                                            {/*{singleWorkshopData.workshopOwnerReviews.map((review) => {*/}
+                                            {reviewsToShow.map((review) => {
                                                 return (
                                                     <article className={styles["container__individual-review"]}
-                                                             key={review.id}>
+                                                             key={`review-${review.id}`}>
                                                         <div className={styles["top-row__review"]}>
                                                             <StarRating rating={review.rating} size={14}></StarRating>
                                                             <p>{review.rating.toFixed(1)} / 5</p>
@@ -535,13 +552,15 @@ function WorkshopPage() {
                                                     </article>
                                                 )
                                             })}
+                                            {reviewsToShow.length < singleWorkshopData.workshopOwnerReviews.length && (
+                                                <Button type="text" onClick={handleShowAllReviews}>Toon alle reviews</Button>
+                                            )}
                                         </section>
                                     </>
                                     :
                                     <>
                                         <div className={styles["zero-review"]}>
                                             <p>Er zijn nog geen reviews</p>
-                                            {/*    TODO button toevoegen om review achter te laten? */}
                                         </div>
                                     </>
                                 }

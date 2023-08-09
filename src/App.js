@@ -40,7 +40,7 @@ function App() {
                     <Route path="/aanpassenworkshop/:workshopId" element={user != null && user.highestAuthority !== 'customer'?  <UpdateWorkshopPage/> : <Home />}/>
                     <Route path="/workshops" element={user != null && user.highestAuthority !== 'customer'?  <AllWorkshops/> : <Home />}/>
                     <Route path="/reviews" element={user != null && user.highestAuthority !== 'workshopowner' ?  <AllReviews/> : <Home />}/>
-                    <Route path="/nieuwereview/:workshopId/:workshopTitle/:workshopDate" element={user != null && user.highestAuthority !== 'workshopowner' ? <CreateReview/> : <Home />}/>
+                    <Route path="/nieuwereview/:customerId/:workshopId/:workshopTitle/:workshopDate" element={user != null && user.highestAuthority !== 'workshopowner' ? <CreateReview/> : <Home />}/>
                     <Route path="/boekingen" element={isAuth?  <AllBookings/> : <Home />}/>
                     <Route path="/gebruikers" element={user != null && user.highestAuthority === 'admin' ?  <AllUsers/> : <Home />}/>
                     <Route path="*" element={ <PageNotFound/> }/>

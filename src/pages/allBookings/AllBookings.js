@@ -291,7 +291,13 @@ function AllBookings() {
         <main className={`outer-container ${styles["all-bookings__outer-container"]}`}>
             <div className={`inner-container ${styles["all-bookings__inner-container"]}`}>
                 {bookingsData && bookingsData.length > 0 ?
-                    <h1>{(highestAuthority === 'admin' || highestAuthority === 'workshopowner')  ? "Alle boekingen" : "Mijn boekingen"} </h1>
+                    <h1>{(highestAuthority === 'admin') ?
+                        "Alle boekingen"
+                        :
+                        (highestAuthority === 'workshopowner') ?
+                            "Alle boekingen op mijn workshops"
+                            :
+                            "Mijn boekingen"} </h1>
                     :
                     <h1>{(highestAuthority === 'admin' || highestAuthority === 'workshopowner') ? "Er zijn nog geen boekingen" : "Je hebt nog geen boekingen"} </h1>
                 }
@@ -447,7 +453,8 @@ function AllBookings() {
 
                         <div className={styles["container__filter-dropdown__button"]}>
                             <div className={styles["dropdown"]}>
-                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Kies workshop ID:</label>
+                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Filter op workshop
+                                    ID:</label>
                                 <Select className={styles["filter__dropdown"]}
                                         id="select-dropdown-workshopId"
                                         name="select-dropdown-workshopId"
@@ -538,7 +545,7 @@ function AllBookings() {
                                                         ) : (
                                                             <Link
                                                                 className={"link-table-text"}
-                                                                  to={`/nieuwereview/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
+                                                                to={`/nieuwereview/${booking.customerId}/${booking.workshopId}/${booking.workshopTitle}/${booking.workshopDate}`}>Laat
                                                                 review
                                                                 achter</Link>
                                                         )
@@ -555,13 +562,14 @@ function AllBookings() {
                     </table>}
 
                 {(highestAuthority !== 'customer' && Object.keys(workshopId).length === 0) &&
-                    <Button type="text" onClick={() => downloadCsvFileBookings(highestAuthority)}>Download csv</Button>
+                    <Button type="text" onClick={() => downloadCsvFileBookings(highestAuthority)}>Download overzicht
+                        boekingen</Button>
                 }
 
                 {(highestAuthority !== 'customer' && Object.keys(workshopId).length !== 0) &&
                     <Button type="text"
                             onClick={() => downloadCsvFileBookings(highestAuthority, parseInt(workshopId.value))}>Download
-                        csv</Button>
+                        overzicht boekingen</Button>
                 }
             </div>
         </main>

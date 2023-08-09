@@ -63,7 +63,7 @@ function AllUsers() {
         return function cleanup() {
             controller.abort();
         }
-    }, []);
+    }, [needUpdateUsersData]);
 
     useEffect(() => {
         setUsersData(sortArrayAllUsers(usersData, sortValue.value));
