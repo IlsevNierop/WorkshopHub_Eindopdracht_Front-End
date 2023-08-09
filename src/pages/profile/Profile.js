@@ -8,8 +8,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Camera, Check} from "@phosphor-icons/react";
 import {
     fetchDataCustomer,
-    fetchDataWorkshopOwner, resetPassword, resetPasswordLoggedIn,
-    signIn,
+    fetchDataWorkshopOwner, resetPasswordLoggedIn,
     updateCustomer,
     updateWorkshopOwner,
     uploadProfilePic
@@ -26,7 +25,12 @@ function Profile() {
     const [userData, setUserData] = useState(null);
     const [editProfile, toggleEditProfile] = useState(false);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
-    const {register: registerResetPassword, handleSubmit: handleSubmitResetPassword, formState: {errors : errorsResetPassword}, reset: resetResetPassword} = useForm({mode: 'onBlur'});
+    const {
+        register: registerResetPassword,
+        handleSubmit: handleSubmitResetPassword,
+        formState: {errors: errorsResetPassword},
+        reset: resetResetPassword
+    } = useForm({mode: 'onBlur'});
     const [error, setError] = useState('');
     const [userType, setUserType] = useState(workshopowner ? {
         value: true,
@@ -263,9 +267,11 @@ function Profile() {
                             contentLabel="Reset Password"
                             functionalModalHeader="Wachtwoord wijzigen"
                         >
-                            <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
+                            <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en
+                                een
                                 nieuw wachtwoord.</h4>
-                            <form className={styles["reset-password__form"]} onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
+                            <form className={styles["reset-password__form"]}
+                                  onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
                                 <InputField
                                     type="text"
                                     name="email"
@@ -567,11 +573,19 @@ function Profile() {
                                     </>
                                 }
                                 {editProfile &&
-                                    <Button
-                                        type="submit"
-                                    >Verstuur
-                                    </Button>
+                                    <>
+                                        <Button
+                                            type="submit"
+                                        >Verstuur
+                                        </Button>
+                                        <Button
+                                            type="text"
+                                            onClick={() => toggleEditProfile(false)}
+                                        >Annuleren
+                                        </Button>
+                                    </>
                                 }
+
                                 {error && <p className="error-message">{error}</p>}
 
                             </form>

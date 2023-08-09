@@ -9,8 +9,6 @@ import SignIn from "../SignIn/SignIn";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
 
 function NavBar() {
-
-
     const {isAuth, user, logout} = useContext(AuthContext);
     const {setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
 
@@ -18,7 +16,6 @@ function NavBar() {
         setModalIsOpenSignIn(true);
         setSignInSubHeader(subheader);
     }
-
 
     return (
         <>
