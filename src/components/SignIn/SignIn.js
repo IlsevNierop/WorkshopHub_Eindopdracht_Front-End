@@ -16,7 +16,13 @@ function SignIn() {
     const {login} = useContext(AuthContext);
     const {modalIsOpenSignIn, setModalIsOpenSignIn, signInSubHeader} = useContext(ModalSignInContext);
 
-    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onTouched'});
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
+    const {
+        register: registerResetPassword,
+        handleSubmit: handleSubmitResetPassword,
+        formState: {errors: errorsResetPassword},
+        reset: resetResetPassword
+    } = useForm({mode: 'onBlur'});
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [modalIsOpenResetPassword, setIsOpenResetPassword] = useState(false);
@@ -179,7 +185,7 @@ function SignIn() {
                 <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
                 <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
                     nieuw wachtwoord.</h4>
-                <form className={styles["reset-password__form"]} onSubmit={handleSubmit(handleFormSubmitResetPassword)}>
+                <form className={styles["reset-password__form"]} onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
                     <InputField
                         type="text"
                         name="email"
@@ -194,8 +200,8 @@ function SignIn() {
                                 message: "Vul een geldig e-mailadres in"
                             }
                         }}
-                        register={register}
-                        errors={errors}
+                        register={registerResetPassword}
+                        errors={errorsResetPassword}
                     >
                     </InputField>
                     <InputField classNameLabel="password-input-field"
@@ -222,8 +228,8 @@ function SignIn() {
                                     }
                                 }
                                 }
-                                register={register}
-                                errors={errors}
+                                register={registerResetPassword}
+                                errors={errorsResetPassword}
                                 setShowPassword={setShowPassword}
                                 showPassword={showPassword}
                     >
