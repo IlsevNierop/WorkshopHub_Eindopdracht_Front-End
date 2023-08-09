@@ -177,7 +177,7 @@ function SignIn() {
             >
                 {/*This is not the correct way to reset a password, because the user is verified (normally through email for example). But because I don't have email functionality, don't know of a way to validate the user, but do want a password reset functionality, it's possible to reset a password, by just filling in your email adress and new password. */}
                 <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
-                <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en kies een
+                <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
                     nieuw wachtwoord.</h4>
                 <form className={styles["reset-password__form"]} onSubmit={handleSubmit(handleFormSubmitResetPassword)}>
                     <InputField

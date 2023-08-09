@@ -87,12 +87,11 @@ export async function createCustomer(firstname, lastname, email, password, works
 }
 
 
-export async function updateWorkshopOwner(token, userId, firstname, lastname, email, password, companyname, kvknumber, vatnumber, workshopowner) {
+export async function updateWorkshopOwner(token, userId, firstname, lastname, email, companyname, kvknumber, vatnumber, workshopowner) {
     const response = await axios.put(`${baseUrl}users/workshopowner/${userId}`, {
             firstName: firstname,
             lastName: lastname,
             email: email,
-            password: password,
             companyName: companyname,
             kvkNumber: kvknumber,
             vatNumber: vatnumber,
@@ -109,12 +108,11 @@ export async function updateWorkshopOwner(token, userId, firstname, lastname, em
 }
 
 
-export async function updateCustomer(token, userId, firstname, lastname, email, password, workshopowner) {
+export async function updateCustomer(token, userId, firstname, lastname, email, workshopowner) {
     const response = await axios.put(`${baseUrl}users/customer/${userId}`, {
             firstName: firstname,
             lastName: lastname,
             email: email,
-            password: password,
             workshopOwner: workshopowner,
         },
         {
@@ -142,6 +140,20 @@ export async function resetPassword(email, password) {
     const response = await axios.put(`${baseUrl}users/passwordrequest/${email}`, {
         newPassword: password
     });
+    return response;
+}
+
+export async function resetPasswordLoggedIn(token, email, password) {
+    const response = await axios.put(`${baseUrl}users/passwordupdaterequest/${email}`, {
+        newPassword: password
+    },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            signal: controller.signal,
+        });
     return response;
 }
 

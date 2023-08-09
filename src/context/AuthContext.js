@@ -8,7 +8,6 @@ export const AuthContext = createContext(null);
 
 
 function AuthContextProvider({children}) {
-
     const [authData, setAuthData] = useState({
         isAuth: false,
         user: null,
@@ -19,18 +18,15 @@ function AuthContextProvider({children}) {
 
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
-
         if (storedToken && checkTokenValidity(storedToken)) {
             void login(storedToken);
         } else {
             void logout();
         }
-
     }, []);
 
 
     function login(jwt_token, redirect) {
-
         const decodedToken = jwt_decode(jwt_token)
         const {sub, id, authorities, workshopowner} = decodedToken;
 
