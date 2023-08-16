@@ -341,6 +341,9 @@ function Home() {
 
 
                     <section className={styles["overview__workshop-tiles"]}>
+                        {workshopData.length === 0 &&
+                            <h3>Er zijn geen workshop die aan deze filters voldoen</h3>
+                        }
                         {workshopData && workshopData.map((workshop) => {
                             return (
                                 <WorkshopTile
