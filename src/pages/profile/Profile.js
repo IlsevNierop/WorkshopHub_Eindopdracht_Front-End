@@ -316,7 +316,7 @@ function Profile() {
                                                     message: 'Wachtwoord mag niet meer dan 20 karakters lang zijn',
                                                 },
                                                 pattern: {
-                                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[\\!\\#\\@\\$\\%\\&\\/\\(\\)\\=\\?\\*\\-\\+\\_\\.\\:\\;\\,\\{\\}\\^])[A-Za-z0-9!#@$%&/()=?*+-_.:;,{}].+$/,
+                                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*?[0-9])(?=.*?[!#@$%&\/()=?*\-+_.:;,{}^])[A-Za-z0-9!#@$%&/()=?*+\-_.:;,{}].+$/,
                                                     message: "Ongeldig wachtwoord. Het moet aan de volgende eisen voldoen: \n- Minimaal 1 kleine letter. \n- Minimaal 1 hoofdletter. \n- Minimaal 1 getal \n- Minimaal 1 symbool."
                                                 }
                                             }
