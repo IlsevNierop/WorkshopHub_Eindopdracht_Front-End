@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
 import styles from "./NavBar.module.css";
-import logo from "../../../../workshophub-eindopdracht/src/assets/logo-default.svg";
+import logo from "../../assets/logo-default.svg";
 import {Heart} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
 import {navLinks} from "./navLinks";

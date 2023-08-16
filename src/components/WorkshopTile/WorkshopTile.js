@@ -8,7 +8,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {Link} from "react-router-dom";
 import CustomModal from "../CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
-import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+import defaultworkshoppic from "../../assets/defaultworkshoppic.webp";
 
 
 function WorkshopTile({
@@ -102,7 +102,7 @@ function WorkshopTile({
                 <Link
                     aria-label="link__workshop-page"
                     className={styles["workshop-tile__link"]} to={link}>
-                    <img className={styles["workshop-image"]} src={image ? image : defaultpic}
+                    <img className={styles["workshop-image"]} src={image ? image : defaultworkshoppic}
                          alt={`Foto van de workshop ${workshoptitle}`}/>
 
                     <aside className={styles["information-workshop-column"]}>

@@ -18,7 +18,7 @@ import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {Heart} from "@phosphor-icons/react";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
-import defaultpic from "../../../../workshophub-eindopdracht/src/assets/temppicsworkshop/defaultpic.webp";
+import defaultworkshoppic from "../../assets/defaultworkshoppic.webp";
 import InputField from "../../components/InputField/InputField";
 import {useForm} from "react-hook-form";
 
@@ -44,7 +44,6 @@ function WorkshopPage() {
     const [workshopOffline, setWorkshopOffline] = useState(false);
     const [totalPriceBooking, setTotalPriceBooking] = useState(false);
     const [reviewsToShow, setReviewsToShow] = useState([]);
-    // const [displayedReviewCount, setDisplayedReviewCount] = useState(3);
 
     const [modalIsOpenUpdateMessage, setIsOpenUpdateMessage] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
@@ -455,7 +454,7 @@ function WorkshopPage() {
                         </div>
                         <div className={styles["image__wrapper"]}>
                             <img className={styles["workshop-image"]}
-                                 src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultpic}
+                                 src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultworkshoppic}
                                  alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
                             <Link
                                 aria-label="link__add-remove-favourite-workshop"
@@ -489,7 +488,9 @@ function WorkshopPage() {
 
                             <section>
                                 <Button type="text" onClick={onClikHandlerBooking}
-                                        disabled={(singleWorkshopData.spotsAvailable === 0) && true}>
+                                        disabled={
+                                    ((singleWorkshopData.spotsAvailable === 0) || !singleWorkshopData.publishWorkshop || !singleWorkshopData.workshopVerified)
+                                            && true}>
                                     Boeken
                                 </Button>
                                 {(singleWorkshopData.spotsAvailable === 0) ?
