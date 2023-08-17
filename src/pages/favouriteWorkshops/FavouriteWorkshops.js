@@ -54,6 +54,8 @@ function FavouriteWorkshops() {
 
                 <section className={styles["overview__workshop-tiles"]}>
 
+                    {favouriteWorkshops.length === 0 &&
+                    <h3>Je hebt nog geen favoriete workshops</h3>}
                     {favouriteWorkshops && favouriteWorkshops.map((workshop) => {
                         return (
                             //TODO while in overview changes favourite icon - no refresh - add state + dependency for useeffect

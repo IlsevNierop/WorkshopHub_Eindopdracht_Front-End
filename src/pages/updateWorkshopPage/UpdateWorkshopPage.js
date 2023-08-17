@@ -44,6 +44,7 @@ function UpdateWorkshopPage() {
         publishWorkshop: '',
         feedbackAdmin: '',
         workshopVerified: '',
+        spotsAvailable: '',
     });
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
@@ -82,7 +83,8 @@ function UpdateWorkshopPage() {
                         workshopPicUrl,
                         publishWorkshop,
                         feedbackAdmin,
-                        workshopVerified
+                        workshopVerified,
+                        spotsAvailable
                     } = response;
 
 
@@ -103,7 +105,8 @@ function UpdateWorkshopPage() {
                         workshopPicUrl,
                         publishWorkshop,
                         feedbackAdmin,
-                        workshopVerified
+                        workshopVerified,
+                        spotsAvailable
                     });
 
                     setError('');
@@ -224,6 +227,18 @@ function UpdateWorkshopPage() {
     const handleIsCheckedChange = () => {
         setIsChecked(prevIsChecked => !prevIsChecked);
         closeModalCheck();
+    };
+
+    const validateBookingsLessThanAmountParticipants = (value) => {
+        const bookings = (workshopToVerifyData.amountOfParticipants - workshopToVerifyData.spotsAvailable);
+
+        if (bookings > value) {
+            return `Je hebt al ${bookings} boekingen op deze workshop, dus het maximaal aantal deelnemers van ${value} is te laag`;
+        }
+        else if (value <= 0) {
+            return `Je moet minstens 1 plek aanbieden.`;
+        }
+        return true;
     };
 
 
@@ -435,10 +450,7 @@ function UpdateWorkshopPage() {
                                     value: true,
                                     message: "Maximaal aantal is verplicht",
                                 },
-                            min: {
-                                value: 1,
-                                message: 'Het aantal deelnemers moet hoger dan 0 zijn',
-                            },
+                            validate: validateBookingsLessThanAmountParticipants
                         }
                         }
                         register={register}

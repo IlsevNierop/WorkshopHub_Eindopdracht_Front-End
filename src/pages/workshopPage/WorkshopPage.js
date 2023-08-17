@@ -591,7 +591,7 @@ function WorkshopPage() {
                                         <>
                                             <Button type="text" onClick={verifyWorkshop}>Direct goedkeuren</Button>
                                             <Button type="text"
-                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Aanpassen
+                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Wijzigen
                                                 en goed/afkeuren</Button>
                                         </>}
                                 </>}
