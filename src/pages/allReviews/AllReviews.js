@@ -49,14 +49,14 @@ function AllReviews() {
             [{value: 'reviewId', label: 'Review ID'},
                 {value: 'companyNameWorkshopOwner', label: 'Workshop eigenaar'},
                 {value: 'rating', label: 'Rating'},
-                {value: 'reviewVerified', label: 'Geaccordeerd'},
+                {value: 'reviewVerified', label: 'Goedgekeurd'},
                 {value: 'firstNameReviewer', label: 'Voornaam klant'},
             ]
             :
             [{value: 'reviewId', label: 'Review ID'},
                 {value: 'companyNameWorkshopOwner', label: 'Workshop eigenaar'},
                 {value: 'rating', label: 'Rating'},
-                {value: 'reviewVerified', label: 'Geaccordeerd'},
+                {value: 'reviewVerified', label: 'Goedgekeurd'},
             ];
 
 
@@ -285,7 +285,7 @@ function AllReviews() {
                     afterOpenModal={afterModalVerifySuccessful}
                     closeModal={closeModalVerifySuccessful}
                     contentLabel="Verify review successful"
-                    updateHeader={`De review is succesvol geaccordeerd`}
+                    updateHeader={`De review is succesvol goedgekeurd`}
                 ></CustomModal>
 
                 <CustomModal
@@ -510,7 +510,7 @@ function AllReviews() {
                                 <th>Workshop titel</th>
                                 <th>Workshop eigenaar</th>
                                 <th>Datum workshop</th>
-                                <th>Geaccordeerd door admin</th>
+                                <th>Goedgekeurd door admin</th>
                                 <th>Feedback</th>
                                 <th>Wijzigen</th>
                                 <th>Verwijderen</th>
@@ -528,7 +528,7 @@ function AllReviews() {
                                         <td>{updateDateFormatShort(review.workshopDate)}</td>
                                         <td className={review.reviewVerified ? "td-verified" : "td-not-verified"}>
                                             {review.reviewVerified ? (
-                                                    "Geaccordeerd"
+                                                    "Goedgekeurd"
                                                 ) :
                                                 highestAuthority === 'admin' ?
                                                     ((review.reviewVerified === false) ?
@@ -538,7 +538,7 @@ function AllReviews() {
                                                                 to="#"
                                                                 onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
                                                             >
-                                                                Afgekeurd (direct accorderen)
+                                                                Afgekeurd (direct goedkeuren)
                                                             </Link>)
                                                         :
                                                         (<Link
@@ -546,14 +546,14 @@ function AllReviews() {
                                                                 to="#"
                                                                 onClick={() => verifyReview(review.id, review.rating, review.reviewDescription, true, review.feedbackAdmin)}
                                                             >
-                                                                Direct accorderen
+                                                                Direct goedkeuren
                                                             </Link>
                                                         ))
                                                     :
                                                     review.reviewVerified === false ?
                                                         "Afgekeurd"
                                                         :
-                                                        "Nog niet akkoord"
+                                                        "Nog niet goedgekeurd"
                                             }</td>
                                         <td>{review.feedbackAdmin}</td>
                                         <td><Link

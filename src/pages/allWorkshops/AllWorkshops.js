@@ -43,13 +43,13 @@ function AllWorkshops() {
                 {value: 'title', label: 'Titel'},
                 {value: 'date', label: 'Datum'},
                 {value: 'companyname', label: 'Bedrijf'},
-                {value: 'verified', label: 'Geaccordeerd'},
+                {value: 'verified', label: 'Goedgekeurd'},
             ]
             : [
                 {value: 'workshopId', label: 'Workshop ID'},
                 {value: 'title', label: 'Titel'},
                 {value: 'date', label: 'Datum'},
-                {value: 'verified', label: 'Geaccordeerd'},
+                {value: 'verified', label: 'Goedgekeurd'},
             ];
 
 
@@ -283,7 +283,7 @@ function AllWorkshops() {
                                 <th>Titel</th>
                                 <th>Datum</th>
                                 <th>Bedrijf</th>
-                                <th>Geaccordeerd</th>
+                                <th>Goedgekeurd</th>
                                 <th>Gepubliceerd</th>
                                 <th>Wijzigen</th>
                                 <th>Verwijderen</th>
@@ -299,7 +299,7 @@ function AllWorkshops() {
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
                                         <td>{workshop.workshopOwnerCompanyName}</td>
-                                        <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Geaccordeerd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet akkoord")}</td>
+                                        <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Goedgekeurd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet goedgekeurd")}</td>
                                         <td className={workshop.workshopVerified ? "td-published" : "td-not-published"}>{workshop.publishWorkshop ? (
                                             "Gepubliceerd"
                                         ) : workshop.workshopVerified ? (
@@ -351,7 +351,7 @@ function AllWorkshops() {
                                 <th>Workshop ID</th>
                                 <th>Titel</th>
                                 <th>Datum</th>
-                                <th>Geaccordeerd door admin</th>
+                                <th>Goedgekeurd door admin</th>
                                 <th>Gepubliceerd</th>
                                 <th>Feedback Admin</th>
                                 <th>Wijzigen</th>
@@ -367,7 +367,7 @@ function AllWorkshops() {
                                                   to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
-                                        <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Geaccordeerd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet akkoord")}</td>
+                                        <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Goedgekeurd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet goedgekeurd")}</td>
                                         <td className={workshop.workshopVerified ? "td-published" : "td-not-published"}>{workshop.publishWorkshop ? (
                                             "Gepubliceerd"
                                         ) : workshop.workshopVerified ? (
