@@ -28,7 +28,7 @@ export function navLinks(highestAuthority) {
                 link: "/reviews",
             },
             {
-                title: "Alle Boekingen",
+                title: "Boekingen",
                 link: "/boekingen",
             },
             {

@@ -281,7 +281,7 @@ function AllUsers() {
                                                 to="#"
                                                 onClick={() => verifyWorkshopOwner(user.id, true)}
                                             >
-                                                Afgekeurd (direct verifieren)
+                                                Afgekeurd (direct goedkeuren)
                                             </Link>
                                             :
                                             (
