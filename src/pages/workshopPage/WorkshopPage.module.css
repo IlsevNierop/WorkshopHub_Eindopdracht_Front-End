@@ -63,7 +63,8 @@
 }
 
 .image__wrapper {
-    position: relative
+    position: relative;
+    width: 300px;
 }
 
 .workshop-image {
@@ -75,11 +76,11 @@
 }
 
 .favourite-icon {
+    position: absolute;
     z-index: 0.5;
     padding: 0.25rem;
     border-radius: 50px;
     background-color: var(--color-grey-200);
-    position: absolute;
     top: 25px;
     right: 10px;
     opacity: 0.6;

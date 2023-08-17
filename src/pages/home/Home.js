@@ -48,8 +48,8 @@ function Home() {
 
     const optionsSortValue = [
         {value: "date", label: "Datum"},
-        {value: "pricelowtohigh", label: "Prijs - laag naar hoog"},
-        {value: "pricehightolow", label: "Prijs - hoog naar laag"},
+        {value: "pricelowtohigh", label: "Prijs - oplopend"},
+        {value: "pricehightolow", label: "Prijs - aflopend"},
         {value: "popular", label: "Populariteit"},
     ];
 

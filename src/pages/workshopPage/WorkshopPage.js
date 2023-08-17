@@ -253,7 +253,6 @@ function WorkshopPage() {
     }
 
     const handleShowAllReviews = () => {
-        // setDisplayedReviewCount(singleWorkshopData.workshopOwnerReviews.length);
         setReviewsToShow(singleWorkshopData.workshopOwnerReviews);
     };
 
@@ -496,7 +495,11 @@ function WorkshopPage() {
                                 {(singleWorkshopData.spotsAvailable === 0) ?
                                     <p className={styles["sold-out__sentence"]}>Uitverkocht</p>
                                     :
-                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable} plekken
+                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable}
+                                        {singleWorkshopData.spotsAvailable === 1
+                                            ? " plek "
+                                            : " plekken "
+                                        }
                                         beschikbaar</p>
                                 }
 
@@ -536,7 +539,6 @@ function WorkshopPage() {
 
                                         <section className={styles["container__reviews"]}>
 
-                                            {/*{singleWorkshopData.workshopOwnerReviews.map((review) => {*/}
                                             {reviewsToShow.map((review) => {
                                                 return (
                                                     <article className={styles["container__individual-review"]}
