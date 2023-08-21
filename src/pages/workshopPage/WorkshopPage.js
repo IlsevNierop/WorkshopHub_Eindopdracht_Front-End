@@ -215,8 +215,7 @@ function WorkshopPage() {
     const validateSpotsAvailable = (value) => {
         if (singleWorkshopData.spotsAvailable < value) {
             return `Er zijn maar ${singleWorkshopData.spotsAvailable} plekken beschikbaar, en je probeert ${value} plekken te boeken`;
-        }
-        else if (value <= 0) {
+        } else if (value <= 0) {
             return `Je moet minstens 1 plek boeken.`;
         }
         return true;
@@ -432,205 +431,215 @@ function WorkshopPage() {
                 >
                 </CustomModal>
 
-                {loading && <p>Loading...</p>}
-                <h1>{singleWorkshopData.title}</h1>
+                <div className={styles["row__inner-container__workshoppage"]}>
+                    <aside className={styles["aside__workshoppage__owner__admin"]}>
+                        {user != null && user.highestAuthority === 'admin' &&
+                            <div className={styles["aside__column__buttons"]}>
 
-                <article className={styles["top-part__workshop-page"]}>
-
-                    <aside className={styles["left-side__top__workshop"]}>
-
-                        <div className={styles["workshop-owner-rating"]}>
-                            <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
-                                        size={20}></StarRating>
-                            <p>
-                                {singleWorkshopData.averageRatingWorkshopOwnerReviews != null ? singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1) : 0} /
-                                5 (
-                                {singleWorkshopData.numberOfReviews === 1
-                                    ? `${singleWorkshopData.numberOfReviews} review`
-                                    : `${singleWorkshopData.numberOfReviews != null ? singleWorkshopData.numberOfReviews : "nog geen"} reviews`
-                                })
-                            </p>
-                        </div>
-                        <div className={styles["image__wrapper"]}>
-                            <img className={styles["workshop-image"]}
-                                 src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultworkshoppic}
-                                 alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
-                            <Link
-                                aria-label="link__add-remove-favourite-workshop"
-                                to="#" onClick={addOrRemoveFavouriteWorkshop}>
-                                <Heart className={styles["favourite-icon"]} size={24}
-                                       color={favourite ? "#fe5c5c" : "282828"}
-                                       weight={favourite ? "fill" : "light"}/></Link>
-                        </div>
-
-                    </aside>
-                    {Object.keys(singleWorkshopData).length > 0 &&
-                        <aside className={styles["right-side__top__workshop"]}>
-                            <section className={styles["top__column__workshop-info"]}>
-
-                                <Link
-                                    aria-label="link__all-workshops-from-workshop-owner-page"
-                                    className={styles["link__companyname__workshop-info"]}
-                                    to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
-                                    <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
-                                </Link>
-                                <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
-                                </h5>
-                                <h5 className={styles["workshop-info"]}> {updateDateFormatLong(singleWorkshopData.date)} </h5>
-                                <h5 className={styles["workshop-info"]}>
-                                    {updateTimeFormat(singleWorkshopData.startTime)} - {updateTimeFormat(singleWorkshopData.endTime)}
-                                </h5>
-                                <h5 className={styles["workshop-info"]}> {singleWorkshopData.location} </h5>
-                                <h5 className={styles["workshop-info"]}> {getInOrOutdoors(singleWorkshopData.inOrOutdoors)} </h5>
-                                <h5 className={styles["workshop-info"]}> max. {singleWorkshopData.amountOfParticipants} deelnemers </h5>
-                            </section>
-
-                            <section>
-                                <Button type="text" onClick={onClikHandlerBooking}
-                                        disabled={
-                                    ((singleWorkshopData.spotsAvailable === 0) || !singleWorkshopData.publishWorkshop || !singleWorkshopData.workshopVerified)
-                                            && true}>
-                                    Boeken
-                                </Button>
-                                {(singleWorkshopData.spotsAvailable === 0) ?
-                                    <p className={styles["sold-out__sentence"]}>Uitverkocht</p>
-                                    :
-                                    <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable}
-                                        {singleWorkshopData.spotsAvailable === 1
-                                            ? " plek "
-                                            : " plekken "
-                                        }
-                                        beschikbaar</p>
-                                }
-
-                                <div className={styles["category-workshop-row"]}>
-                                    <p>{singleWorkshopData.workshopCategory1}</p>
-                                    {singleWorkshopData.workshopCategory2 &&
-                                        <p>{singleWorkshopData.workshopCategory2}</p>}
-                                </div>
-                            </section>
-                        </aside>
-                    }
-                </article>
-
-                {Object.keys(singleWorkshopData).length > 0 &&
-                    <>
-                        <article className={styles["description__middle-part__workshop"]}>
-                            <h4>Omschrijving van de workshop</h4>
-                            <p>{singleWorkshopData.description}</p>
-                        </article>
-
-                        <section className={styles["bottom-part__workshop"]}>
-
-                            <article className={styles["reviews__bottom__workshop"]}>
-                                <h4>Reviews over deze aanbieder</h4>
-                                {singleWorkshopData.workshopOwnerReviews.length > 0 ?
-                                    <>
-                                        <div className={styles["workshop-owner-rating"]}>
-                                            <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
-                                                        size={26}></StarRating>
-                                            <p className={styles["rating__numbers__workshopowner"]}>
-                                                {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} / 5 (
-                                                {singleWorkshopData.numberOfReviews === 1
-                                                    ? `${singleWorkshopData.numberOfReviews} review`
-                                                    : `${singleWorkshopData.numberOfReviews} reviews`})
-                                            </p>
-                                        </div>
-
-                                        <section className={styles["container__reviews"]}>
-
-                                            {reviewsToShow.map((review) => {
-                                                return (
-                                                    <article className={styles["container__individual-review"]}
-                                                             key={`review-${review.id}`}>
-                                                        <div className={styles["top-row__review"]}>
-                                                            <StarRating rating={review.rating} size={14}></StarRating>
-                                                            <p>{review.rating.toFixed(1)} / 5</p>
-                                                            <h5 className={styles["name-reviewer"]}>| {review.firstNameReviewer}</h5>
-                                                        </div>
-                                                        <p className={styles["date-review"]}>Datum
-                                                            workshop: {updateDateFormatShort(review.workshopDate)}</p>
-                                                        <h5>Workshop: {review.workshopTitle}</h5>
-                                                        <p>{review.reviewDescription}</p>
-                                                    </article>
-                                                )
-                                            })}
-                                            {reviewsToShow.length < singleWorkshopData.workshopOwnerReviews.length && (
-                                                <Button type="text" onClick={handleShowAllReviews}>Toon alle reviews</Button>
-                                            )}
-                                        </section>
-                                    </>
+                            {singleWorkshopData.workshopVerified === true ?
+                                    <Button type="text"
+                                            onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
+                                        wijzigen</Button>
                                     :
                                     <>
-                                        <div className={styles["zero-review"]}>
-                                            <p>Er zijn nog geen reviews</p>
-                                        </div>
-                                    </>
-                                }
-                            </article>
+                                        <Button type="text" onClick={verifyWorkshop}>Direct goedkeuren</Button>
+                                        <Button type="text"
+                                                onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Wijzigen
+                                            en goed/afkeuren</Button>
+                                    </>}
+                            </div>}
+                        {(user != null && user.highestAuthority === 'workshopowner' && user.id === singleWorkshopData.workshopOwnerId) &&
+                            <>
+                                {(singleWorkshopData.workshopVerified !== null && singleWorkshopData.publishWorkshop !== true && singleWorkshopData.feedbackAdmin) &&
+                                    <div className={styles["aside__feedback-admin"]}>
+                                        <h4>Feedback administrator</h4>
+                                        <p>{singleWorkshopData.feedbackAdmin}</p>
+                                    </div>}
 
-                            {singleWorkshopData.highlightedInfo &&
-                                <div className={styles["info__bottom__workshop"]}>
-                                    <h4>Belangrijk om te weten</h4>
-                                    <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
-                                        return (
-                                            <li className={styles["list-item"]} key={info.slice(0, 3)}>{info}</li>
-                                        )
-                                    })
-                                    }</ul>
-                                </div>}
-                        </section>
-
-                        <section className={styles["extra-bottom__workshop__owner__admin"]}>
-
-                            {user != null && user.highestAuthority === 'admin' &&
-                                <>
-                                    {singleWorkshopData.workshopVerified === true ?
+                                <div className={styles["aside__column__buttons"]}>
+                                    {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
+                                        <>
+                                            <Button type="text"
+                                                    onClick={() => publishWorkshop(true)}
+                                            >
+                                                Direct publiceren</Button>
+                                        </>}
+                                    {singleWorkshopData.publishWorkshop === true ?
+                                        <>
+                                            <Button type="text"
+                                                    onClick={openModalCheck}>Workshop
+                                                wijzigen</Button>
+                                            <Button type="text"
+                                                    onClick={takeWorkshopOffline}>Haal workshop offline</Button>
+                                        </>
+                                        :
                                         <Button type="text"
                                                 onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
-                                            wijzigen</Button>
-                                        :
-                                        <>
-                                            <Button type="text" onClick={verifyWorkshop}>Direct goedkeuren</Button>
-                                            <Button type="text"
-                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Wijzigen
-                                                en goed/afkeuren</Button>
-                                        </>}
-                                </>}
-                            {(user != null && user.highestAuthority === 'workshopowner' && user.id === singleWorkshopData.workshopOwnerId) &&
-                                <article className={styles["extra-bottom__workshopowner"]}>
-                                    {(singleWorkshopData.workshopVerified !== null && singleWorkshopData.publishWorkshop !== true && singleWorkshopData.feedbackAdmin) &&
-                                        <div className={styles["bottom__workshopowner__feedback-admin"]}>
-                                            <h5>Feedback administrator</h5>
-                                            <p>{singleWorkshopData.feedbackAdmin}</p>
+                                            wijzigen</Button>}
+                                </div>
+                            </>
+                        }
+                    </aside>
+                    <div className={styles["column__inner-container__workshoppage"]}>
+
+                        {loading && <p>Loading...</p>}
+                        <h1>{singleWorkshopData.title}</h1>
+
+                        <article className={styles["top-part__workshop-page"]}>
+
+                            <aside className={styles["left-side__top__workshop"]}>
+
+                                <div className={styles["workshop-owner-rating"]}>
+                                    <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
+                                                size={20}></StarRating>
+                                    <p>
+                                        {singleWorkshopData.averageRatingWorkshopOwnerReviews != null ? singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1) : 0} /
+                                        5 (
+                                        {singleWorkshopData.numberOfReviews === 1
+                                            ? `${singleWorkshopData.numberOfReviews} review`
+                                            : `${singleWorkshopData.numberOfReviews != null ? singleWorkshopData.numberOfReviews : "nog geen"} reviews`
+                                        })
+                                    </p>
+                                </div>
+                                <div className={styles["image__wrapper"]}>
+                                    <img className={styles["workshop-image"]}
+                                         src={singleWorkshopData.workshopPicUrl ? singleWorkshopData.workshopPicUrl : defaultworkshoppic}
+                                         alt={`Foto van de workshop ${singleWorkshopData.title}`}/>
+                                    <Link
+                                        aria-label="link__add-remove-favourite-workshop"
+                                        to="#" onClick={addOrRemoveFavouriteWorkshop}>
+                                        <Heart className={styles["favourite-icon"]} size={24}
+                                               color={favourite ? "#fe5c5c" : "282828"}
+                                               weight={favourite ? "fill" : "light"}/></Link>
+                                </div>
+
+                            </aside>
+                            {Object.keys(singleWorkshopData).length > 0 &&
+                                <aside className={styles["right-side__top__workshop"]}>
+                                    <section className={styles["top__column__workshop-info"]}>
+
+                                        <Link
+                                            aria-label="link__all-workshops-from-workshop-owner-page"
+                                            className={styles["link__companyname__workshop-info"]}
+                                            to={`/alleworkshopseigenaar/${singleWorkshopData.workshopOwnerId}`}>
+                                            <h3 className={styles["companyname__workshop-info"]}>{singleWorkshopData.workshopOwnerCompanyName}</h3>
+                                        </Link>
+                                        <h5 className={styles["workshop-info"]}>€ {singleWorkshopData.price.toFixed(2).replace('.', ',')}
+                                        </h5>
+                                        <h5 className={styles["workshop-info"]}> {updateDateFormatLong(singleWorkshopData.date)} </h5>
+                                        <h5 className={styles["workshop-info"]}>
+                                            {updateTimeFormat(singleWorkshopData.startTime)} - {updateTimeFormat(singleWorkshopData.endTime)}
+                                        </h5>
+                                        <h5 className={styles["workshop-info"]}> {singleWorkshopData.location} </h5>
+                                        <h5 className={styles["workshop-info"]}> {getInOrOutdoors(singleWorkshopData.inOrOutdoors)} </h5>
+                                        <h5 className={styles["workshop-info"]}> max. {singleWorkshopData.amountOfParticipants} deelnemers </h5>
+                                    </section>
+
+                                    <section>
+                                        <Button type="text" onClick={onClikHandlerBooking}
+                                                disabled={
+                                                    ((singleWorkshopData.spotsAvailable === 0) || !singleWorkshopData.publishWorkshop || !singleWorkshopData.workshopVerified)
+                                                    && true}>
+                                            Boeken
+                                        </Button>
+                                        {(singleWorkshopData.spotsAvailable === 0) ?
+                                            <p className={styles["sold-out__sentence"]}>Uitverkocht</p>
+                                            :
+                                            <p className={styles["available-spots__sentence"]}>{singleWorkshopData.spotsAvailable}
+                                                {singleWorkshopData.spotsAvailable === 1
+                                                    ? " plek "
+                                                    : " plekken "
+                                                }
+                                                beschikbaar</p>
+                                        }
+
+                                        <div className={styles["category-workshop-row"]}>
+                                            <p>{singleWorkshopData.workshopCategory1}</p>
+                                            {singleWorkshopData.workshopCategory2 &&
+                                                <p>{singleWorkshopData.workshopCategory2}</p>}
                                         </div>
-                                    }
-                                    <div className={styles["row__buttons__bottom"]}>
-                                        {(singleWorkshopData.workshopVerified === true && singleWorkshopData.publishWorkshop !== true) &&
+                                    </section>
+                                </aside>
+                            }
+                        </article>
+
+                        {Object.keys(singleWorkshopData).length > 0 &&
+                            <>
+                                <article className={styles["description__middle-part__workshop"]}>
+                                    <h4>Omschrijving van de workshop</h4>
+                                    <p>{singleWorkshopData.description}</p>
+                                </article>
+
+                                <section className={styles["bottom-part__workshop"]}>
+
+                                    <article className={styles["reviews__bottom__workshop"]}>
+                                        <h4>Reviews over deze aanbieder</h4>
+                                        {singleWorkshopData.workshopOwnerReviews.length > 0 ?
                                             <>
-                                                <Button type="text"
-                                                        onClick={() => publishWorkshop(true)}
-                                                >
-                                                    Direct publiceren</Button>
-                                            </>}
-                                        {singleWorkshopData.publishWorkshop === true ?
-                                            <>
-                                                <Button type="text"
-                                                        onClick={openModalCheck}>Workshop
-                                                    wijzigen</Button>
-                                                <Button type="text"
-                                                        onClick={takeWorkshopOffline}>Haal workshop offline</Button>
+                                                <div className={styles["workshop-owner-rating"]}>
+                                                    <StarRating
+                                                        rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
+                                                        size={26}></StarRating>
+                                                    <p className={styles["rating__numbers__workshopowner"]}>
+                                                        {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} /
+                                                        5 (
+                                                        {singleWorkshopData.numberOfReviews === 1
+                                                            ? `${singleWorkshopData.numberOfReviews} review`
+                                                            : `${singleWorkshopData.numberOfReviews} reviews`})
+                                                    </p>
+                                                </div>
+
+                                                <section className={styles["container__reviews"]}>
+
+                                                    {reviewsToShow.map((review) => {
+                                                        return (
+                                                            <article className={styles["container__individual-review"]}
+                                                                     key={`review-${review.id}`}>
+                                                                <div className={styles["top-row__review"]}>
+                                                                    <StarRating rating={review.rating}
+                                                                                size={14}></StarRating>
+                                                                    <p>{review.rating.toFixed(1)} / 5</p>
+                                                                    <h5 className={styles["name-reviewer"]}>| {review.firstNameReviewer}</h5>
+                                                                </div>
+                                                                <p className={styles["date-review"]}>Datum
+                                                                    workshop: {updateDateFormatShort(review.workshopDate)}</p>
+                                                                <h5>Workshop: {review.workshopTitle}</h5>
+                                                                <p>{review.reviewDescription}</p>
+                                                            </article>
+                                                        )
+                                                    })}
+                                                    {reviewsToShow.length < singleWorkshopData.workshopOwnerReviews.length && (
+                                                        <Button type="text" onClick={handleShowAllReviews}>Toon alle
+                                                            reviews</Button>
+                                                    )}
+                                                </section>
                                             </>
                                             :
-                                            <Button type="text"
-                                                    onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
-                                                wijzigen</Button>}
-                                    </div>
-                                </article>
-                            }
-                        </section>
-                    </>
-                }
+                                            <>
+                                                <div className={styles["zero-review"]}>
+                                                    <p>Er zijn nog geen reviews</p>
+                                                </div>
+                                            </>
+                                        }
+                                    </article>
+
+                                    {singleWorkshopData.highlightedInfo &&
+                                        <div className={styles["info__bottom__workshop"]}>
+                                            <h4>Belangrijk om te weten</h4>
+                                            <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
+                                                return (
+                                                    <li className={styles["list-item"]}
+                                                        key={info.slice(0, 3)}>{info}</li>
+                                                )
+                                            })
+                                            }</ul>
+                                        </div>}
+                                </section>
+                            </>
+                        }
+                    </div>
+
+                </div>
 
                 <Link className={styles["link"]} to="/">Terug naar de homepage</Link>
             </div>
