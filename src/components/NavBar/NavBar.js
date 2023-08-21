@@ -21,15 +21,25 @@ function NavBar() {
         <>
             <div className={`outer-container ${styles["nav-outer-top"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-top"]}`}>
-                    <NavLink to="/" aria-label="link__homepage"><img className={styles["image-logo"]} src={logo} alt="WorkshopHub logo"/>
+                    <NavLink to="/" aria-label="link__homepage"><img className={styles["image-logo"]} src={logo}
+                                                                     alt="WorkshopHub logo"/>
                     </NavLink>
                     <ul className={styles["nav-ul-top"]}>
 
-                        {!isAuth && <li className={styles["nav-li-top"]}>
-                            <NavLink
-                                className={styles['default-nav-link']}
-                                to="#" onClick={() => signInWithSubHeader('')}>Inloggen</NavLink>
-                        </li>}
+                        {!isAuth &&
+                            <>
+                                <li className={styles["nav-li-top"]}>
+                                    <NavLink
+                                        className={styles['default-nav-link']}
+                                        to="#" onClick={() => signInWithSubHeader('')}>Inloggen</NavLink>
+                                </li>
+                                <li className={styles["nav-li-top"]}>
+                                    <NavLink
+                                        className={styles['default-nav-link']}
+                                        to="/registreren">Registreren</NavLink>
+                                </li>
+                            </>
+                        }
 
                         {isAuth && <li className={styles["nav-li-top"]}>
                             <NavLink className={styles['default-nav-link']}
@@ -41,7 +51,7 @@ function NavBar() {
                                 <NavLink to="/favorieten"
                                          aria-label="link__favourite-workshops"
                                 ><Heart size={32} color="black"
-                                                                 weight="regular"/>
+                                        weight="regular"/>
                                 </NavLink>
                             </li>
                             :
@@ -65,36 +75,41 @@ function NavBar() {
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
                         {
-                            navLinks(user.highestAuthority).map((navlink) => {
+                            navLinks(user.highestAuthority).map((navlink, index) => {
 
-                                return (<li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
-                                        {navlink.submenu ? (
-                                            <div className={styles["nav__dropdown_menu"]}>
-                                                <span className={styles['default-nav-link']}>{navlink.title}</span>
+                                return (
+                                    <>
+                                        <li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
+                                            {navlink.submenu ? (
+                                                <div className={styles["nav__dropdown_menu"]}>
+                                                    <span className={styles['default-nav-link']}>{navlink.title}</span>
 
-                                                <div className={styles["nav__dropdown_content"]}>
-                                                    {navlink.submenu.map((submenuItem) => (
-                                                        <NavLink
-                                                            key={submenuItem.title}
-                                                            to={submenuItem.link}
-                                                            className={styles['default-nav-link']}
-                                                        >
-                                                            {submenuItem.title}
-                                                        </NavLink>
-                                                    ))}
+                                                    <div className={styles["nav__dropdown_content"]}>
+                                                        {navlink.submenu.map((submenuItem) => (
+                                                            <NavLink
+                                                                key={submenuItem.title}
+                                                                to={submenuItem.link}
+                                                                className={({isActive}) =>
+                                                                    isActive ? styles['active-nav-link'] : styles['default-nav-link']}
+                                                            >
+                                                                {submenuItem.title}
+                                                            </NavLink>
+                                                        ))}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ) : (
-                                            <NavLink
-                                                className={({isActive}) =>
-                                                    isActive ? styles['active-nav-link'] : styles['default-nav-link']
-                                                }
-                                                to={navlink.link}
-                                            >
-                                                {navlink.title}
-                                            </NavLink>
-                                        )}
-                                    </li>
+                                            ) : (
+                                                <NavLink
+                                                    className={({isActive}) =>
+                                                        isActive ? styles['active-nav-link'] : styles['default-nav-link']
+                                                    }
+                                                    to={navlink.link}
+                                                >
+                                                    {navlink.title}
+                                                </NavLink>
+                                            )}
+                                        </li>
+                                        {index !== navLinks(user.highestAuthority).length - 1 && <span>|</span>}
+                                    </>
                                 );
                             })
                         }

@@ -436,7 +436,7 @@ function WorkshopPage() {
                         {user != null && user.highestAuthority === 'admin' &&
                             <div className={styles["aside__column__buttons"]}>
 
-                            {singleWorkshopData.workshopVerified === true ?
+                                {singleWorkshopData.workshopVerified === true ?
                                     <Button type="text"
                                             onClick={() => navigate(`/aanpassenworkshop/${workshopId}`)}>Workshop
                                         wijzigen</Button>
