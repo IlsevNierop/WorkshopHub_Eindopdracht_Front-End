@@ -7,6 +7,7 @@
     */
 
 import axios from "axios";
+import {EscalatorDown} from "@phosphor-icons/react";
 
 const controller = new AbortController();
 
@@ -300,8 +301,8 @@ export async function fetchWorkshopsToVerifyByAdmin(token) {
     return response.data;
 }
 
-export async function fetchWorkshopsToVerifyByOwner(token, workshopOwnerId) {
-    const response = await axios.get(`${baseUrl}workshops/workshopowner/verify/${workshopOwnerId}`,
+export async function fetchWorkshopsToPublishByOwner(token, workshopOwnerId) {
+    const response = await axios.get(`${baseUrl}workshops/workshopowner/publish/${workshopOwnerId}`,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -478,8 +479,8 @@ export async function updateWorkshopByWorkshopOwner(workshopId, workshopOwnerId,
     return response.data;
 }
 
-export async function verifyWorkshopByOwner(token, workshopId, publishWorkshop) {
-    return await axios.put(`${baseUrl}workshops/workshopowner/verify/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
+export async function publishWorkshopByOwner(token, workshopId, publishWorkshop) {
+    return await axios.put(`${baseUrl}workshops/workshopowner/publish/${workshopId}?publishWorkshop=${publishWorkshop}`, null,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -650,6 +651,7 @@ export async function createReview(token, rating, reviewDescription, customerId,
     return response.data;
 }
 
+// TODO check: same function?
 export async function verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
     const response = await axios.put(`${baseUrl}reviews/admin/verify/${reviewId}`, {
             rating: rating,
