@@ -74,49 +74,45 @@ function NavBar() {
             {isAuth && <div className={`outer-container ${styles["nav-outer-bottom"]}`}>
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
-                        {
-                            navLinks(user.highestAuthority).map((navlink, index) => {
+                        {navLinks(user.highestAuthority).map((navlink, index) => {
 
-                                return (
-                                    <>
-                                        <li key={`${navlink.title}`} className={styles["nav-li-bottom"]}>
-                                            {navlink.submenu ? (
-                                                <div className={styles["nav__dropdown_menu"]}>
-                                                    <span className={styles['default-nav-link']}>{navlink.title}</span>
+                            return (
+                                <div key={`${navlink.title}`} className={styles["container__list-item__nav-bottom"]}>
+                                    <li  className={styles["nav-li-bottom"]}>
+                                        {navlink.submenu ? (
+                                            <div className={styles["nav__dropdown_menu"]}>
+                                                <span className={styles['default-nav-link']}>{navlink.title}</span>
 
-                                                    <div className={styles["nav__dropdown_content"]}>
-                                                        {navlink.submenu.map((submenuItem) => (
-                                                            <NavLink
-                                                                key={submenuItem.title}
-                                                                to={submenuItem.link}
-                                                                className={({isActive}) =>
-                                                                    isActive ? styles['active-nav-link'] : styles['default-nav-link']}
-                                                            >
-                                                                {submenuItem.title}
-                                                            </NavLink>
-                                                        ))}
-                                                    </div>
+                                                <div className={styles["nav__dropdown_content"]}>
+                                                    {navlink.submenu.map((submenuItem) => (
+                                                        <NavLink
+                                                            key={submenuItem.title}
+                                                            to={submenuItem.link}
+                                                            className={({isActive}) =>
+                                                                isActive ? styles['active-nav-link'] : styles['default-nav-link']}
+                                                        >
+                                                            {submenuItem.title}
+                                                        </NavLink>
+                                                    ))}
                                                 </div>
-                                            ) : (
-                                                <NavLink
-                                                    className={({isActive}) =>
-                                                        isActive ? styles['active-nav-link'] : styles['default-nav-link']
-                                                    }
-                                                    to={navlink.link}
-                                                >
-                                                    {navlink.title}
-                                                </NavLink>
-                                            )}
-                                        </li>
-                                        {index !== navLinks(user.highestAuthority).length - 1 && <span>|</span>}
-                                    </>
-                                );
-                            })
+                                            </div>
+                                        ) : (
+                                            <NavLink
+                                                className={({isActive}) =>
+                                                    isActive ? styles['active-nav-link'] : styles['default-nav-link']
+                                                }
+                                                to={navlink.link}
+                                            >
+                                                {navlink.title}
+                                            </NavLink>
+                                        )}
+                                    </li>
+                                    {index !== navLinks(user.highestAuthority).length - 1 && "|"}
+                                </div>
+                            );
+                        })
                         }
-
                     </ul>
-
-
                 </nav>
             </div>}
 
