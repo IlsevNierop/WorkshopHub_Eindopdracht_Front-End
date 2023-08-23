@@ -35,7 +35,6 @@ function SignIn() {
     }
 
     function afterOpenModalSignin() {
-
     }
 
     function closeModalSignIn() {
@@ -50,14 +49,13 @@ function SignIn() {
     }
 
     function afterOpenModalResetPassword() {
-
     }
 
     function closeModalResetPassword() {
         setIsOpenResetPassword(false);
         setError('');
         setShowPassword(false);
-        reset();
+        resetResetPassword();
     }
 
     function openModalMessage() {
@@ -65,7 +63,6 @@ function SignIn() {
     }
 
     function afterOpenModalMessage() {
-
     }
 
     function closeModalMessage() {
@@ -80,7 +77,6 @@ function SignIn() {
             reset();
             login(jwt);
             closeModalSignIn();
-
         } catch (e) {
             setError(errorHandling(e));
             console.log(error);
@@ -88,7 +84,6 @@ function SignIn() {
     }
 
     async function handleFormSubmitResetPassword(data) {
-
         try {
             const response = await resetPassword(data.email, data.password);
             console.log(response);
@@ -98,8 +93,6 @@ function SignIn() {
                 closeModalMessage();
                 setModalIsOpenSignIn(true);
             }, 2000);
-
-
         } catch (e) {
             setError(errorHandling(e));
             setTimeout(() => {
@@ -113,7 +106,6 @@ function SignIn() {
 
     return (
         <>
-
             <CustomModal
                 modalIsOpen={modalIsOpenSignIn}
                 afterOpenModal={afterOpenModalSignin}
@@ -167,7 +159,6 @@ function SignIn() {
                 <div className={styles["bottom-links__signin"]}>
                     <Link className={styles["bottom-link"]} to="#" onClick={onClickResetPassword}>
                         <p>Wachtwoord vergeten?</p></Link>
-
                     <p>Heb je nog geen account? <Link className={styles["bottom-link"]} to="/registreren"
                                                       onClick={closeModalSignIn}>Registreer</Link> je
                         dan eerst.</p>
@@ -181,7 +172,7 @@ function SignIn() {
                 contentLabel="Reset Password"
                 functionalModalHeader="Wachtwoord wijzigen"
             >
-                {/*This is not the correct way to reset a password, because the user is verified (normally through email for example). But because I don't have email functionality, don't know of a way to validate the user, but do want a password reset functionality, it's possible to reset a password, by just filling in your email adress and new password. */}
+                {/*This is not the correct way to reset a password, because usually the user will be validated before he/she can reset the password (normally through email for example). But because I don't have email functionality, don't know of a way to validate the user, but do want a password reset functionality, it's possible to reset a password, by just filling in your email address and new password. */}
                 <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
                 <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
                     nieuw wachtwoord.</h4>
@@ -251,9 +242,7 @@ function SignIn() {
                 updateHeader="Je wachtwoord is succesvol gewijzigd"
                 updateMessage="Je kunt nu inloggen met je nieuwe wachtwoord"
             >
-
             </CustomModal>
-
         </>
     );
 }

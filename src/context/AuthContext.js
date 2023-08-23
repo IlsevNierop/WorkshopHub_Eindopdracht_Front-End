@@ -6,14 +6,12 @@ import {returnHighestAuthority} from "../helper/returnHighestAuthority";
 
 export const AuthContext = createContext(null);
 
-
 function AuthContextProvider({children}) {
     const [authData, setAuthData] = useState({
         isAuth: false,
         user: null,
         status: "pending",
     });
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +22,6 @@ function AuthContextProvider({children}) {
             void logout();
         }
     }, []);
-
 
     function login(jwt_token, redirect) {
         const decodedToken = jwt_decode(jwt_token)
@@ -43,7 +40,6 @@ function AuthContextProvider({children}) {
             status: "done",
         });
 
-
         localStorage.setItem('token', jwt_token);
 
         if (redirect) navigate(redirect);
@@ -58,7 +54,6 @@ function AuthContextProvider({children}) {
             status: "done",
         })
         navigate("/");
-
     }
 
     const data = {
@@ -68,12 +63,10 @@ function AuthContextProvider({children}) {
         logout: logout
     }
 
-
     return (
         <AuthContext.Provider value={data}>
             {authData.status === "done" ? children : <p>Loading...</p>}
         </AuthContext.Provider>
-
     );
 }
 
