@@ -438,7 +438,7 @@ export async function updateAndVerifyWorkshopByAdmin(workshopId, token, title, d
     return response.data;
 }
 
-export async function updateWorkshopByWorkshopOwner(workshopId, workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, workshopVerified, feedbackAdmin, file) {
+export async function updateWorkshopByWorkshopOwner(workshopId, workshopOwnerId, token, title, date, starttime, endtime, price, location, category1, category2, inoroutdoors, amountparticipants, highlightedinfo, description, file) {
 
     const formData = new FormData();
 
