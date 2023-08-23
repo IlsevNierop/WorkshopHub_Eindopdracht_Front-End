@@ -30,7 +30,7 @@ function InputField({
                         {label}
 
                         {onChangeHandler ?
-                            //The onChange is needed for updating the profile page (setValue doesn't work, because of the disabled fields), but adding an onChange variable on the input element (even when it's not an argument when implementing the component) the default onchange behaviour of Hook Form gets overwritten for (at least) submitting with pressing enter (while in an inputfield), and for validating the fields (onblur /ontouched) after trying to submit the first time. Therefor, I made different Hook Form inputfields For workshop, register user, log in etc an inputfield without onChange, and for editing the profile page for example, an inputfield with onChange.
+                            //The onChange is needed for updating the profile page (setValue doesn't work, because of the disabled fields), but adding an onChange variable on the input element (even when it's not an argument when implementing the component) the default onchange behaviour of Hook Form gets overwritten for (at least) submitting with pressing enter (while in an inputfield), and for validating the fields (onblur /ontouched) after trying to submit the first time. Therefor, I made different Hook Form inputfields. For workshop, register user, log in etc an inputfield without onChange, and for editing the profile page for example, an inputfield with onChange.
                             <>
                                 <input
                                     className={`${errors[name] ? styles["input-field__error"] : styles["input-field__none"]} ${styles["input-field"]} ${styles[`input-field-${name}`]}`}
