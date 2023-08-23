@@ -25,7 +25,6 @@ function NavBar() {
                                                                      alt="WorkshopHub logo"/>
                     </NavLink>
                     <ul className={styles["nav-ul-top"]}>
-
                         {!isAuth &&
                             <>
                                 <li className={styles["nav-li-top"]}>
@@ -40,12 +39,10 @@ function NavBar() {
                                 </li>
                             </>
                         }
-
                         {isAuth && <li className={styles["nav-li-top"]}>
                             <NavLink className={styles['default-nav-link']}
                                      to="/" onClick={() => logout()}>
                                 Uitloggen</NavLink></li>}
-
                         {isAuth ?
                             <li className={styles["nav-li-top"]}>
                                 <NavLink to="/favorieten"
@@ -65,9 +62,7 @@ function NavBar() {
                             </li>
                         }
                     </ul>
-
                     <SignIn></SignIn>
-
                 </nav>
             </div>
 
@@ -75,10 +70,9 @@ function NavBar() {
                 <nav className={`inner-container ${styles["nav-inner-bottom"]}`}>
                     <ul className={styles["nav-ul-bottom"]}>
                         {navLinks(user.highestAuthority).map((navlink, index) => {
-
                             return (
                                 <div key={`${navlink.title}`} className={styles["container__list-item__nav-bottom"]}>
-                                    <li  className={styles["nav-li-bottom"]}>
+                                    <li className={styles["nav-li-bottom"]}>
                                         {navlink.submenu ? (
                                             <div className={styles["nav__dropdown_menu"]}>
                                                 <span className={styles['default-nav-link']}>{navlink.title}</span>
@@ -115,11 +109,7 @@ function NavBar() {
                     </ul>
                 </nav>
             </div>}
-
-
         </>
-
-
     );
 }
 

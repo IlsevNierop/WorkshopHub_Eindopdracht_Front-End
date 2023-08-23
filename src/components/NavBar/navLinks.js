@@ -55,7 +55,6 @@ export function navLinks(highestAuthority) {
                         title: "Nieuwe Workshop",
                         link: "/nieuweworkshop",
                     },
-
                 ],
             },
             {
@@ -77,5 +76,4 @@ export function navLinks(highestAuthority) {
                 link: "/reviews",
             }];
     }
-
 }
