@@ -7,7 +7,6 @@
     */
 
 import axios from "axios";
-import {EscalatorDown} from "@phosphor-icons/react";
 
 const controller = new AbortController();
 
@@ -105,7 +104,7 @@ export async function updateWorkshopOwner(token, userId, firstname, lastname, em
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 
@@ -123,7 +122,7 @@ export async function updateCustomer(token, userId, firstname, lastname, email, 
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function uploadProfilePic(token, userId, formData) {
@@ -134,14 +133,14 @@ export async function uploadProfilePic(token, userId, formData) {
         },
         signal: controller.signal,
     });
-    return response;
+    return response.data;
 }
 
 export async function resetPassword(email, password) {
     const response = await axios.put(`${baseUrl}users/passwordrequest/${email}`, {
         newPassword: password
     });
-    return response;
+    return response.data;
 }
 
 export async function resetPasswordLoggedIn(token, email, password) {
@@ -155,7 +154,7 @@ export async function resetPasswordLoggedIn(token, email, password) {
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function verifyWorkshopOwnerByAdmin(token, workshopOwnerId, workshopOwnerVerified) {
@@ -164,9 +163,8 @@ export async function verifyWorkshopOwnerByAdmin(token, workshopOwnerId, worksho
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-
     });
-    return response;
+    return response.data;
 }
 
 /* --------------- 2 Workshop API requests ----------------------- */
@@ -350,7 +348,7 @@ export async function addOrRemoveWorkshopFavourites(token, userId, workshopId, i
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 
@@ -565,7 +563,7 @@ export async function updateBooking(token, amount, commentsCustomer, workshopId,
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function removeBooking(token, bookingId) {
@@ -666,7 +664,7 @@ export async function verifyReviewByAdmin(token, reviewId, rating, reviewDescrip
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function updateReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
@@ -683,7 +681,7 @@ export async function updateReviewByAdmin(token, reviewId, rating, reviewDescrip
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function updateReviewByCustomer(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin, customerId) {
@@ -700,7 +698,7 @@ export async function updateReviewByCustomer(token, reviewId, rating, reviewDesc
             },
             signal: controller.signal,
         });
-    return response;
+    return response.data;
 }
 
 export async function removeReview(token, reviewId) {
