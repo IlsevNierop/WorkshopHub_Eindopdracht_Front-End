@@ -9,5 +9,4 @@ export function getInOrOutdoors(inOrOutdoors) {
         default:
             return "Binnen";
     }
-
 }

@@ -1,21 +1,18 @@
 export function sortArrayHomePage(array, sortValue) {
     let newArray;
     if (sortValue === 'pricelowtohigh') {
-
         newArray = array.map((workshop) => {
             return workshop
         });
         newArray.sort((a, b) => a.price - b.price);
     }
     if (sortValue === 'pricehightolow') {
-
         newArray = array.map((workshop) => {
             return workshop
         });
         newArray.sort((a, b) => b.price - a.price);
     }
     if (sortValue === 'date') {
-
         newArray = array.map((workshop) => {
             return workshop
         });
@@ -23,7 +20,6 @@ export function sortArrayHomePage(array, sortValue) {
     }
 
     if (sortValue === 'popular') {
-
         newArray = array.map((workshop) => {
             return workshop
         });
