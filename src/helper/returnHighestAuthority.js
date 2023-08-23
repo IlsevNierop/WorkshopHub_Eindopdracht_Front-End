@@ -1,7 +1,5 @@
 export function returnHighestAuthority(authorities) {
-
     if (authorities != null) {
-
         const stringAuthorities = authorities.map((a) => {
             return a.authority
         });

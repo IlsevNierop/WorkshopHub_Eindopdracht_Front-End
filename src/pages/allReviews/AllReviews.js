@@ -13,10 +13,10 @@ import {errorHandling} from "../../helper/errorHandling";
 import {AuthContext} from "../../context/AuthContext";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import Select from "react-select";
-import {sortArrayReviews} from "../../helper/sortArrayReviews";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {Controller, useForm} from "react-hook-form";
+import {sortArrayTable} from "../../helper/sortArrayTable";
 
 function AllReviews() {
     const token = localStorage.getItem('token');
@@ -99,7 +99,7 @@ function AllReviews() {
     );
 
     useEffect(() => {
-        setReviewsData(sortArrayReviews(reviewsData, sortValue.value));
+        setReviewsData(sortArrayTable(reviewsData, sortValue.value));
     }, [sortValue]);
 
 

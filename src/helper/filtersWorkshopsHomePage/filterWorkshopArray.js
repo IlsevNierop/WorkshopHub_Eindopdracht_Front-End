@@ -8,7 +8,6 @@ import {getWorkshopsFilteredEnvironment} from "./getWorkshopsFilteredEnvironment
 
 export function filterWorkshopArray(originalWorkshopData, category, location, environment, priceSlider, minRating, dateRange, sortValue) {
 
-
     const filteredWorkshopsByCategories = getWorkshopsFilteredCategories(originalWorkshopData, category);
     const filteredWorkshopsByDate = getWorkshopsFilteredDate(filteredWorkshopsByCategories, dateRange);
     const filteredWorkshopsByLocation = getWorkshopsFilteredLocation(filteredWorkshopsByDate, location);
@@ -19,7 +18,6 @@ export function filterWorkshopArray(originalWorkshopData, category, location, en
     if (sortValue) {
         return sortArrayHomePage(filteredWorkshopsByEnvironment, sortValue);
     }
-
 
     return filteredWorkshopsByEnvironment;
 }
