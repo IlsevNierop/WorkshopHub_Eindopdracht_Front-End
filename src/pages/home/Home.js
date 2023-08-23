@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import styles from "./Home.module.css";
 import Select from 'react-select';
-import 'react-date-range/dist/styles.css'; // main css file of date range calendar
-import 'react-date-range/dist/theme/default.css'; // theme css file of date range calendar
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import {DateRange} from 'react-date-range';
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {AuthContext} from "../../context/AuthContext";
@@ -40,6 +40,14 @@ function Home() {
     const [optionsCategory, setOptionsCategory] = useState([]);
     const [optionsLocation, setOptionsLocation] = useState([]);
 
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ]);
+
     const optionsEnvironment = [
         {value: "INDOORS", label: "Binnen"},
         {value: "OUTDOORS", label: "Buiten"},
@@ -52,16 +60,6 @@ function Home() {
         {value: "pricehightolow", label: "Prijs - aflopend"},
         {value: "popular", label: "Populariteit"},
     ];
-
-
-    const [dateRange, setDateRange] = useState([
-        {
-            startDate: new Date(),
-            endDate: null,
-            key: 'selection'
-        }
-    ]);
-
 
     const changeValueSlider = (e) => {
         setPriceSlider(e.target.value);
@@ -98,15 +96,12 @@ function Home() {
                     } else {
                         response = await fetchWorkshopData();
                     }
-
-
                     setWorkshopData
                     (response);
                     setOriginalWorkshopData(response);
                     setError('');
                 } catch (e) {
                     setError(errorHandling(e));
-                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -121,7 +116,6 @@ function Home() {
 
 
     useEffect(() => {
-
         function setOptions() {
             setOptionsCategory(createOptionsObjectSelectDropdown(originalWorkshopData, "workshopCategory1", "workshopCategory2"));
             setOptionsLocation(createOptionsObjectSelectDropdown(originalWorkshopData, "location",));
@@ -132,8 +126,6 @@ function Home() {
     }, [originalWorkshopData])
 
     useEffect(() => {
-
-
         setWorkshopData(sortArrayHomePage(workshopData, sortValue.value));
 
     }, [sortValue]);
@@ -240,7 +232,8 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className={styles["minimum-rating"]} htmlFor="minimum-rating">Minimale beoordeling</label>
+                            <label className={styles["minimum-rating"]} htmlFor="minimum-rating">Minimale
+                                beoordeling</label>
                             <div className={styles["rating-column"]}>
                                 <InputField
                                     classNameLabel="rating-row"
@@ -318,7 +311,8 @@ function Home() {
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className="select-dropdown" htmlFor="select-dropdown-environment">Waar vindt de workshop plaats</label>
+                            <label className="select-dropdown" htmlFor="select-dropdown-environment">Waar vindt de
+                                workshop plaats</label>
                             <Select
                                 id="select-dropdown-environment"
                                 name="select-dropdown-environment"
@@ -338,7 +332,6 @@ function Home() {
                             Alle filters wissen</Button>
 
                     </aside>
-
 
                     <section className={styles["overview__workshop-tiles"]}>
                         {workshopData.length === 0 &&

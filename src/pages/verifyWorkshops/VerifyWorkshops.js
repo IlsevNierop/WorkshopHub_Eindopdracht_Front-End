@@ -18,37 +18,36 @@ function VerifyWorkshops() {
     const [loading, toggleLoading] = useState(false);
 
     useEffect(() => {
-            async function getWorkshopsToVerify() {
-                toggleLoading(true);
-                setError('');
-                try {
-                    let response;
-                    if (highestAuthority === 'admin') {
-                        response = await fetchWorkshopsToVerifyByAdmin(token);
-                    } else {
-                        response = await fetchWorkshopsToPublishByOwner(token, id);
-                    }
-                    setWorkshopsToVerifyData(response);
-                    setError('');
-                } catch
-                    (e) {
-                    setError(errorHandling(e));
-                    console.log(error);
+        async function getWorkshopsToVerify() {
+            toggleLoading(true);
+            setError('');
+            try {
+                let response;
+                if (highestAuthority === 'admin') {
+                    response = await fetchWorkshopsToVerifyByAdmin(token);
+                } else {
+                    response = await fetchWorkshopsToPublishByOwner(token, id);
                 }
-                toggleLoading(false);
+                setWorkshopsToVerifyData(response);
+                setError('');
+            } catch
+                (e) {
+                setError(errorHandling(e));
             }
-            void getWorkshopsToVerify();
+            toggleLoading(false);
+        }
 
-            return function cleanup() {
-                controller.abort();
-            }
-        },[]);
+        void getWorkshopsToVerify();
+
+        return function cleanup() {
+            controller.abort();
+        }
+    }, []);
 
 
     return (
         <main className={`outer-container ${styles["verify-workshop__outer-container"]}`}>
             <div className={`inner-container ${styles["verify-workshop__inner-container"]}`}>
-
 
                 <h1>{highestAuthority === 'admin' ? "Openstaande workshops" : "Goedgekeurde workshops: te publiceren"}</h1>
 
@@ -82,7 +81,6 @@ function VerifyWorkshops() {
                     })
                     }
                 </section>
-
             </div>
         </main>
     );

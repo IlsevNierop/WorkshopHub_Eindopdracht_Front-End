@@ -16,7 +16,6 @@ function AllWorkshopsFromOwner() {
     const {user} = useContext(AuthContext);
     const {workshopOwnerId} = useParams();
 
-
     const [workshopsFromOwner, setWorkshopsFromOwner] = useState([]);
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
@@ -26,7 +25,6 @@ function AllWorkshopsFromOwner() {
             async function getWorkshopsFromOwner() {
                 toggleLoading(true);
                 setError('');
-
                 try {
                     let response;
                     if (user !== null) {
@@ -40,7 +38,6 @@ function AllWorkshopsFromOwner() {
 
                 } catch (e) {
                     setError(errorHandling(e));
-                    console.log(error);
                 }
                 toggleLoading(false);
             }

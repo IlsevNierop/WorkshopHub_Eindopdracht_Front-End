@@ -39,7 +39,7 @@ function CreateWorkshop() {
     async function handleFormSubmit(data) {
         setPreviewUrl('');
         try {
-            const response = await createWorkshop(id, token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
+            await createWorkshop(id, token, capitalizeFirstLetter(data.title), data.date, (data.starttime + ":00"), (data.endtime + ":00"), data.price, capitalizeFirstLetter(data.location), capitalizeFirstLetter(data.category1), capitalizeFirstLetter(data.category2), data.inoroutdoors, data.amountparticipants, data.highlightedinfo, data.description, file);
             reset();
             setFile([]);
             openModal();
@@ -49,7 +49,6 @@ function CreateWorkshop() {
         } catch (e) {
             setError(errorHandling(e));
         }
-
     }
 
     function openModal() {
@@ -72,8 +71,8 @@ function CreateWorkshop() {
                     closeModal={closeModal}
                     contentLabel="Create workshop successful"
                     updateHeader="Dank voor het uploaden van je nieuwe workshop"
-                    updateMessage="Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht.-
-           Zodra deze geverifieerd is, kun je de workshop publiceren."
+                    updateMessage="Je workshop zal geverifieerd worden door de administrator.-
+           Zodra deze geverifieerd is, krijg je hiervan bericht en kun je de workshop publiceren."
                 ></CustomModal>
 
                 <h1>Nieuwe workshop aanmaken</h1>
@@ -287,10 +286,10 @@ function CreateWorkshop() {
                         )}
                     />
                     <div className={styles["container__input-field__workshop-picture"]}>
-                    <label className={styles["label__input-field__workshop-picture"]}
-                           htmlFor="workshop-picture-field">
-                        Kies afbeelding
-                    </label>
+                        <label className={styles["label__input-field__workshop-picture"]}
+                               htmlFor="workshop-picture-field">
+                            Kies afbeelding
+                        </label>
                         <InputField
                             type="file"
                             name="workshop-picture"
@@ -309,7 +308,6 @@ function CreateWorkshop() {
                             />
                         </label>
                     }
-
                     <Button
                         type="submit"
                     >Workshop aanmaken</Button>

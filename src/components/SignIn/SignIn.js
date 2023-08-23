@@ -79,14 +79,12 @@ function SignIn() {
             closeModalSignIn();
         } catch (e) {
             setError(errorHandling(e));
-            console.log(error);
         }
     }
 
     async function handleFormSubmitResetPassword(data) {
         try {
-            const response = await resetPassword(data.email, data.password);
-            console.log(response);
+            await resetPassword(data.email, data.password);
             closeModalResetPassword();
             openModalMessage();
             setTimeout(() => {
@@ -97,9 +95,7 @@ function SignIn() {
             setError(errorHandling(e));
             setTimeout(() => {
                 setError('');
-
             }, 4000);
-            console.log(error);
         }
     }
 

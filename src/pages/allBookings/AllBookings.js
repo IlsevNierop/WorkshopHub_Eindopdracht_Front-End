@@ -39,7 +39,6 @@ function AllBookings() {
     const [modalIsOpenDeleteCheck, setIsOpenDeleteCheck] = useState(false);
     const [modalIsOpenDeleteSuccessful, setIsOpenDeleteSuccessful] = useState(false);
     const [toDeleteBookingId, setToDeleteBookingId] = useState(null);
-
     const [modalIsOpenUpdateBooking, setIsOpenUpdateBooking] = useState(false);
     const [modalIsOpenUpdateBookingSuccessful, setIsOpenUpdateBookingSuccessful] = useState(false);
 
@@ -81,7 +80,6 @@ function AllBookings() {
                     setTimeout(() => {
                         closeModalError();
                     }, 4000);
-                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -93,9 +91,7 @@ function AllBookings() {
             }
         }
         ,
-        [needUpdateBookingData]
-    )
-    ;
+        [needUpdateBookingData]);
 
     useEffect(() => {
         function setOptions() {
@@ -119,12 +115,10 @@ function AllBookings() {
         }
     }, [workshopId]);
 
-
     function removeWorkshopIdFilter() {
         setWorkshopId([]);
         setBookingsData(originalBookingsData);
     }
-
 
     const validateSpotsAvailable = (value) => {
         if ((toUpdateBookingData.booking.sppotsAvailableWorkshop + toUpdateBookingData.booking.amount) < value) {
@@ -160,10 +154,8 @@ function AllBookings() {
                 closeModalUpdateBookingSuccessful();
             }, 4000);
 
-
         } catch (e) {
             setError(errorHandling(e));
-            console.log(e)
             openModalError();
             setTimeout(() => {
                 closeModalError();
@@ -182,14 +174,12 @@ function AllBookings() {
             setTimeout(() => {
                 closeModalDeleteSuccessful();
             }, 4000);
-
         } catch (e) {
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
         setToDeleteBookingId(null);
     }
@@ -213,14 +203,12 @@ function AllBookings() {
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-
         } catch (e) {
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
     }
 
@@ -301,7 +289,6 @@ function AllBookings() {
                     :
                     <h1>{(highestAuthority === 'admin' || highestAuthority === 'workshopowner') ? "Er zijn nog geen boekingen" : "Je hebt nog geen boekingen"} </h1>
                 }
-
                 {loading && <p>Loading...</p>}
 
                 {error &&
@@ -342,12 +329,9 @@ function AllBookings() {
                     contentLabel="Update booking"
                     functionalModalHeader={`Wijzig deze boeking`}
                 >
-
                     <div className={styles["booking__modal"]}>
                         <form className={styles["update-booking__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
-
                             <p className={styles["subheader__input-fields"]}>Niet te wijzigen:</p>
-
                             <InputField
                                 type="number"
                                 name="bookingId"
@@ -375,9 +359,7 @@ function AllBookings() {
                                 readOnly={true}
                             >
                             </InputField>
-
                             <p className={styles["subheader__input-fields"]}>Wijzigen:</p>
-
                             <InputField
                                 type="number"
                                 name="workshopId"
@@ -418,7 +400,6 @@ function AllBookings() {
                                 errors={errors}
                             >
                             </InputField>
-
                             <Button
                                 type="submit"
                             >Boeking plaatsen</Button>
@@ -453,7 +434,8 @@ function AllBookings() {
 
                         <div className={styles["container__filter-dropdown__button"]}>
                             <div className={styles["dropdown"]}>
-                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Filter op workshop
+                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Filter op
+                                    workshop
                                     ID:</label>
                                 <Select className={styles["filter__dropdown"]}
                                         id="select-dropdown-workshopId"

@@ -48,7 +48,6 @@ function WorkshopTile({
                 setTimeout(() => {
                     closeModalError();
                 }, 2000);
-                console.log(e);
             }
         }
     }

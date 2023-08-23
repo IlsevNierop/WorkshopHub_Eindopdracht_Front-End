@@ -24,13 +24,11 @@ import {useForm} from "react-hook-form";
 
 
 function WorkshopPage() {
-
     const {workshopId} = useParams();
 
     const {user} = useContext(AuthContext);
     const {setModalIsOpenSignIn, setSignInSubHeader} = useContext(ModalSignInContext);
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
-
 
     const token = localStorage.getItem('token');
     const navigate = useNavigate();
@@ -64,7 +62,6 @@ function WorkshopPage() {
                     } else if (user && user.highestAuthority === 'workshopowner') {
                         response = await fetchSingleWorkshopDataByOwner(token, workshopId, user.id);
                     }
-                    console.log(response)
                     setSingleWorkshopData(response);
                     setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
                     setFavourite(singleWorkshopData.isFavourite);
@@ -72,7 +69,7 @@ function WorkshopPage() {
                 } catch (e) {
                     setError(errorHandling(e));
                     if (user && user.highestAuthority === 'workshopowner') {
-                        // this is for when a workshopowner wants to see someone else's workshop. Because upfront it's unclear if the workshopowner is the owner of the workshop, first I try to get the data as if he/she is the owner, in case of an error, he/she is clearly not the owner, and data is being fetched as if the workshopowner is a 'normal' viewer.
+                        // this is for when a workshopowner wants to see someone else's workshop. Because upfront it's unclear if the workshopowner is the owner of the workshop or not, so first I try to get the data as if he/she is the owner, in case of an error, means that he/she is not the owner, so then data is being fetched as if the workshopowner is a 'normal' viewer - with the function below:
                         await getDataSingleWorkshopDataLoggedIn(token, user.id);
                     }
                     if (user && user.highestAuthority === 'admin') {
@@ -81,20 +78,16 @@ function WorkshopPage() {
                             closeModalError();
                             navigate("/");
                         }, 3000);
-                        console.log(e)
                     }
                 }
                 toggleLoading(false);
             } else {
-                console.log("test")
                 try {
                     let response;
                     if (user) {
-                        console.log("user")
                         await getDataSingleWorkshopDataLoggedIn(token, user.id);
                     } else {
                         response = await fetchSingleWorkshopData(workshopId);
-                        console.log(response)
                         setSingleWorkshopData(response);
                         setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
                         setFavourite(singleWorkshopData.isFavourite);
@@ -108,7 +101,6 @@ function WorkshopPage() {
                         closeModalError();
                         navigate("/");
                     }, 3000);
-                    console.log(e)
                 }
                 toggleLoading(false);
             }
@@ -128,7 +120,6 @@ function WorkshopPage() {
     async function getDataSingleWorkshopDataLoggedIn() {
         try {
             const response = await fetchSingleWorkshopDataLoggedIn(token, user.id, workshopId);
-            console.log(response);
             setSingleWorkshopData(response);
             setReviewsToShow(response.workshopOwnerReviews.slice(0, 3));
             setFavourite(singleWorkshopData.isFavourite);
@@ -141,7 +132,6 @@ function WorkshopPage() {
                 closeModalError();
                 navigate("/");
             }, 3000);
-            console.log(e)
         }
         toggleLoading(false);
     }
@@ -163,7 +153,6 @@ function WorkshopPage() {
                 setTimeout(() => {
                     closeModalError();
                 }, 3000);
-                console.log(e);
             }
         }
     }
@@ -186,7 +175,6 @@ function WorkshopPage() {
                 setTimeout(() => {
                     closeModalError();
                 }, 3000);
-                console.log(e);
             }
         }
     }
@@ -208,7 +196,6 @@ function WorkshopPage() {
             setTimeout(() => {
                 closeModalError();
             }, 3000);
-            console.log(e);
         }
     }
 
@@ -224,7 +211,6 @@ function WorkshopPage() {
     async function handleFormSubmit(data) {
         try {
             const response = await createBooking(token, data.amount, data.comments, user.id, workshopId);
-            console.log(response);
             setTotalPriceBooking(response.totalPrice);
             closeModalBooking();
             openModalBookingSuccessful();
@@ -645,8 +631,7 @@ function WorkshopPage() {
             </div>
         </main>
 
-    )
-        ;
+    );
 }
 
 export default WorkshopPage;
