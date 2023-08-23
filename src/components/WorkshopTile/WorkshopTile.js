@@ -10,7 +10,6 @@ import CustomModal from "../CustomModal/CustomModal";
 import {ModalSignInContext} from "../../context/ModalSigninContext";
 import defaultworkshoppic from "../../assets/defaultworkshoppic.webp";
 
-
 function WorkshopTile({
                           workshoptitle,
                           image,
@@ -28,12 +27,10 @@ function WorkshopTile({
 
     const token = localStorage.getItem('token');
 
-
     const [error, setError] = useState('');
     const [favourite, setFavourite] = useState(isFavourite);
 
     const [modalIsOpenError, setIsOpenError] = useState(false);
-
 
     async function addOrRemoveFavouriteWorkshop() {
         setError('');
@@ -104,7 +101,6 @@ function WorkshopTile({
                     className={styles["workshop-tile__link"]} to={link}>
                     <img className={styles["workshop-image"]} src={image ? image : defaultworkshoppic}
                          alt={`Foto van de workshop ${workshoptitle}`}/>
-
                     <aside className={styles["information-workshop-column"]}>
                         <section className={styles["top-row-workshop"]}>
                             <h4>{workshoptitle}</h4>
@@ -124,8 +120,7 @@ function WorkshopTile({
                 </Link>
             </article>
         </>
-    )
-        ;
+    );
 }
 
 export default WorkshopTile;

@@ -145,8 +145,8 @@ export async function resetPassword(email, password) {
 
 export async function resetPasswordLoggedIn(token, email, password) {
     const response = await axios.put(`${baseUrl}users/passwordupdaterequest/${email}`, {
-        newPassword: password
-    },
+            newPassword: password
+        },
         {
             headers: {
                 "Content-Type": "application/json",
