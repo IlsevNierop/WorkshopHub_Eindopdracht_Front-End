@@ -21,7 +21,8 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.booking__modal{
+
+.booking__modal {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -37,11 +38,12 @@
     gap: 0.5rem;
 }
 
-.row__inner-container__workshoppage{
+.row__inner-container__workshoppage {
     display: flex;
     flex-direction: row;
 }
-.column__inner-container__workshoppage{
+
+.column__inner-container__workshoppage {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -133,7 +135,7 @@
 }
 
 .link__companyname__workshop-info {
-   color: var(--color-black);
+    color: var(--color-black);
 }
 
 .workshop-info {
@@ -257,7 +259,7 @@
 
 
 .link {
-  color: var(--color-earth-blue);
+    color: var(--color-earth-blue);
 }
 
 

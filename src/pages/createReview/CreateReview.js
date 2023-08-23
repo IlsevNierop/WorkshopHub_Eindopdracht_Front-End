@@ -1,9 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import styles from "./CreateReview.module.css"
 import InputField from "../../components/InputField/InputField";
 import {Controller, useForm} from "react-hook-form";
 import Button from "../../components/Button/Button";
-import {AuthContext} from "../../context/AuthContext";
 import {createReview} from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {useNavigate, useParams} from "react-router-dom";
@@ -13,7 +12,6 @@ import CustomModal from "../../components/CustomModal/CustomModal";
 function CreateReview() {
     const {customerId, workshopId, workshopTitle, workshopDate} = useParams();
 
-    const {user: {id}} = useContext(AuthContext);
     const token = localStorage.getItem('token');
     const {register, handleSubmit, formState: {errors}, control} = useForm({mode: 'onBlur'});
     const [error, setError] = useState('');
@@ -23,11 +21,8 @@ function CreateReview() {
 
     async function handleFormSubmit(data) {
         setError('')
-        console.log(data)
-
         try {
-            const response = await createReview(token, data.rating, data.reviewDescription, customerId, workshopId);
-            console.log(response);
+            await createReview(token, data.rating, data.reviewDescription, customerId, workshopId);
             setError('')
             openModalCreateSuccessful();
             setTimeout(() => {
@@ -38,7 +33,6 @@ function CreateReview() {
         } catch (e) {
             setError(errorHandling(e));
         }
-
     }
 
     function openModalCreateSuccessful() {
@@ -62,8 +56,8 @@ function CreateReview() {
                     closeModal={closeModalCreateSuccessful}
                     contentLabel="Create review successful"
                     updateHeader="Dank voor het achterlaten van je review"
-                    updateMessage="Je review zal geverifieerd worden door de administrator, hiervan krijg je bericht.-
-           Zodra deze geverifieerd is zal de review online komen te staan. - Je wordt doorgestuurd naar de homepage."
+                    updateMessage="Je review zal geverifieerd worden door de administrator.-
+           Zodra deze geverifieerd, krijg je hiervan bericht en zal de review online komen te staan. - Je wordt nu doorgestuurd naar de homepage."
                 ></CustomModal>
 
                 <h1>Laat een review achter</h1>
@@ -122,14 +116,10 @@ function CreateReview() {
                             </div>
                         )}
                     />
-
-
                     <Button
                         type="submit"
                     >Review versturen</Button>
-
                 </form>
-
 
             </div>
         </main>

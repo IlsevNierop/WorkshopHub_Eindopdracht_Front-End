@@ -35,5 +35,8 @@
     border-radius: 5px;
     padding: 5px;
     margin: 0.5rem;
+}
 
+.table-row__user-information {
+    height: 90px;
 }

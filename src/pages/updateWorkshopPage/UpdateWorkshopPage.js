@@ -129,7 +129,6 @@ function UpdateWorkshopPage() {
 
                 } catch (e) {
                     setError(errorHandling(e));
-                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -177,11 +176,10 @@ function UpdateWorkshopPage() {
             data.workshopCategory2 = capitalizeFirstLetter(data.workshopCategory2);
         }
         try {
-            let response;
             if (highestAuthority === 'admin') {
-                response = await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.verify, data.feedbackAdmin, file);
+                await updateAndVerifyWorkshopByAdmin(workshopId, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, data.verify, data.feedbackAdmin, file);
             } else {
-                response = await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
+                await updateWorkshopByWorkshopOwner(workshopId, id, token, data.title, data.date, (data.startTime + ":00"), (data.endTime + ":00"), data.price, data.location, data.workshopCategory1, data.workshopCategory2, data.inOrOutdoors, data.amountOfParticipants, data.highlightedInfo, data.description, file);
             }
             reset();
             setFile([]);
@@ -196,7 +194,6 @@ function UpdateWorkshopPage() {
             }, 5000);
         } catch (e) {
             setError(errorHandling(e));
-            console.error(e);
         }
     }
 
@@ -234,8 +231,7 @@ function UpdateWorkshopPage() {
 
         if (bookings > value) {
             return `Je hebt al ${bookings} boekingen op deze workshop, dus het maximaal aantal deelnemers van ${value} is te laag`;
-        }
-        else if (value <= 0) {
+        } else if (value <= 0) {
             return `Je moet minstens 1 plek aanbieden.`;
         }
         return true;
@@ -255,7 +251,7 @@ function UpdateWorkshopPage() {
                     updateMessage={highestAuthority === 'admin' ?
                         "De workshop eigenaar krijgt hiervan bericht. - Je wordt doorgestuurd naar het overzicht van de openstaande workshops."
                         :
-                        "Je workshop zal geverifieerd worden door de administrator, hiervan krijg je bericht. - Zodra deze geverifieerd is, kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
+                        "Je workshop zal geverifieerd worden door de administrator.- Zodra deze geverifieerd is, krijg je hiervan bericht en kun je de workshop publiceren. - Je wordt doorgestuurd naar het overzicht van je workshops."
                     }
                 ></CustomModal>
 

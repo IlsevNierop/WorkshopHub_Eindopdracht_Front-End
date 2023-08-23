@@ -15,6 +15,7 @@ function AllUsers() {
 
     const {register, handleSubmit, formState: {errors}, reset} = useForm({mode: 'onBlur'});
 
+    const controller = new AbortController();
 
     const [error, setError] = useState('');
     const [loading, toggleLoading] = useState(false);
@@ -28,15 +29,12 @@ function AllUsers() {
     const [modalIsOpenVerifyWorkshopOwner, setIsOpenVerifyWorkshopOwner] = useState(false);
     const [toVerifyWorkshopOwnerId, setToVerifyWorkshopOwnerId] = useState(null);
 
-    const controller = new AbortController();
-
     const optionsSortValue =
         [
             {value: 'userId', label: 'Gebruikers ID'},
             {value: 'firstName', label: 'Voornaam'},
             {value: 'workshopOwnerVerified', label: 'Geverifieerd'},
         ];
-
 
     useEffect(() => {
         async function getAllUsers() {
@@ -53,7 +51,6 @@ function AllUsers() {
                 setTimeout(() => {
                     closeModalError();
                 }, 4000);
-                console.log(error);
             }
             toggleLoading(false);
         }
@@ -69,13 +66,11 @@ function AllUsers() {
         setUsersData(sortArrayTable(usersData, sortValue.value));
     }, [sortValue]);
 
-
     async function handleFormSubmit(data) {
-        console.log(data)
         setError('');
 
         try {
-            const response = await verifyWorkshopOwnerByAdmin(token, toVerifyWorkshopOwnerId, data.verify);
+            await verifyWorkshopOwnerByAdmin(token, toVerifyWorkshopOwnerId, data.verify);
             setError('');
             closeModalVerifyWorkshopOwner();
             toggleNeedUpdateUsersData(!needUpdateUsersData);
@@ -90,9 +85,7 @@ function AllUsers() {
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
-
     }
 
     function verifyWorkshopOwner(workshopOwnerId) {
@@ -155,7 +148,6 @@ function AllUsers() {
                     >
                     </CustomModal>
                 }
-
                 <CustomModal
                     modalIsOpen={modalIsOpenVerifySuccessful}
                     afterOpenModal={afterModalVerifySuccessful}
@@ -220,7 +212,6 @@ function AllUsers() {
                                 </div>
                             </label>
 
-
                             <Button
                                 type="submit"
                             >Verstuur</Button>
@@ -258,7 +249,7 @@ function AllUsers() {
                     </thead>
                     <tbody>
                         {usersData && usersData.map((user) => {
-                            return (<tr key={user.id}>
+                            return (<tr className={styles["table-row__user-information"]} key={user.id}>
                                 <td>{user.id}</td>
                                 <td>{user.profilePicUrl &&
                                     <img className={styles["profile-pic"]} src={user.profilePicUrl}
@@ -297,7 +288,6 @@ function AllUsers() {
                         })}
                     </tbody>
                 </table>
-
             </div>
         </main>
     );

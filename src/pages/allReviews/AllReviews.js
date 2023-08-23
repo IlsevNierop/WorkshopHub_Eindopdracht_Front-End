@@ -39,7 +39,6 @@ function AllReviews() {
     const [modalIsOpenDeleteSuccessful, setIsOpenDeleteSuccessful] = useState(false);
     const [modalIsOpenError, setIsOpenError] = useState(false);
     const [modalIsOpenVerifySuccessful, setIsOpenVerifySuccessful] = useState(false);
-
     const [modalIsOpenUpdateReview, setIsOpenUpdateReview] = useState(false);
     const [modalIsOpenUpdateReviewSuccessful, setIsOpenUpdateReviewSuccessful] = useState(false);
 
@@ -82,7 +81,6 @@ function AllReviews() {
                     setTimeout(() => {
                         closeModalError();
                     }, 4000);
-                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -93,7 +91,6 @@ function AllReviews() {
                 controller.abort();
             }
         }
-
         ,
         [needToUpdateReviewsData]
     );
@@ -102,14 +99,12 @@ function AllReviews() {
         setReviewsData(sortArrayTable(reviewsData, sortValue.value));
     }, [sortValue]);
 
-
     async function verifyReview(reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin) {
         setError('');
 
         try {
-            const response = await verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin);
+            await verifyReviewByAdmin(token, reviewId, rating, reviewDescription, reviewVerified, feedbackAdmin);
             setError('');
-            console.log(response);
             toggleNeedToUpdateReviewsData(!needToUpdateReviewsData);
             openModalVerifySuccessful();
             setTimeout(() => {
@@ -122,33 +117,27 @@ function AllReviews() {
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
-
     }
 
     async function deleteReview(reviewId) {
         setError('');
         closeModalDeleteCheck();
         try {
-            const response = await removeReview(token, reviewId);
+            await removeReview(token, reviewId);
             setError('');
-            console.log(response);
             toggleNeedToUpdateReviewsData(!needToUpdateReviewsData);
             openModalDeleteSuccessful();
             setTimeout(() => {
                 closeModalDeleteSuccessful();
             }, 3000);
-
         } catch (e) {
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
-
     }
 
     function changeReview(reviewId, firstNameReviewer, lastNameReviewer, rating, reviewDescription, reviewVerified, feedbackAdmin) {
@@ -176,11 +165,8 @@ function AllReviews() {
             setTimeout(() => {
                 closeModalUpdateReviewSuccessful();
             }, 4000);
-
-
         } catch (e) {
             setError(errorHandling(e));
-            console.log(e)
             openModalError();
             setTimeout(() => {
                 closeModalError();
@@ -262,11 +248,9 @@ function AllReviews() {
         setIsOpenUpdateReviewSuccessful(false);
     }
 
-
     return (
         <main className={`outer-container ${styles["all-reviews__outer-container"]}`}>
             <div className={`inner-container ${styles["all-reviews__inner-container"]}`}>
-
                 {loading && <p>Loading...</p>}
 
                 {error &&
@@ -279,7 +263,6 @@ function AllReviews() {
                     >
                     </CustomModal>
                 }
-
                 <CustomModal
                     modalIsOpen={modalIsOpenVerifySuccessful}
                     afterOpenModal={afterModalVerifySuccessful}
@@ -322,12 +305,10 @@ function AllReviews() {
                     contentLabel="Update review"
                     functionalModalHeader={`Wijzig deze review`}
                 >
-
                     <div className={styles["review__modal"]}>
                         <form className={styles["update-review__form"]} onSubmit={handleSubmit(handleFormSubmit)}>
 
                             <p className={styles["subheader__input-fields"]}>Niet te wijzigen:</p>
-
                             <InputField
                                 type="number"
                                 name="reviewId"
@@ -357,7 +338,6 @@ function AllReviews() {
                             </InputField>
 
                             <p className={styles["subheader__input-fields"]}>Wijzigen:</p>
-
                             <InputField
                                 type="text"
                                 step="any"
@@ -386,12 +366,12 @@ function AllReviews() {
                                 control={control}
                                 defaultValue=""
                                 rules={{
-                                    required: 'Omschrijving is verplicht',
+                                    required: 'Omschrijving review is verplicht',
                                 }}
                                 render={({field}) => (
                                     <div>
                             <textarea
-                                className={`${errors.description ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
+                                className={`${errors.reviewDescription ? styles["textarea__error"] : styles["textarea__none"]} ${styles["textarea__form"]}`}
                                 {...field}
                                 name="reviewDescription"
                                 id="reviewDescription"
@@ -399,8 +379,8 @@ function AllReviews() {
                                 rows={10}
                                 placeholder="Vul hier de omschrijving van je review in."
                             />
-                                        {errors.description && <p style={{whiteSpace: 'pre-line'}}
-                                                                  className={styles["input-field__error-message"]}>{errors.description.message}</p>}
+                                        {errors.reviewDescription && <p style={{whiteSpace: 'pre-line'}}
+                                                                        className={styles["input-field__error-message"]}>{errors.reviewDescription.message}</p>}
                                     </div>
                                 )}
                             />
@@ -481,7 +461,6 @@ function AllReviews() {
                     :
                     <h1>{highestAuthority === 'admin' ? "Er zijn nog geen " : "Je hebt nog geen "}reviews</h1>
                 }
-
 
                 {reviewsData && reviewsData.length > 0 &&
                     <div className={styles["sort"]}>
@@ -573,13 +552,11 @@ function AllReviews() {
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
-
                                     </tr>
                                 )
                             })}
                         </tbody>
                     </table>}
-
             </div>
         </main>
     );

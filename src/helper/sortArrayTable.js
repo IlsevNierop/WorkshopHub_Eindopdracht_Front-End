@@ -179,7 +179,6 @@ export function sortArrayTable(array, sortValue) {
     }
 
     if (sortValue === 'firstNameReviewer') {
-
         newArray = array.map((review) => {
             return review;
         });

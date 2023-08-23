@@ -52,9 +52,6 @@ function AllWorkshops() {
                 {value: 'workshopVerified', label: 'Goedgekeurd'},
             ];
 
-
-    //TODO search quiery and getrequest on backend
-
     useEffect(() => {
             async function getAllWorkshops() {
                 toggleLoading(true);
@@ -74,7 +71,6 @@ function AllWorkshops() {
                     setTimeout(() => {
                         closeModalError();
                     }, 4000);
-                    console.log(error);
                 }
                 toggleLoading(false);
             }
@@ -108,7 +104,6 @@ function AllWorkshops() {
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(e);
         }
     }
 
@@ -122,8 +117,7 @@ function AllWorkshops() {
         toggleLoading(true);
         setError('');
         try {
-            const response = await removeWorkshop(token, workshopId);
-            console.log(response);
+            await removeWorkshop(token, workshopId);
             setError('');
             openModalDeleteSuccessful();
             toggleNeedUpdateWorkshopsData(!needUpdateWorkshopsData);
@@ -137,7 +131,6 @@ function AllWorkshops() {
             setTimeout(() => {
                 closeModalError();
             }, 4000);
-            console.log(error);
         }
         toggleLoading(false);
         setToDeleteWorkshopId(null);
@@ -189,7 +182,6 @@ function AllWorkshops() {
     }
 
     function openModalEditCheck(workshopId) {
-        console.log(workshopId);
         setToEditWorkshopId(workshopId);
         setIsOpenEditCheck(true);
     }
@@ -295,7 +287,7 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__workshop-page"
                                             className={"link-table-text"}
-                                                  to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
+                                            to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
                                         <td>{workshop.workshopOwnerCompanyName}</td>
@@ -316,16 +308,16 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__edit-workshop"
                                             className={"link-icon"}
-                                                  to={workshop.publishWorkshop === true ?
-                                                      "#"
-                                                      :
-                                                      `/aanpassenworkshop/${workshop.id}`}
+                                            to={workshop.publishWorkshop === true ?
+                                                "#"
+                                                :
+                                                `/aanpassenworkshop/${workshop.id}`}
 
-                                                  onClick={() => {
-                                                      if (workshop.publishWorkshop === true) {
-                                                          openModalEditCheck(workshop.id);
-                                                      }
-                                                  }}
+                                            onClick={() => {
+                                                if (workshop.publishWorkshop === true) {
+                                                    openModalEditCheck(workshop.id);
+                                                }
+                                            }}
                                         ><NotePencil
                                             size={20}
                                             weight="regular"/></Link>
@@ -333,7 +325,7 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__delete-workshop"
                                             className={"link-icon"} to="#"
-                                                  onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
+                                            onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
@@ -364,7 +356,7 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__workshop-page"
                                             className={"link-table-text"}
-                                                  to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
+                                            to={`/workshop/${workshop.id}`}>{workshop.id}</Link></td>
                                         <td>{workshop.title}</td>
                                         <td>{updateDateFormatShort(workshop.date)}</td>
                                         <td className={workshop.workshopVerified ? "td-verified" : "td-not-verified"}>{workshop.workshopVerified ? "Goedgekeurd" : (workshop.workshopVerified === false ? "Afgekeurd" : "Nog niet goedgekeurd")}</td>
@@ -385,16 +377,16 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__edit-workshop"
                                             className={"link-icon"}
-                                                  to={workshop.publishWorkshop === true ?
-                                                      "#"
-                                                      :
-                                                      `/aanpassenworkshop/${workshop.id}`}
+                                            to={workshop.publishWorkshop === true ?
+                                                "#"
+                                                :
+                                                `/aanpassenworkshop/${workshop.id}`}
 
-                                                  onClick={() => {
-                                                      if (workshop.publishWorkshop === true) {
-                                                          openModalEditCheck(workshop.id);
-                                                      }
-                                                  }}
+                                            onClick={() => {
+                                                if (workshop.publishWorkshop === true) {
+                                                    openModalEditCheck(workshop.id);
+                                                }
+                                            }}
                                         ><NotePencil
                                             size={20}
                                             weight="regular"/></Link>
@@ -402,7 +394,7 @@ function AllWorkshops() {
                                         <td><Link
                                             aria-label="link__delete-workshop"
                                             className={"link-icon"} to="#"
-                                                  onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
+                                            onClick={() => checkDeleteWorkshop(workshop.id)}><TrashSimple
                                             size={20}
                                             weight="regular"/></Link>
                                         </td>
@@ -413,8 +405,6 @@ function AllWorkshops() {
                         </tbody>
                     </table>
                 }
-
-
             </div>
         </main>
 
