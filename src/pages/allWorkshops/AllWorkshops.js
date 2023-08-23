@@ -11,9 +11,9 @@ import {NotePencil, TrashSimple} from "@phosphor-icons/react";
 import {Link, useNavigate} from "react-router-dom";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import Select from "react-select";
-import {sortArrayAllWorkshops} from "../../helper/sortArrayAllWorkshops";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import {AuthContext} from "../../context/AuthContext";
+import {sortArrayTable} from "../../helper/sortArrayTable";
 
 function AllWorkshops() {
     const token = localStorage.getItem('token');
@@ -41,15 +41,15 @@ function AllWorkshops() {
             ? [
                 {value: 'workshopId', label: 'Workshop ID'},
                 {value: 'title', label: 'Titel'},
-                {value: 'date', label: 'Datum'},
+                {value: 'workshopDate', label: 'Datum'},
                 {value: 'companyname', label: 'Bedrijf'},
-                {value: 'verified', label: 'Goedgekeurd'},
+                {value: 'workshopVerified', label: 'Goedgekeurd'},
             ]
             : [
                 {value: 'workshopId', label: 'Workshop ID'},
                 {value: 'title', label: 'Titel'},
-                {value: 'date', label: 'Datum'},
-                {value: 'verified', label: 'Goedgekeurd'},
+                {value: 'workshopDate', label: 'Datum'},
+                {value: 'workshopVerified', label: 'Goedgekeurd'},
             ];
 
 
@@ -88,7 +88,7 @@ function AllWorkshops() {
         , [needUpdateWorkshopsData]);
 
     useEffect(() => {
-        setWorkshopsData(sortArrayAllWorkshops(workshopsData, sortValue.value));
+        setWorkshopsData(sortArrayTable(workshopsData, sortValue.value));
     }, [sortValue]);
 
 

@@ -8,7 +8,7 @@ import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {useForm} from "react-hook-form";
 import Select from "react-select";
-import {sortArrayAllUsers} from "../../helper/sortArrayAllUsers";
+import {sortArrayTable} from "../../helper/sortArrayTable";
 
 function AllUsers() {
     const token = localStorage.getItem('token');
@@ -34,7 +34,7 @@ function AllUsers() {
         [
             {value: 'userId', label: 'Gebruikers ID'},
             {value: 'firstName', label: 'Voornaam'},
-            {value: 'verified', label: 'Geverifieerd'},
+            {value: 'workshopOwnerVerified', label: 'Geverifieerd'},
         ];
 
 
@@ -66,7 +66,7 @@ function AllUsers() {
     }, [needUpdateUsersData]);
 
     useEffect(() => {
-        setUsersData(sortArrayAllUsers(usersData, sortValue.value));
+        setUsersData(sortArrayTable(usersData, sortValue.value));
     }, [sortValue]);
 
 

@@ -14,8 +14,8 @@ import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import {useForm} from "react-hook-form";
 import Select from "react-select";
-import {sortArrayBookings} from "../../helper/sortArrayBookings";
 import {createOptionsObjectSelectDropdown} from "../../helper/createOptionsObjectSelectDropdown";
+import {sortArrayTable} from "../../helper/sortArrayTable";
 
 function AllBookings() {
     const token = localStorage.getItem('token');
@@ -52,7 +52,7 @@ function AllBookings() {
 
     const optionsSortValue =
         [{value: 'bookingId', label: 'Boeking ID'},
-            {value: 'workshopId', label: 'Workshop ID'},
+            {value: 'bookingWorkshopId', label: 'Workshop ID'},
             {value: 'dateBooking', label: 'Datum Boeking'},
             {value: 'firstNameCustomer', label: 'Voornaam klant'},];
 
@@ -107,7 +107,7 @@ function AllBookings() {
 
 
     useEffect(() => {
-        setBookingsData(sortArrayBookings(bookingsData, sortValue.value));
+        setBookingsData(sortArrayTable(bookingsData, sortValue.value));
     }, [sortValue]);
 
 
