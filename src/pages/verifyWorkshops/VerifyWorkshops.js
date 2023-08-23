@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import styles from './VerifyWorkshops.module.css';
 import WorkshopTile from "../../components/WorkshopTile/WorkshopTile";
 import {errorHandling} from "../../helper/errorHandling";
-import {fetchWorkshopsToVerifyByAdmin, fetchWorkshopsToVerifyByOwner} from "../../api/api";
+import {fetchWorkshopsToVerifyByAdmin, fetchWorkshopsToPublishByOwner} from "../../api/api";
 import {updateDateFormatShort} from "../../helper/updateDateFormatShort";
 import {Confetti} from "@phosphor-icons/react";
 import {AuthContext} from "../../context/AuthContext";
@@ -26,7 +26,7 @@ function VerifyWorkshops() {
                     if (highestAuthority === 'admin') {
                         response = await fetchWorkshopsToVerifyByAdmin(token);
                     } else {
-                        response = await fetchWorkshopsToVerifyByOwner(token, id);
+                        response = await fetchWorkshopsToPublishByOwner(token, id);
                     }
                     setWorkshopsToVerifyData(response);
                     setError('');

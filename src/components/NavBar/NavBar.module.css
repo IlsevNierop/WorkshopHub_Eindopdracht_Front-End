@@ -43,6 +43,11 @@
     height: 45px;
 }
 
+.container__list-item__nav-bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
 
 .nav__dropdown_menu {
     position: relative;

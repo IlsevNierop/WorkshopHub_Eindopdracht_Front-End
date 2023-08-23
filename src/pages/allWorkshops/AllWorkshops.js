@@ -4,7 +4,7 @@ import {
     fetchAllWorkshopsAdmin,
     fetchAllWorkshopsOwnerByOwner,
     removeWorkshop,
-    verifyWorkshopByOwner
+    publishWorkshopByOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {NotePencil, TrashSimple} from "@phosphor-icons/react";
@@ -95,7 +95,7 @@ function AllWorkshops() {
     async function publishWorkshop(workshopId, publishWorkshop) {
         setError('');
         try {
-            await verifyWorkshopByOwner(token, workshopId, publishWorkshop);
+            await publishWorkshopByOwner(token, workshopId, publishWorkshop);
             toggleNeedUpdateWorkshopsData(!needUpdateWorkshopsData);
             openModalPublishSuccessful();
             setTimeout(() => {

@@ -4,7 +4,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     addOrRemoveWorkshopFavourites, createBooking,
     fetchSingleWorkshopData, fetchSingleWorkshopDataAdmin, fetchSingleWorkshopDataByOwner,
-    fetchSingleWorkshopDataLoggedIn, updateAndVerifyWorkshopByAdmin, verifyWorkshopByOwner
+    fetchSingleWorkshopDataLoggedIn, updateAndVerifyWorkshopByAdmin, publishWorkshopByOwner
 } from "../../api/api";
 import {errorHandling} from "../../helper/errorHandling";
 import {Link, useNavigate, useParams} from "react-router-dom";
@@ -194,7 +194,7 @@ function WorkshopPage() {
     async function publishWorkshop(publishWorkshop) {
         setError('');
         try {
-            await verifyWorkshopByOwner(token, workshopId, publishWorkshop);
+            await publishWorkshopByOwner(token, workshopId, publishWorkshop);
             setupdateMessage(true);
             openModalUpdateMessage();
             setTimeout(() => {
