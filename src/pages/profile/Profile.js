@@ -63,7 +63,6 @@ function Profile() {
     function closeModal() {
         setIsOpen(false);
         setPreviewUrl('');
-        reset();
     }
 
     function openModalUpdateProfile() {
@@ -199,7 +198,6 @@ function Profile() {
         try {
             const response = await uploadProfilePic(token, id, formData);
             closeModal();
-            reset();
             setUserData({
                 ...userData,
                 profilepic: response.data,
