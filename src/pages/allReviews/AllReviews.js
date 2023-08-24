@@ -406,7 +406,7 @@ function AllReviews() {
                                                 register={register}
                                                 errors={errors}
                                             >
-                                                Goedkeuren
+                                                Goedkeuren en publiceren
                                             </InputField>
                                             <InputField
                                                 classNameInputField="radio-checkbox__verify"

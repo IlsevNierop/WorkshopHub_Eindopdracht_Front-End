@@ -31,6 +31,11 @@
     width: 26px;
 }
 
+.size-28 .container-half-star, .size-28 .container__rating  {
+    height: 28px;
+    width: 28px;
+}
+
 .container-half-star::before {
     content: '';
     position: absolute;
