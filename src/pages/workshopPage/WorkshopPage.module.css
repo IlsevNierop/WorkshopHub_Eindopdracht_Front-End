@@ -122,6 +122,10 @@
     opacity: 0.6;
 }
 
+.favourite-icon:hover {
+    border: 2px solid var(--color-black);
+}
+
 .right-side__top__workshop {
     display: flex;
     flex-direction: column;
