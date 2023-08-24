@@ -1,5 +1,4 @@
 export function errorHandling(e) {
-    console.error(e);
 
     if (e.response.status === 400 && e.response.data.includes("Field error:")) {
         return "Een of meerdere velden zijn niet of niet juist ingevuld.";
