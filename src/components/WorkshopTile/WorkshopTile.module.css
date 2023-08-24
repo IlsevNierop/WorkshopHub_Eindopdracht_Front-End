@@ -16,7 +16,6 @@
 }
 
 .favourite-icon {
-    /*z-index: 0.5;*/
     padding: 0.25rem;
     border-radius: 50px;
     background-color: var(--color-grey-200);
@@ -25,6 +24,11 @@
     right: 10px;
     opacity: 0.6;
 }
+
+.favourite-icon:hover {
+    border: 2px solid var(--color-black);
+}
+
 
 .workshop-image {
     border-radius: 0.5rem 0.5rem 0 0;

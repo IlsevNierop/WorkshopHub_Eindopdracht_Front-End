@@ -240,8 +240,7 @@ function Register() {
                         }
                         <Button
                             type="submit"
-                            disabled={error ? "disabled" : null}
-                        >Verstuur</Button>
+                        >Registreren</Button>
                         {error && <p className="error-message">{error}</p>}
 
                     </form>
