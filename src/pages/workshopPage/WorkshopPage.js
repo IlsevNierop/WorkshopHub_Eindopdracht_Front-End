@@ -477,7 +477,7 @@ function WorkshopPage() {
 
                                 <div className={styles["workshop-owner-rating"]}>
                                     <StarRating rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
-                                                size={20}></StarRating>
+                                                size={26}></StarRating>
                                     <p>
                                         {singleWorkshopData.averageRatingWorkshopOwnerReviews != null ? singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1) : 0} /
                                         5 (
@@ -565,7 +565,7 @@ function WorkshopPage() {
                                                 <div className={styles["workshop-owner-rating"]}>
                                                     <StarRating
                                                         rating={singleWorkshopData.averageRatingWorkshopOwnerReviews}
-                                                        size={26}></StarRating>
+                                                        size={28}></StarRating>
                                                     <p className={styles["rating__numbers__workshopowner"]}>
                                                         {singleWorkshopData.averageRatingWorkshopOwnerReviews.toFixed(1)} /
                                                         5 (

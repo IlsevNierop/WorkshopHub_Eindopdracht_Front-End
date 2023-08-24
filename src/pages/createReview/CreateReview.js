@@ -62,8 +62,8 @@ function CreateReview() {
 
                 <h1>Laat een review achter</h1>
                 <div className={styles["subtitle__create-review"]}>
-                    <h3>Over de workshop: {workshopTitle} </h3>
-                    <h3>gevolgd op {updateDateFormatLong(workshopDate)}</h3>
+                    <h2>{workshopTitle} </h2>
+                    <h3>Gevolgd op: {updateDateFormatLong(workshopDate)}</h3>
                 </div>
 
                 {error && <p className="error-message">{error}</p>}
