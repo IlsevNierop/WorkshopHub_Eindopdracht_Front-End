@@ -578,7 +578,7 @@ export async function removeBooking(token, bookingId) {
 }
 
 export async function getCsvFileAdmin(token) {
-    const response = await axios.get(`${baseUrl}bookings/admin/generateanddownloadcsv`, {
+    const response = await axios.get(`${baseUrl}bookings/admin/csv`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -589,7 +589,7 @@ export async function getCsvFileAdmin(token) {
 }
 
 export async function getCsvFileWorkshopOwner(token, workshopOwnerId) {
-    const response = await axios.get(`${baseUrl}bookings/workshopowner/generateanddownloadcsv/${workshopOwnerId}`, {
+    const response = await axios.get(`${baseUrl}bookings/workshopowner/csv/${workshopOwnerId}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -600,7 +600,7 @@ export async function getCsvFileWorkshopOwner(token, workshopOwnerId) {
 }
 
 export async function getCsvFileWorkshop(token, workshopId) {
-    const response = await axios.get(`${baseUrl}bookings/workshopowner/generateanddownloadcsv/workshop/${workshopId}`, {
+    const response = await axios.get(`${baseUrl}bookings/workshopowner/csv/workshop/${workshopId}`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
