@@ -125,13 +125,10 @@
     padding-bottom: 1.5rem;
 }
 
-.user-type__row {
-    display: flex;
-    flex-direction: row;
-}
-
 .user-type__label {
     font-weight: normal;
+    display: flex;
+    flex-direction: row;
 }
 
 .user-type__dropdown {
