@@ -171,7 +171,7 @@ function Register() {
                                 >
                                 </InputField>
                                 <div className={styles["user-type__row"]}>
-                                    <label className={styles["user-type__label"]} htmlFor="user-type__label">Consument/
+                                    <label className={styles["user-type__label"]}>Consument/
                                         workshop eigenaar*
                                         <Select className={styles["user-type__dropdown"]}
                                                 options={optionsUserType}
