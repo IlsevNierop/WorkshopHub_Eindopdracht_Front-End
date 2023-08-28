@@ -170,7 +170,6 @@ function AllUsers() {
                             <label htmlFor="verify">Goed of afkeuren van workshop eigenaar met
                                 ID: {toVerifyWorkshopOwnerId}
                                 <div className={styles["workshop-owner-verified-radio-checkboxes"]}>
-
                                     <InputField
                                         classNameInputField="radio-checkbox__verify"
                                         classNameLabel="label__radio-checkbox__verify"
@@ -220,17 +219,18 @@ function AllUsers() {
                 </CustomModal>
 
                 <div className={styles["sort"]}>
-                    <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
-                    <Select className={styles["sort__dropdown"]}
-                            id="select-dropdown-sort"
-                            name="select-dropdown-sort"
-                            label="select-dropdown-sort"
-                            placeholder="Selecteer.."
-                            defaultValue={sortValue}
-                            onChange={setSortValue}
-                            options={optionsSortValue}
-                            isMulti={false}
-                    />
+                    <label className="select-dropdown">Sorteer op:
+                        <Select className={styles["sort__dropdown"]}
+                                id="select-dropdown-sort"
+                                name="select-dropdown-sort"
+                                label="select-dropdown-sort"
+                                placeholder="Selecteer.."
+                                defaultValue={sortValue}
+                                onChange={setSortValue}
+                                options={optionsSortValue}
+                                isMulti={false}
+                        />
+                    </label>
                 </div>
 
                 <table className={"table"}>

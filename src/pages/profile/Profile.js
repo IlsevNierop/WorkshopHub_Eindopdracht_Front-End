@@ -458,21 +458,16 @@ function Profile() {
                                     >
                                     </InputField>
                                     {editProfile &&
-                                        <>
-                                            <div className={styles["user-type__row"]}>
-
                                                 <label
-                                                    className={`select-dropdown ${styles["user-type__label"]}`}
-                                                    htmlFor="select-dropdown-sort">Consument/
-                                                    workshop eigenaar:</label>
-                                                <Select className={styles["user-type__dropdown"]}
-                                                        defaultValue={userType}
-                                                        onChange={setUserType}
-                                                        options={optionsUserType}
-                                                        isMulti={false}
-                                                />
-                                            </div>
-                                        </>
+                                                    className={`select-dropdown ${styles["user-type__label"]}`}>Consument/
+                                                    workshop eigenaar:
+                                                    <Select className={styles["user-type__dropdown"]}
+                                                            defaultValue={userType}
+                                                            onChange={setUserType}
+                                                            options={optionsUserType}
+                                                            isMulti={false}
+                                                    />
+                                                </label>
                                     }
                                 </div>
                             }

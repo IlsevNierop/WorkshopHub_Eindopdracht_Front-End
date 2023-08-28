@@ -254,17 +254,18 @@ function AllWorkshops() {
                 ></CustomModal>
 
                 <div className={styles["sort"]}>
-                    <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
-                    <Select className={styles["sort__dropdown"]}
-                            id="select-dropdown-sort"
-                            name="select-dropdown-sort"
-                            label="select-dropdown-sort"
-                            placeholder="Selecteer.."
-                            defaultValue={sortValue}
-                            onChange={setSortValue}
-                            options={optionsSortValue}
-                            isMulti={false}
-                    />
+                    <label className="select-dropdown">Sorteer op:
+                        <Select className={styles["sort__dropdown"]}
+                                id="select-dropdown-sort"
+                                name="select-dropdown-sort"
+                                label="select-dropdown-sort"
+                                placeholder="Selecteer.."
+                                defaultValue={sortValue}
+                                onChange={setSortValue}
+                                options={optionsSortValue}
+                                isMulti={false}
+                        />
+                    </label>
                 </div>
 
                 {highestAuthority === 'admin' &&

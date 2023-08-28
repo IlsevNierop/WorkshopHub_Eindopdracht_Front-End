@@ -126,6 +126,7 @@ function Home() {
     }, [originalWorkshopData])
 
     useEffect(() => {
+
         setWorkshopData(sortArrayHomePage(workshopData, sortValue.value));
 
     }, [sortValue]);
@@ -154,17 +155,18 @@ function Home() {
                     <h4>Filter je zoekopdracht:</h4>
 
                     <div className={styles["sort"]}>
-                        <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
-                        <Select className={styles["sort__dropdown"]}
-                                id="select-dropdown-sort"
-                                name="select-dropdown-sort"
-                                label="select-dropdown-sort"
-                                placeholder="Selecteer.."
-                                defaultValue={sortValue}
-                                onChange={setSortValue}
-                                options={optionsSortValue}
-                                isMulti={false}
-                        />
+                        <label className="select-dropdown">Sorteer op:
+                            <Select className={styles["sort__dropdown"]}
+                                    id="select-dropdown-sort"
+                                    name="select-dropdown-sort"
+                                    label="select-dropdown-sort"
+                                    placeholder="Selecteer.."
+                                    defaultValue={sortValue}
+                                    onChange={setSortValue}
+                                    options={optionsSortValue}
+                                    isMulti={false}
+                            />
+                        </label>
                     </div>
                 </section>
 
@@ -172,158 +174,163 @@ function Home() {
                     <aside className={styles["sidebar__filter"]}>
 
                         <div className={styles["filter-item"]}>
-
-                            <label className="select-dropdown" htmlFor="select-dropdown-category">Categorie</label>
-                            <Select
-                                id="select-dropdown-category"
-                                name="select-dropdown-category"
-                                label="select-dropdown-category"
-                                placeholder="Selecteer.."
-                                value={category}
-                                onChange={setCategory}
-                                options={optionsCategory}
-                                isMulti={true}
-
-                            />
+                            <label className="select-dropdown">Categorie
+                                <Select
+                                    id="select-dropdown-category"
+                                    name="select-dropdown-category"
+                                    label="select-dropdown-category"
+                                    placeholder="Selecteer.."
+                                    value={category}
+                                    onChange={setCategory}
+                                    options={optionsCategory}
+                                    isMulti={true}
+                                />
+                            </label>
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className={styles["date-range-picker"]} htmlFor="date-range">Wanneer</label>
-                            <DateRange
-                                label="date-range"
-                                editableDateInputs={true}
-                                onChange={item => setDateRange([item.selection])}
-                                moveRangeOnFirstSelection={false}
-                                ranges={dateRange}
-                                minDate={new Date()}
-                                rangeColors={['#375673', '#375673', '#375673']}
-                                color={'#375673'}
-                            />
+                            <label className={styles["date-range-picker"]}>Wanneer
+                                <DateRange
+                                    label="date-range"
+                                    editableDateInputs={true}
+                                    onChange={item => setDateRange([item.selection])}
+                                    moveRangeOnFirstSelection={false}
+                                    ranges={dateRange}
+                                    minDate={new Date()}
+                                    rangeColors={['#375673', '#375673', '#375673']}
+                                    color={'#375673'}
+                                />
+                            </label>
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className="select-dropdown" htmlFor="select-dropdown-location">Locatie</label>
-                            <Select
-                                id="select-dropdown-location"
-                                name="select-dropdown-location"
-                                label="select-dropdown-location"
-                                placeholder="Selecteer.."
-                                value={location}
-                                onChange={setLocation}
-                                options={optionsLocation}
-                                isMulti={true}
-                            />
+                            <label className="select-dropdown">Locatie
+                                <Select
+                                    id="select-dropdown-location"
+                                    name="select-dropdown-location"
+                                    label="select-dropdown-location"
+                                    placeholder="Selecteer.."
+                                    value={location}
+                                    onChange={setLocation}
+                                    options={optionsLocation}
+                                    isMulti={true}
+                                />
+                            </label>
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className={styles["price-slider"]} htmlFor="price-slider">Maximale prijs</label>
-                            <p>{priceSlider}</p>
-                            <Slider
-                                id="price"
-                                name="price-slider"
-                                label="price-slider"
-                                changeHandler={changeValueSlider}
-                                minRange="1"
-                                maxRange="400"
-                                step="1"
-                                value={priceSlider}
-                            >
-                            </Slider>
+                            <label className={styles["price-slider"]}>Maximale prijs
+                                <p>{priceSlider}</p>
+                                <Slider
+                                    id="price"
+                                    name="price-slider"
+                                    label="price-slider"
+                                    changeHandler={changeValueSlider}
+                                    minRange="1"
+                                    maxRange="400"
+                                    step="1"
+                                    value={priceSlider}
+                                >
+                                </Slider>
+                            </label>
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className={styles["minimum-rating"]} htmlFor="minimum-rating">Minimale
-                                beoordeling</label>
-                            <div className={styles["rating-column"]}>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="zero-star"
-                                    type="radio"
-                                    value={0}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={0} size={20}></StarRating>
-                                </InputField>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="one-star"
-                                    type="radio"
-                                    value={1}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={1} size={20}></StarRating>
-                                </InputField>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="two-star"
-                                    type="radio"
-                                    value={2}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={2} size={20}></StarRating>
-                                </InputField>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="three-star"
-                                    type="radio"
-                                    value={3}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={3} size={20}></StarRating>
-                                </InputField>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="four-star"
-                                    type="radio"
-                                    value={4}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={4} size={20}></StarRating>
-                                </InputField>
-                                <InputField
-                                    classNameLabel="rating-row"
-                                    classNameInputField="radio-checkbox"
-                                    name="five-star"
-                                    type="radio"
-                                    value={5}
-                                    nameInputField="rating"
-                                    onChangeHandler={handleChangeRating}
-                                    minRating={minRating}
-                                >
-                                    <StarRating rating={5} size={20}></StarRating>
-                                </InputField>
-                            </div>
+                            <label className={styles["minimum-rating"]}>Minimale
+                                beoordeling
+                                <div className={styles["rating-column"]}>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="zero-star"
+                                        type="radio"
+                                        value={0}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={0} size={20}></StarRating>
+                                    </InputField>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="one-star"
+                                        type="radio"
+                                        value={1}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={1} size={20}></StarRating>
+                                    </InputField>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="two-star"
+                                        type="radio"
+                                        value={2}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={2} size={20}></StarRating>
+                                    </InputField>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="three-star"
+                                        type="radio"
+                                        value={3}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={3} size={20}></StarRating>
+                                    </InputField>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="four-star"
+                                        type="radio"
+                                        value={4}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={4} size={20}></StarRating>
+                                    </InputField>
+                                    <InputField
+                                        classNameLabel="rating-row"
+                                        classNameInputField="radio-checkbox"
+                                        name="five-star"
+                                        type="radio"
+                                        value={5}
+                                        nameInputField="rating"
+                                        onChangeHandler={handleChangeRating}
+                                        minRating={minRating}
+                                    >
+                                        <StarRating rating={5} size={20}></StarRating>
+                                    </InputField>
+                                </div>
+                            </label>
+
                         </div>
 
                         <div className={styles["filter-item"]}>
-                            <label className="select-dropdown" htmlFor="select-dropdown-environment">Waar vindt de
-                                workshop plaats</label>
-                            <Select
-                                id="select-dropdown-environment"
-                                name="select-dropdown-environment"
-                                label="select-dropdown-environment"
-                                placeholder="Selecteer.."
-                                value={environment}
-                                onChange={setEnvironment}
-                                options={optionsEnvironment}
-                                isMulti={false}
-                                isClearable={true}
-                            />
+                            <label className="select-dropdown">Waar vindt de
+                                workshop plaats
+                                <Select
+                                    id="select-dropdown-environment"
+                                    name="select-dropdown-environment"
+                                    label="select-dropdown-environment"
+                                    placeholder="Selecteer.."
+                                    value={environment}
+                                    onChange={setEnvironment}
+                                    options={optionsEnvironment}
+                                    isMulti={false}
+                                    isClearable={true}
+                                />
+                            </label>
                         </div>
 
                         <Button

@@ -419,24 +419,23 @@ function AllBookings() {
                     <div className={styles["top__bookings__dropdown-menu"]}>
 
                         <div className={styles["dropdown"]}>
-                            <label className="select-dropdown" htmlFor="select-dropdown-sort">Sorteer op:</label>
-                            <Select className={styles["sort__dropdown"]}
-                                    id="select-dropdown-sort"
-                                    name="select-dropdown-sort"
-                                    label="select-dropdown-sort"
-                                    placeholder="Selecteer.."
-                                    defaultValue={sortValue}
-                                    onChange={setSortValue}
-                                    options={optionsSortValue}
-                                    isMulti={false}
-                            />
+                            <label className="select-dropdown">Sorteer op:
+                                <Select className={styles["sort__dropdown"]}
+                                        id="select-dropdown-sort"
+                                        name="select-dropdown-sort"
+                                        label="select-dropdown-sort"
+                                        placeholder="Selecteer.."
+                                        defaultValue={sortValue}
+                                        onChange={setSortValue}
+                                        options={optionsSortValue}
+                                        isMulti={false}
+                                />
+                            </label>
                         </div>
 
                         <div className={styles["container__filter-dropdown__button"]}>
                             <div className={styles["dropdown"]}>
-                                <label className="select-dropdown" htmlFor="select-dropdown-workshopId">Filter op
-                                    workshop
-                                    ID:</label>
+                                <label className="select-dropdown">Filter op workshop ID:
                                 <Select className={styles["filter__dropdown"]}
                                         id="select-dropdown-workshopId"
                                         name="select-dropdown-workshopId"
@@ -447,6 +446,7 @@ function AllBookings() {
                                         options={optionsWorkshopId}
                                         isMulti={false}
                                 />
+                                </label>
                             </div>
                             <Button type="text" onClick={removeWorkshopIdFilter}>Alle workshops</Button>
                         </div>
