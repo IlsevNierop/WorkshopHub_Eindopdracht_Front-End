@@ -31,6 +31,7 @@ function CreateReview() {
             }, 5000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
@@ -61,10 +62,10 @@ function CreateReview() {
                 ></CustomModal>
 
                 <h1>Laat een review achter</h1>
-                <div className={styles["subtitle__create-review"]}>
+                <section className={styles["subtitle__create-review"]}>
                     <h2>{workshopTitle} </h2>
                     <h3>Gevolgd op: {updateDateFormatLong(workshopDate)}</h3>
-                </div>
+                </section>
 
                 {error && <p className="error-message">{error}</p>}
 

@@ -76,6 +76,7 @@ function AllReviews() {
                         setError('');
                     }
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                     openModalError();
                     setTimeout(() => {
@@ -112,6 +113,7 @@ function AllReviews() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -132,6 +134,7 @@ function AllReviews() {
                 closeModalDeleteSuccessful();
             }, 3000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -166,6 +169,7 @@ function AllReviews() {
                 closeModalUpdateReviewSuccessful();
             }, 4000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -463,7 +467,7 @@ function AllReviews() {
                 }
 
                 {reviewsData && reviewsData.length > 0 &&
-                    <div className={styles["sort"]}>
+                    <section className={styles["sort"]}>
                         <label className="select-dropdown">Sorteer op:
                             <Select className={styles["sort__dropdown"]}
                                     id="select-dropdown-sort"
@@ -476,7 +480,7 @@ function AllReviews() {
                                     isMulti={false}
                             />
                         </label>
-                    </div>
+                    </section>
                 }
 
                 {reviewsData && reviewsData.length > 0 &&

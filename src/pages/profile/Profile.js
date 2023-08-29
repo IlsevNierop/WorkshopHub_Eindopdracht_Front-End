@@ -127,6 +127,7 @@ function Profile() {
                     });
                     setError('');
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                 }
             } else {
@@ -147,6 +148,7 @@ function Profile() {
                     });
                     setError('');
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                 }
             }
@@ -176,10 +178,11 @@ function Profile() {
                 }, 2000);
                 toggleEditProfile(false);
             } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
             }
-        } catch
-            (e) {
+        } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
@@ -204,6 +207,7 @@ function Profile() {
             });
             window.location.reload();
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
@@ -218,6 +222,7 @@ function Profile() {
                 closeModalUpdatePassword();
             }, 2000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             setTimeout(() => {
                 setError('');
@@ -349,7 +354,7 @@ function Profile() {
                 </div>
 
                 <div className={styles["profile"]}>
-                    <section className={styles["left-side__profile"]}>
+                    <aside className={styles["left-side__profile"]}>
                         {userData &&
                             <>
                                 <Link
@@ -390,7 +395,7 @@ function Profile() {
                             </>
                         }
 
-                    </section>
+                    </aside>
 
                     <section className={styles["profile-fields"]}>
 
@@ -458,16 +463,16 @@ function Profile() {
                                     >
                                     </InputField>
                                     {editProfile &&
-                                                <label
-                                                    className={`select-dropdown ${styles["user-type__label"]}`}>Consument/
-                                                    workshop eigenaar:
-                                                    <Select className={styles["user-type__dropdown"]}
-                                                            defaultValue={userType}
-                                                            onChange={setUserType}
-                                                            options={optionsUserType}
-                                                            isMulti={false}
-                                                    />
-                                                </label>
+                                        <label
+                                            className={`select-dropdown ${styles["user-type__label"]}`}>Consument/
+                                            workshop eigenaar:
+                                            <Select className={styles["user-type__dropdown"]}
+                                                    defaultValue={userType}
+                                                    onChange={setUserType}
+                                                    options={optionsUserType}
+                                                    isMulti={false}
+                                            />
+                                        </label>
                                     }
                                 </div>
                             }

@@ -101,6 +101,7 @@ function Home() {
                     setOriginalWorkshopData(response);
                     setError('');
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                 }
                 toggleLoading(false);
@@ -122,11 +123,9 @@ function Home() {
         }
 
         void setOptions();
-
     }, [originalWorkshopData])
 
     useEffect(() => {
-
         setWorkshopData(sortArrayHomePage(workshopData, sortValue.value));
 
     }, [sortValue]);
@@ -313,7 +312,6 @@ function Home() {
                                     </InputField>
                                 </div>
                             </label>
-
                         </div>
 
                         <div className={styles["filter-item"]}>
@@ -363,7 +361,6 @@ function Home() {
                         })
                         }
                     </section>
-
                 </section>
             </div>
         </main>

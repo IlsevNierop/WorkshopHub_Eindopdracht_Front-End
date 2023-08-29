@@ -128,6 +128,7 @@ function UpdateWorkshopPage() {
 
 
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                 }
                 toggleLoading(false);
@@ -193,6 +194,7 @@ function UpdateWorkshopPage() {
                 }
             }, 5000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }

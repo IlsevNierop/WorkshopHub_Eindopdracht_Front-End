@@ -30,8 +30,8 @@ function VerifyWorkshops() {
                 }
                 setWorkshopsToVerifyData(response);
                 setError('');
-            } catch
-                (e) {
+            } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
             }
             toggleLoading(false);

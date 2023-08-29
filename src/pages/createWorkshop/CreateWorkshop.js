@@ -47,6 +47,7 @@ function CreateWorkshop() {
                 closeModal();
             }, 5000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
@@ -214,7 +215,6 @@ function CreateWorkshop() {
                     </InputField>
 
                     <div className={styles["dropdown-inoroutdoors__container"]}>
-
                         <label className={styles["dropdown-inoroutdoors__label"]}
                                htmlFor="inoroutdoors">Binnen/buiten*</label>
                         <Controller
