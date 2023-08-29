@@ -46,6 +46,7 @@ function AllUsers() {
                 setError('');
 
             } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
                 openModalError();
                 setTimeout(() => {
@@ -80,6 +81,7 @@ function AllUsers() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -218,7 +220,7 @@ function AllUsers() {
                     </div>
                 </CustomModal>
 
-                <div className={styles["sort"]}>
+                <section className={styles["sort"]}>
                     <label className="select-dropdown">Sorteer op:
                         <Select className={styles["sort__dropdown"]}
                                 id="select-dropdown-sort"
@@ -231,7 +233,7 @@ function AllUsers() {
                                 isMulti={false}
                         />
                     </label>
-                </div>
+                </section>
 
                 <table className={"table"}>
                     <thead>

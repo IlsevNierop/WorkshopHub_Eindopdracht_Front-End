@@ -67,6 +67,7 @@ function WorkshopPage() {
                     setFavourite(singleWorkshopData.isFavourite);
                     setError('');
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                     if (user && user.highestAuthority === 'workshopowner') {
                         // this is for when a workshopowner wants to see someone else's workshop. Because upfront it's unclear if the workshopowner is the owner of the workshop or not, so first I try to get the data as if he/she is the owner, in case of an error, means that he/she is not the owner, so then data is being fetched as if the workshopowner is a 'normal' viewer - with the function below:
@@ -93,8 +94,8 @@ function WorkshopPage() {
                         setFavourite(singleWorkshopData.isFavourite);
                         setError('');
                     }
-                } catch
-                    (e) {
+                } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                     openModalError();
                     setTimeout(() => {
@@ -126,6 +127,7 @@ function WorkshopPage() {
             setError('');
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -148,6 +150,7 @@ function WorkshopPage() {
                 setFavourite(!favourite);
 
             } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
                 openModalError();
                 setTimeout(() => {
@@ -170,6 +173,7 @@ function WorkshopPage() {
                 }, 3000);
 
             } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
                 openModalError();
                 setTimeout(() => {
@@ -191,6 +195,7 @@ function WorkshopPage() {
             }, 3000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -220,6 +225,7 @@ function WorkshopPage() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -610,7 +616,7 @@ function WorkshopPage() {
                                     </article>
 
                                     {singleWorkshopData.highlightedInfo &&
-                                        <div className={styles["info__bottom__workshop"]}>
+                                        <article className={styles["info__bottom__workshop"]}>
                                             <h4>Belangrijk om te weten</h4>
                                             <ul>{(singleWorkshopData.highlightedInfo.split(".")).filter(info => info.trim() !== "").map((info) => {
                                                 return (
@@ -619,7 +625,7 @@ function WorkshopPage() {
                                                 )
                                             })
                                             }</ul>
-                                        </div>}
+                                        </article>}
                                 </section>
                             </>
                         }

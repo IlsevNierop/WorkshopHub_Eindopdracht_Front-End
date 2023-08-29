@@ -75,6 +75,7 @@ function AllBookings() {
                         setError('');
                     }
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                     openModalError();
                     setTimeout(() => {
@@ -97,7 +98,6 @@ function AllBookings() {
         function setOptions() {
             setOptionsWorkshopId(createOptionsObjectSelectDropdown(bookingsData, "workshopId",));
         }
-
         void setOptions();
     }, [originalBookingsData]);
 
@@ -155,6 +155,7 @@ function AllBookings() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -175,6 +176,7 @@ function AllBookings() {
                 closeModalDeleteSuccessful();
             }, 4000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -204,6 +206,7 @@ function AllBookings() {
             a.click();
             window.URL.revokeObjectURL(url);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -416,7 +419,7 @@ function AllBookings() {
                 ></CustomModal>
 
                 {(bookingsData && bookingsData.length > 0 && highestAuthority !== 'customer') &&
-                    <div className={styles["top__bookings__dropdown-menu"]}>
+                    <section className={styles["top__bookings__dropdown-menu"]}>
 
                         <div className={styles["dropdown"]}>
                             <label className="select-dropdown">Sorteer op:
@@ -436,21 +439,21 @@ function AllBookings() {
                         <div className={styles["container__filter-dropdown__button"]}>
                             <div className={styles["dropdown"]}>
                                 <label className="select-dropdown">Filter op workshop ID:
-                                <Select className={styles["filter__dropdown"]}
-                                        id="select-dropdown-workshopId"
-                                        name="select-dropdown-workshopId"
-                                        label="select-dropdown-workshopId"
-                                        placeholder="Selecteer.."
-                                        value={workshopId}
-                                        onChange={setWorkshopId}
-                                        options={optionsWorkshopId}
-                                        isMulti={false}
-                                />
+                                    <Select className={styles["filter__dropdown"]}
+                                            id="select-dropdown-workshopId"
+                                            name="select-dropdown-workshopId"
+                                            label="select-dropdown-workshopId"
+                                            placeholder="Selecteer.."
+                                            value={workshopId}
+                                            onChange={setWorkshopId}
+                                            options={optionsWorkshopId}
+                                            isMulti={false}
+                                    />
                                 </label>
                             </div>
                             <Button type="text" onClick={removeWorkshopIdFilter}>Alle workshops</Button>
                         </div>
-                    </div>
+                    </section>
                 }
 
                 {bookingsData && bookingsData.length > 0 &&

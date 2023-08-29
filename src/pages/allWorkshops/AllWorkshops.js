@@ -66,6 +66,7 @@ function AllWorkshops() {
                     setWorkshopsData(response);
                     setError('');
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                     openModalError();
                     setTimeout(() => {
@@ -99,6 +100,7 @@ function AllWorkshops() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -126,6 +128,7 @@ function AllWorkshops() {
             }, 4000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             openModalError();
             setTimeout(() => {
@@ -253,7 +256,7 @@ function AllWorkshops() {
                                 worden door een administrator voordat de workshop weer gepubliceerd kan worden."
                 ></CustomModal>
 
-                <div className={styles["sort"]}>
+                <section className={styles["sort"]}>
                     <label className="select-dropdown">Sorteer op:
                         <Select className={styles["sort__dropdown"]}
                                 id="select-dropdown-sort"
@@ -266,7 +269,7 @@ function AllWorkshops() {
                                 isMulti={false}
                         />
                     </label>
-                </div>
+                </section>
 
                 {highestAuthority === 'admin' &&
                     <table className={"table"}>

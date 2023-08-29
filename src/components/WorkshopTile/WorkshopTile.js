@@ -43,6 +43,7 @@ function WorkshopTile({
                 setFavourite(!favourite);
 
             } catch (e) {
+                console.error(e);
                 setError(errorHandling(e));
                 openModalError();
                 setTimeout(() => {

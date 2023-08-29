@@ -78,6 +78,7 @@ function SignIn() {
             login(jwt);
             closeModalSignIn();
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
@@ -92,6 +93,7 @@ function SignIn() {
                 setModalIsOpenSignIn(true);
             }, 2000);
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
             setTimeout(() => {
                 setError('');
@@ -172,7 +174,8 @@ function SignIn() {
                 <h4 className={styles["content__modal__reset-password"]}>Weet je het wachtwoord niet meer? </h4>
                 <h4 className={styles["content__modal__reset-password"]}>Vul hieronder je e-mailadres in en een
                     nieuw wachtwoord.</h4>
-                <form className={styles["reset-password__form"]} onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
+                <form className={styles["reset-password__form"]}
+                      onSubmit={handleSubmitResetPassword(handleFormSubmitResetPassword)}>
                     <InputField
                         type="text"
                         name="email"

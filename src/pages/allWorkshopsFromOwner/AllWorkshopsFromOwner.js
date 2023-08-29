@@ -37,6 +37,7 @@ function AllWorkshopsFromOwner() {
                     setError('');
 
                 } catch (e) {
+                    console.error(e);
                     setError(errorHandling(e));
                 }
                 toggleLoading(false);

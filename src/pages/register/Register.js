@@ -49,6 +49,7 @@ function Register() {
             }, 3000);
 
         } catch (e) {
+            console.error(e);
             setError(errorHandling(e));
         }
     }
